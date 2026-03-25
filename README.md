@@ -1,35 +1,35 @@
-# 🧠 MentorIA - Plataforma Educativa IA para Docentes
+# MentorIA - Plataforma Educativa IA para Docentes
 
-**MentorIA** es una aplicación SaaS moderna diseñada para empoderar a los profesores mediante el uso de Inteligencia Artificial. Permite la creación de cursos, generación de lecciones dinámicas y edición de contenidos de forma intuitiva, ofreciendo además una experiencia de aprendizaje optimizada para los estudiantes.
+MentorIA es una aplicación SaaS moderna diseñada para empoderar a los profesores mediante el uso de Inteligencia Artificial. Permite la creación de cursos, generación de lecciones dinámicas y edición de contenidos de forma intuitiva, ofreciendo además una experiencia de aprendizaje optimizada para los estudiantes.
 
 ---
 
-## 🚀 Características Principales
+## Características Principales
 
 ### Para Profesores:
-- **Asistente de Creación de Cursos**: Genera estructuras de cursos completas a partir de objetivos pedagógicos.
-- **Generador de Lecciones IA**: Crea contenido educativo, ejercicios y quizzes automáticamente.
-- **Editor de Bloques Estilo Notion**: Personaliza cada lección con texto, imágenes y componentes interactivos.
-- **Optimización con IA**: Mejora y refina el contenido de tus clases con un solo clic.
+- Asistente de Creación de Cursos: Genera estructuras de cursos completas a partir de objetivos pedagógicos.
+- Generador de Lecciones IA: Crea contenido educativo, ejercicios y quizzes automáticamente.
+- Editor de Bloques Estilo Notion: Personaliza cada lección con texto, imágenes y componentes interactivos.
+- Optimización con IA: Mejora y refina el contenido de tus clases con un solo clic.
 
 ### Para Estudiantes:
-- **Interfaz de Lectura Limpia**: Entorno sin distracciones para el aprendizaje.
-- **Tutor IA Integrado**: Asistente pedagógico disponible 24/7 para explicar conceptos complejos.
-- **Seguimiento de Progreso**: Visualización clara del avance en cada materia.
+- Interfaz de Lectura Limpia: Entorno sin distracciones para el aprendizaje.
+- Tutor IA Integrado: Asistente pedagógico disponible 24/7 para explicar conceptos complejos.
+- Seguimiento de Progreso: Visualización clara del avance en cada materia.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
-- **Frontend**: [Vue 3](https://vuejs.org/) (Composition API) + [Vite](https://vitejs.dev/)
-- **Estilo**: [Tailwind CSS v4](https://tailwindcss.com/) (Diseño Neobrutalista Premium)
-- **Estado**: [Pinia](https://pinia.vuejs.org/)
-- **Backend**: [Supabase](https://supabase.com/) (Auth, Database, RLS)
-- **Iconos**: [Lucide Vue Next](https://lucide.dev/)
+- Frontend: Vue 3 (Composition API) + Vite
+- Estilo: Tailwind CSS v4 (Diseño Neobrutalista Premium)
+- Estado: Pinia
+- Backend: Supabase (Auth, Database, RLS)
+- Iconos: Lucide Vue Next
 
 ---
 
-## 📦 Instalación y Configuración
+## Instalación y Configuración
 
 Sigue estos pasos para ejecutar el proyecto localmente:
 
@@ -45,7 +45,7 @@ npm install
 ```
 
 ### 3. Configurar variables de entorno
-Crea un archivo `.env` en la raíz del proyecto basándote en el archivo `.env.example`:
+Crea un archivo .env en la raíz del proyecto basándote en el archivo .env.example:
 
 ```env
 VITE_SUPABASE_URL=TU_URL_DE_SUPABASE
@@ -59,20 +59,20 @@ npm run dev
 
 ---
 
-## 🗄️ Base de Datos (Supabase)
+## Base de Datos (Supabase)
 
-Para inicializar la base de datos, ejecuta el script SQL proporcionado en el **SQL Editor** de tu panel de Supabase. Este script creará las tablas necesarias:
-- `profiles`
-- `courses`
-- `lessons`
-- `blocks`
+Para inicializar la base de datos, ejecuta el script SQL proporcionado en el SQL Editor de tu panel de Supabase. Este script creará las tablas necesarias:
+- profiles
+- courses
+- lessons
+- blocks
 
-Además, configura **Google OAuth** en la sección de Authentication para habilitar el inicio de sesión social.
+Además, configura Google OAuth en la sección de Authentication para habilitar el inicio de sesión social.
 
 ---
 
-## 🎨 Filosofía de Diseño
-El proyecto utiliza un estilo **Neobrutalista Moderno**, caracterizado por:
+## Filosofía de Diseño
+El proyecto utiliza un estilo Neobrutalista Moderno, caracterizado por:
 - Sombras sólidas y bordes definidos.
 - Paleta de colores vibrantes y contrastados.
 - Tipografía de alta legibilidad (Epilogue / Plus Jakarta Sans).
@@ -80,8 +80,8 @@ El proyecto utiliza un estilo **Neobrutalista Moderno**, caracterizado por:
 
 ---
 
-## 📄 Licencia
+## Licencia
 Este proyecto es de uso privado para la plataforma MentorIA.
 
 ---
-*Desarrollado con ❤️ para transformar la educación.*
+Desarrollado para transformar la educación.
