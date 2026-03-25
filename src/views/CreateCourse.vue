@@ -14,6 +14,28 @@ import {
 
 const router = useRouter()
 const courseStore = useCourseStore()
+const isUploading = ref(false)
+const fileInput = ref(null)
+
+const handleFileUpload = async (event) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  isUploading.value = true
+  try {
+    const url = await courseStore.uploadMaterial(file)
+    console.log('File uploaded:', url)
+  } catch (error) {
+    alert('Error al subir el archivo')
+  } finally {
+    isUploading.value = false
+  }
+}
+
+const triggerFileInput = () => {
+  fileInput.value.click()
+}
+
 const currentStep = ref(1)
 const steps = ['Básicos', 'Detalles', 'Materiales', 'Generar']
 
@@ -121,12 +143,42 @@ const prevStep = () => {
           <h2 class="text-3xl font-black text-dark">Sube tu plan de estudio</h2>
           <p class="text-gray-500 font-medium">Nuestra IA analizará tu PDF para estructurar las clases automáticamente.</p>
           
-          <div class="border-4 border-dashed border-gray-200 rounded-[3rem] p-16 flex flex-col items-center justify-center group cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all duration-300">
-            <div class="w-24 h-24 rounded-3xl bg-gray-100 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-              <Upload class="w-12 h-12 text-gray-400 group-hover:text-white" />
+          <div 
+            @click="triggerFileInput"
+            class="border-4 border-dashed rounded-[3rem] p-16 flex flex-col items-center justify-center group cursor-pointer transition-all duration-300 relative"
+            :class="[
+              courseStore.newCourseDraft.file ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-primary/40 hover:bg-primary/5',
+              isUploading ? 'opacity-50 pointer-events-none' : ''
+            ]"
+          >
+            <input 
+              ref="fileInput"
+              type="file" 
+              class="hidden" 
+              accept=".pdf"
+              @change="handleFileUpload"
+            />
+            
+            <div v-if="isUploading" class="flex flex-col items-center">
+              <Loader2 class="w-16 h-16 text-primary animate-spin mb-4" />
+              <p class="text-xl font-bold text-primary">Subiendo plan...</p>
             </div>
-            <p class="text-2xl font-black text-gray-400 group-hover:text-primary mb-2">Arrastra tu PDF aquí</p>
-            <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">O haz clic para buscar</p>
+            
+            <template v-else-if="courseStore.newCourseDraft.file">
+              <div class="w-24 h-24 rounded-3xl bg-green-500 text-white flex items-center justify-center mb-6 shadow-soft">
+                <CheckCircle2 class="w-12 h-12" />
+              </div>
+              <p class="text-2xl font-black text-green-600 mb-2">¡Material Cargado!</p>
+              <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">Toca para cambiar archivo</p>
+            </template>
+
+            <template v-else>
+              <div class="w-24 h-24 rounded-3xl bg-gray-100 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                <Upload class="w-12 h-12 text-gray-400 group-hover:text-white" />
+              </div>
+              <p class="text-2xl font-black text-gray-400 group-hover:text-primary mb-2">Sube tu PDF del Sílabo</p>
+              <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">Nuestra IA lo analizará automáticamente</p>
+            </template>
           </div>
         </div>
 

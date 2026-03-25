@@ -71,6 +71,31 @@ export const useCourseStore = defineStore('course', {
         this.isGenerating = false
       }
     },
+    async uploadMaterial(file) {
+      if (!file) return null
+      
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Math.random()}.${fileExt}`
+      const filePath = `${this.user?.id || 'anonymous'}/${fileName}`
+
+      try {
+        const { error: uploadError, data } = await supabase.storage
+          .from('course-assets')
+          .upload(filePath, file)
+
+        if (uploadError) throw uploadError
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('course-assets')
+          .getPublicUrl(filePath)
+
+        this.newCourseDraft.file = publicUrl
+        return publicUrl
+      } catch (error) {
+        console.error('Error uploading file:', error)
+        throw error
+      }
+    },
     selectCourse(course) {
       this.currentCourse = course
     }
