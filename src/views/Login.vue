@@ -11,7 +11,7 @@ const password = ref('')
 
 const handleLogin = async () => {
   await authStore.login(email.value, password.value)
-  router.push('/')
+  router.push('/dashboard')
 }
 
 const handleGoogleLogin = async () => {

@@ -17,10 +17,10 @@ const router = useRouter()
 const route = useRoute()
 
 const navItems = [
-  { name: 'Cursos', icon: BookOpen, path: '/' },
-  { name: 'Crear curso', icon: PlusCircle, path: '/create' },
-  { name: 'Analíticas', icon: BarChart3, path: '/analytics' },
-  { name: 'Configuración', icon: Settings, path: '/settings' },
+  { name: 'Cursos', icon: BookOpen, path: '/dashboard' },
+  { name: 'Crear curso', icon: PlusCircle, path: '/dashboard/create' },
+  { name: 'Analíticas', icon: BarChart3, path: '/dashboard/analytics' },
+  { name: 'Configuración', icon: Settings, path: '/dashboard/settings' },
 ]
 
 const handleLogout = () => {
@@ -33,7 +33,7 @@ const handleLogout = () => {
     <!-- Sidebar -->
     <aside class="w-72 bg-white flex flex-col border-r border-gray-100 shadow-sm z-10 transition-all duration-300">
       <div class="px-8 py-10">
-        <div class="flex items-center gap-3 group cursor-pointer" @click="router.push('/')">
+        <div class="flex items-center gap-3 group cursor-pointer" @click="router.push('/dashboard')">
           <div class="p-2 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors">
             <BrainCircuit class="w-7 h-7 text-primary" />
           </div>

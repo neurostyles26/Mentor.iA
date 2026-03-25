@@ -2,12 +2,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
+    path: '/',
+    name: 'Landing',
+    component: () => import('../views/Landing.vue')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/',
+    path: '/dashboard',
     component: () => import('../components/DashboardLayout.vue'),
     children: [
       {
