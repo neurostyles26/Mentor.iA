@@ -1,0 +1,27 @@
+/* stylelint-disable */
+/* css-lint: unknownAtRules: ignore */
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #6C63FF;
+  --color-secondary: #00C9A7;
+  --color-background: #F8FAFC;
+  --color-dark: #1F2937;
+  --radius-2xl: 1rem;
+  --shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-dark font-sans;
+  }
+}
+
+.glass {
+  @apply bg-white/70 backdrop-blur-md border border-white/20;
+}
+
+.premium-card {
+  @apply bg-white rounded-2xl shadow-soft hover:shadow-premium transition-all duration-300;
+}
