@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../store'
 
 const routes = [
   {
@@ -14,6 +15,7 @@ const routes = [
   {
     path: '/dashboard',
     component: () => import('../components/DashboardLayout.vue'),
+    meta: { requiresAuth: true },
     children: [
       {
         path: '',
@@ -47,6 +49,23 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+// Navigation Guard
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
+  
+  // If route requires auth and user is not logged in
+  if (to.meta.requiresAuth && !authStore.user) {
+    next('/login')
+  } 
+  // If user is logged in and tries to go to login
+  else if (to.name === 'Login' && authStore.user) {
+    next('/dashboard')
+  }
+  else {
+    next()
+  }
 })
 
 export default router

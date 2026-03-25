@@ -64,22 +64,35 @@ export const useAuthStore = defineStore('auth', {
     isLoading: false
   }),
   actions: {
+    async initAuth() {
+      const { data: { session } } = await supabase.auth.getSession()
+      this.user = session?.user || null
+      
+      supabase.auth.onAuthStateChange((_, session) => {
+        this.user = session?.user || null
+      })
+    },
     async login(email, password) {
       this.isLoading = true
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      this.user = { email, name: 'Prof. García' }
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+      if (error) throw error
+      this.user = data.user
       this.isLoading = false
     },
     async signInWithGoogle() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin
+          redirectTo: `${window.location.origin}/dashboard`
         }
       })
       if (error) throw error
     },
-    logout() {
+    async logout() {
+      await supabase.auth.signOut()
       this.user = null
     }
   }
