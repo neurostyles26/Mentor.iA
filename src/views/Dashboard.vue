@@ -1,3 +1,4 @@
+<script setup>
 import { ArrowRight, MoreVertical, Plus } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { useCourseStore } from '../store'

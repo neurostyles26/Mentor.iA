@@ -1,3 +1,4 @@
+<script setup>
 import { BrainCircuit, Chrome, Loader2 } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store'
