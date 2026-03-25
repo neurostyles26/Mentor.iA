@@ -51,9 +51,25 @@ const router = createRouter({
   routes
 })
 
+// Helper to wait for auth
+const waitForAuth = (authStore) => {
+  return new Promise((resolve) => {
+    if (authStore.isAuthReady) return resolve()
+    const unwatch = authStore.$subscribe((_, state) => {
+      if (state.isAuthReady) {
+        unwatch()
+        resolve()
+      }
+    })
+  })
+}
+
 // Navigation Guard
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
+  
+  // Wait for auth to be definitively ready
+  await waitForAuth(authStore)
   
   // If route requires auth and user is not logged in
   if (to.meta.requiresAuth && !authStore.user) {

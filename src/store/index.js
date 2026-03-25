@@ -61,15 +61,23 @@ export const useCourseStore = defineStore('course', {
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
-    isLoading: false
+    isLoading: false,
+    isAuthReady: false
   }),
   actions: {
     async initAuth() {
-      const { data: { session } } = await supabase.auth.getSession()
-      this.user = session?.user || null
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        this.user = session?.user || null
+      } catch (e) {
+        console.error("Auth init error:", e)
+      } finally {
+        this.isAuthReady = true
+      }
       
       supabase.auth.onAuthStateChange((_, session) => {
         this.user = session?.user || null
+        this.isAuthReady = true
       })
     },
     async login(email, password) {
