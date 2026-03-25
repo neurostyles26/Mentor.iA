@@ -23,6 +23,7 @@ const currentLesson = computed(() => courseStore.lessons[0] || { title: 'Concept
 const handleTutorHelp = () => {
   showHelp.value = true
 }
+</script>
 
 <template>
   <div class="min-h-screen bg-white font-sans flex flex-col">

@@ -51,6 +51,7 @@ const optimizeWithAI = () => {
     blocks.value[blocks.value.length - 1].content = '💡 Resumen IA: Las fracciones son esenciales para entender proporciones en la vida real. ¡Excelente contenido!'
   }, 1500)
 }
+</script>
 
 <template>
   <div class="h-full flex flex-col gap-8 animate-fade-in">

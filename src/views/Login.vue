@@ -21,6 +21,7 @@ const handleGoogleLogin = async () => {
     console.error('Error al iniciar sesión con Google:', error)
   }
 }
+</script>
 
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#6C63FF] via-[#8B8DFF] to-[#00C9A7] p-4 font-sans">
