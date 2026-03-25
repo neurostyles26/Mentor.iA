@@ -1,8 +1,6 @@
 // Follow this setup guide to integrate the DeepSeek API into your Supabase Edge Function.
 // Reference: https://supabase.com/docs/guides/functions/secrets
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-
 const DEEPSEEK_API_KEY = Deno.env.get('DEEPSEEK_API_KEY')
 
 const corsHeaders = {
@@ -10,7 +8,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+Deno.serve(async (req: Request) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -39,6 +37,11 @@ serve(async (req) => {
       }),
     })
 
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error?.message || 'DeepSeek API error')
+    }
+
     const data = await response.json()
     const generatedText = data.choices[0].message.content
 
@@ -50,9 +53,9 @@ serve(async (req) => {
       }
     )
 
-  } catch (error) {
+  } catch (error: any) {
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error.message || 'Unknown error occurred' }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400 
