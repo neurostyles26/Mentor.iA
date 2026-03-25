@@ -155,7 +155,7 @@ const goToDashboard = () => {
               <button @click="router.push('/dashboard')" class="px-10 py-4 bg-white border-2 border-gray-200 rounded-2xl font-black text-gray-400 hover:text-dark hover:border-dark transition-all active:scale-95 uppercase tracking-widest text-xs">
                 Descartar
               </button>
-              <button @click="router.push('/editor')" class="px-12 py-4 bg-primary text-white rounded-2xl font-black shadow-premium hover:-translate-y-1 transition-all active:scale-95 uppercase tracking-widest text-xs flex items-center gap-3">
+              <button @click="router.push('/dashboard/editor')" class="px-12 py-4 bg-primary text-white rounded-2xl font-black shadow-premium hover:-translate-y-1 transition-all active:scale-95 uppercase tracking-widest text-xs flex items-center gap-3">
                 Continuar al Editor
                 <ChevronRight class="w-4 h-4" />
               </button>

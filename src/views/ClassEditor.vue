@@ -58,7 +58,7 @@ const optimizeWithAI = () => {
     <!-- Header with Breadcrumbs & Actions -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <span class="text-gray-400 font-bold hover:text-dark cursor-pointer transition-colors" @click="router.push('/')">Cursos</span>
+        <span class="text-gray-400 font-bold hover:text-dark cursor-pointer transition-colors" @click="router.push('/dashboard')">Cursos</span>
         <span class="text-gray-300">/</span>
         <span class="text-gray-400 font-bold">{{ courseStore.currentCourse?.name || 'Nuevo Curso' }}</span>
         <span class="text-gray-300">/</span>

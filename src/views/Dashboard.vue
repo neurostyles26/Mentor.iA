@@ -15,7 +15,7 @@ const handleViewCourse = (course) => {
 }
 
 const navigateToCreate = () => {
-  router.push('/create')
+  router.push('/dashboard/create')
 }
 </script>
 

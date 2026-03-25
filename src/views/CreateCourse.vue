@@ -22,7 +22,7 @@ const nextStep = async () => {
     currentStep.value++
   } else {
     await courseStore.createCourseFromDraft()
-    router.push('/ai-generator')
+    router.push('/dashboard/ai-generator')
   }
 }
 
