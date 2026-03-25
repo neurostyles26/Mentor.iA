@@ -11,6 +11,8 @@ export const useCourseStore = defineStore('course', {
     currentCourse: null,
     lessons: [],
     isGenerating: false,
+    generationError: null,
+    generatedContent: null,
     newCourseDraft: {
       name: '',
       grade: '',
@@ -35,22 +37,39 @@ export const useCourseStore = defineStore('course', {
       this.currentCourse = newCourse
       return newCourse
     },
-    async generateLessonsForCurrentCourse(prompt) {
+    async generateLessonsWithAI(topic) {
       this.isGenerating = true
-      // Simulate AI Generation delay
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      this.generationError = null
+      this.generatedContent = null
       
-      const generatedLessons = [
-        { id: 1, title: `Introducción a ${this.currentCourse?.name || 'la materia'}`, status: 'ready', type: 'Teoría', content: [] },
-        { id: 2, title: 'Conceptos fundamentales', status: 'ready', type: 'Práctica', content: [] },
-        { id: 3, title: 'Ejercicios aplicados', status: 'ready', type: 'Interactivo', content: [] },
-      ]
-      
-      this.lessons = generatedLessons
-      if (this.currentCourse) {
-        this.currentCourse.classes = generatedLessons.length
+      const grade = this.currentCourse?.grade || 'Educación General'
+      const prompt = `Create 5 structured lessons for grade ${grade} about ${topic}. Each lesson must include explanation, example and activity.`
+
+      try {
+        const { data, error } = await supabase.functions.invoke('generate-lessons', {
+          body: { prompt }
+        })
+
+        if (error) throw error
+        if (data.error) throw new Error(data.error)
+
+        this.generatedContent = data.text
+        
+        // Optionally parse into separate lessons if needed, 
+        // but user requested to return ONLY the generated text.
+        this.lessons = [
+          { id: Date.now(), title: `Contenido generado para ${topic}`, status: 'ready', type: 'IA', content: data.text }
+        ]
+        
+        if (this.currentCourse) {
+          this.currentCourse.classes = 1
+        }
+      } catch (error) {
+        console.error('Error generating lessons:', error)
+        this.generationError = 'No se pudo generar el contenido. Verifica tu conexión o intenta más tarde.'
+      } finally {
+        this.isGenerating = false
       }
-      this.isGenerating = false
     },
     selectCourse(course) {
       this.currentCourse = course
