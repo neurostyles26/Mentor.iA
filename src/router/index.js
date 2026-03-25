@@ -75,10 +75,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth && !authStore.user) {
     next('/login')
   } 
-  // If user is logged in and tries to go to login
-  else if (to.name === 'Login' && authStore.user) {
-    next('/dashboard')
-  }
+  // We removed the automatic redirect from Login -> Dashboard to allow the explicit flow.
   else {
     next()
   }
