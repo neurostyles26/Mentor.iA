@@ -78,7 +78,7 @@ const goToDashboard = () => {
             </div>
 
             <div v-if="courseStore.currentCourse" class="p-6 bg-gray-50 rounded-3xl border border-gray-100">
-               <p class="text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widestAlpha">Curso Activo</p>
+               <p class="text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Curso Activo</p>
                <div class="flex items-center justify-between">
                   <span class="font-bold text-dark">{{ courseStore.currentCourse.name }}</span>
                   <span class="px-3 py-1 bg-primary/10 text-primary rounded-lg text-xs font-black">{{ courseStore.currentCourse.grade }}</span>

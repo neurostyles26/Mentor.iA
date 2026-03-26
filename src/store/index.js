@@ -46,17 +46,20 @@ export const useCourseStore = defineStore('course', {
       const prompt = `Create 5 structured lessons for grade ${grade} about ${topic}. Each lesson must include explanation, example and activity.`
 
       try {
+        // Explicitly get session to ensure Authorization header is present
+        const { data: { session } } = await supabase.auth.getSession()
+        
         const { data, error } = await supabase.functions.invoke('generate-lessons', {
-          body: { prompt }
+          body: { prompt },
+          headers: {
+            Authorization: `Bearer ${session?.access_token || ''}`
+          }
         })
 
         if (error) throw error
         if (data.error) throw new Error(data.error)
 
         this.generatedContent = data.text
-        
-        // Optionally parse into separate lessons if needed, 
-        // but user requested to return ONLY the generated text.
         this.lessons = [
           { id: Date.now(), title: `Contenido generado para ${topic}`, status: 'ready', type: 'IA', content: data.text }
         ]
@@ -74,12 +77,15 @@ export const useCourseStore = defineStore('course', {
     async uploadMaterial(file) {
       if (!file) return null
       
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `${this.user?.id || 'anonymous'}/${fileName}`
-
       try {
-        const { error: uploadError, data } = await supabase.storage
+        const { data: { session } } = await supabase.auth.getSession()
+        const userId = session?.user?.id || 'anonymous'
+        
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${Math.random()}.${fileExt}`
+        const filePath = `${userId}/${fileName}`
+
+        const { error: uploadError } = await supabase.storage
           .from('course-assets')
           .upload(filePath, file)
 
