@@ -46,13 +46,15 @@ export const useCourseStore = defineStore('course', {
       const prompt = `Create 5 structured lessons for grade ${grade} about ${topic}. Each lesson must include explanation, example and activity.`
 
       try {
-        // Explicitly get session to ensure Authorization header is present
+        // Explicitly get session and anon key to ensure all required headers are present
         const { data: { session } } = await supabase.auth.getSession()
-        
+        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
         const { data, error } = await supabase.functions.invoke('generate-lessons', {
           body: { prompt },
           headers: {
-            Authorization: `Bearer ${session?.access_token || ''}`
+            'apikey': anonKey,
+            'Authorization': `Bearer ${session?.access_token || ''}`
           }
         })
 
