@@ -14,5 +14,9 @@ app.use(router)
 // Initialize Auth before mounting
 const authStore = useAuthStore()
 authStore.initAuth().then(() => {
+  // Clear stale session tokens from URL for a cleaner experience
+  if (window.location.hash || window.location.search.includes('access_token')) {
+    window.history.replaceState(null, '', window.location.pathname)
+  }
   app.mount('#app')
 })

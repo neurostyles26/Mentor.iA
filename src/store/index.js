@@ -46,24 +46,31 @@ export const useCourseStore = defineStore('course', {
       const prompt = `Create 5 structured lessons for grade ${grade} about ${topic}. Each lesson must include explanation, example and activity.`
 
       try {
-        // Explicitly get session and anon key
-        const { data: { session } } = await supabase.auth.getSession()
+        // Direct fetch strategy (Nuclear Option)
+        // This avoids any SDK-specific header logic that might cause 401s
         const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+        const baseUrl = import.meta.env.VITE_SUPABASE_URL
+        const url = `${baseUrl}/functions/v1/generate-lessons`
 
-        // Use the user's token if available, otherwise fallback to the anon key
-        // This is much more robust against "stale session" errors
+        const { data: { session } } = await supabase.auth.getSession()
         const token = session?.access_token || anonKey
 
-        const { data, error } = await supabase.functions.invoke('generate-lessons', {
-          body: { prompt },
+        const response = await fetch(url, {
+          method: 'POST',
           headers: {
+            'Content-Type': 'application/json',
             'apikey': anonKey,
             'Authorization': `Bearer ${token}`
-          }
+          },
+          body: JSON.stringify({ prompt })
         })
 
-        if (error) throw error
-        if (data.error) throw new Error(data.error)
+        if (!response.ok) {
+          const errorText = await response.text()
+          throw new Error(`HTTP Error ${response.status}: ${errorText || 'Unauthorized'}`)
+        }
+
+        const data = await response.json()
 
         this.generatedContent = data.text
         this.lessons = [
