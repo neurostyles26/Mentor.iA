@@ -9,7 +9,7 @@ const corsHeaders = {
 // @ts-ignore
 Deno.serve(async (req: Request) => {
   // @ts-ignore
-  const DEEPSEEK_API_KEY = Deno.env.get('DEEPSEEK_API_KEY')
+  const GEMINI_API_KEY = Deno.env.get('MentoriA2')
   
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -23,29 +23,35 @@ Deno.serve(async (req: Request) => {
       throw new Error('Prompt is required')
     }
 
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: 'You are a helpful educational assistant specialized in creating structured lesson plans for teachers.' },
-          { role: 'user', content: prompt },
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              {
+                text: `System: You are a helpful educational assistant specialized in creating structured lesson plans for teachers.\n\nUser: ${prompt}`
+              }
+            ]
+          }
         ],
-        temperature: 0.7,
+        generationConfig: {
+          temperature: 0.7,
+        },
       }),
     })
 
     if (!response.ok) {
       const errorData = await response.json()
-      throw new Error(errorData.error?.message || 'DeepSeek API error')
+      throw new Error(errorData.error?.message || 'Gemini API error')
     }
 
     const data = await response.json()
-    const generatedText = data.choices[0].message.content
+    const generatedText = data.candidates[0].content.parts[0].text
 
     return new Response(
       JSON.stringify({ text: generatedText }),
