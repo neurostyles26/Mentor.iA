@@ -17,7 +17,6 @@ export const useCourseStore = defineStore('course', {
       objectives: '',
       file: null
     },
-    selectedModel: 'gemini', // 'gemini' or 'openai'
     lastDiagnosis: null,
     teacherChatHistory: []
   }),
@@ -30,26 +29,15 @@ export const useCourseStore = defineStore('course', {
       this.teacherChatHistory.push(newMessage)
 
       try {
-        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-        const baseUrl = import.meta.env.VITE_SUPABASE_URL
-        const url = `${baseUrl}/functions/v1/tutor-chat`
-
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': anonKey
-          },
-          body: JSON.stringify({ 
+        const { data, error } = await supabase.functions.invoke('tutor-chat', {
+          body: { 
             pregunta: question, 
-            contexto: `Eres un Mentor para DOCENTES. Ayúdame a diseñar una clase creativa para mis alumnos. Dame ideas de actividades y prompts útiles.`, 
-            model: this.selectedModel 
-          })
+            contexto: `Eres un Mentor para DOCENTES. Ayúdame a diseñar una clase creativa para mis alumnos.` 
+          }
         })
 
-        if (!response.ok) throw new Error('Error al conectar con el Mentor')
+        if (error) throw error
 
-        const data = await response.json()
         this.teacherChatHistory.push({ role: 'assistant', content: data.text })
       } catch (error) {
         console.error('Teacher Chat Error:', error)
@@ -109,37 +97,11 @@ export const useCourseStore = defineStore('course', {
       const prompt = `Materia: ${subject}. Grado: ${grade}. Tema: ${topic}. Tipo: ${type}.`
 
       try {
-        // Direct fetch strategy (Nuclear Option)
-        // This avoids any SDK-specific header logic that might cause 401s
-        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-        const baseUrl = import.meta.env.VITE_SUPABASE_URL
-        const url = `${baseUrl}/functions/v1/generate-lessons`
-
-        const { data: { session } } = await supabase.auth.getSession()
-        const token = session?.access_token || anonKey
-
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': anonKey,
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ 
-            prompt, 
-            model: this.selectedModel,
-            grade,
-            subject,
-            type
-          })
+        const { data, error } = await supabase.functions.invoke('generate-lessons', {
+          body: { prompt, grade, subject, type }
         })
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          throw new Error(`HTTP Error ${response.status}: ${errorText || 'Unauthorized'}`)
-        }
-
-        const data = await response.json()
+        if (error) throw error
 
         this.generatedContent = data.text
         
@@ -168,8 +130,8 @@ export const useCourseStore = defineStore('course', {
         }
       } catch (error) {
         console.error('Error generating content:', error)
-        this.generationError = error.message || 'Error desconocido'
-        this.lastDiagnosis = error.message
+        this.generationError = error.message || 'Error de conexión'
+        this.lastDiagnosis = error.message || 'Error desconocido del servidor.'
       } finally {
         this.isGenerating = false
       }
@@ -202,29 +164,11 @@ export const useCourseStore = defineStore('course', {
       this.tutorResponse = null
       
       try {
-        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-        const baseUrl = import.meta.env.VITE_SUPABASE_URL
-        const url = `${baseUrl}/functions/v1/tutor-chat`
-
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': anonKey
-          },
-          body: JSON.stringify({ 
-            contexto: context, 
-            pregunta: question, 
-            model: this.selectedModel 
-          })
+        const { data, error } = await supabase.functions.invoke('tutor-chat', {
+          body: { contexto: context, pregunta: question }
         })
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          throw new Error(`Error del tutor: ${errorText}`)
-        }
-
-        const data = await response.json()
+        if (error) throw error
         this.tutorResponse = data.text
       } catch (error) {
         console.error('Error asking tutor:', error)

@@ -60,11 +60,6 @@ const types = [
   { id: 'exam', name: 'Examen', desc: 'Evaluación y Respuestas', icon: GraduationCap }
 ]
 
-const models = [
-  { id: 'gemini', name: 'Gemini 1.5', icon: Zap },
-  { id: 'openai', name: 'GPT-4o', icon: Cpu }
-]
-
 // Handle chat with mentor
 const sendToMentor = async () => {
   if (!teacherMessage.value.trim() || courseStore.isAskingTutor) return
@@ -246,15 +241,17 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
         <!-- Right Side: Mini Summary -->
         <div class="lg:col-span-4 space-y-6">
           <div class="premium-card bg-dark p-8 text-white shadow-premium">
-            <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-6">Plan en curso</h4>
+            <h4 class="text-xs font-black uppercase tracking-widest text-primary mb-6">Estado del Sistema</h4>
             <div class="space-y-4">
-              <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span class="text-[10px] font-bold text-gray-400">MATERIA</span>
-                <span class="text-xs font-black">{{ subject }}</span>
+              <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
+                <span class="text-[10px] font-bold text-gray-400">MOTOR ACTIVO</span>
+                <span class="text-[10px] font-black flex items-center gap-2 text-primary">
+                  <Zap class="w-3 h-3" /> GEMINI 1.5
+                </span>
               </div>
-              <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                <span class="text-[10px] font-bold text-gray-400">GRADO</span>
-                <span class="text-xs font-black">{{ grade }}</span>
+              <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
+                <span class="text-[10px] font-bold text-gray-400">COSTO</span>
+                <span class="text-[10px] font-black text-green-400 uppercase">GRATUITO</span>
               </div>
             </div>
             <hr class="my-8 border-white/5" />
