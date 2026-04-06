@@ -101,7 +101,11 @@ export const useCourseStore = defineStore('course', {
           body: { prompt, grade, subject, type }
         })
 
-        if (error) throw error
+        if (error) {
+          // Si el error es de HTTP (4xx o 5xx), intentamos ver si hay un mensaje personalizado
+          const errorMsg = await error.context?.json().then(j => j.error).catch(() => null)
+          throw new Error(errorMsg || error.message || 'Error de servidor')
+        }
 
         this.generatedContent = data.text
         
@@ -130,8 +134,8 @@ export const useCourseStore = defineStore('course', {
         }
       } catch (error) {
         console.error('Error generating content:', error)
-        this.generationError = error.message || 'Error de conexión'
-        this.lastDiagnosis = error.message || 'Error desconocido del servidor.'
+        this.generationError = error.message
+        this.lastDiagnosis = error.message
       } finally {
         this.isGenerating = false
       }
