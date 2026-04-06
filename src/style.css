@@ -67,3 +67,27 @@
   background: #E2E8F0;
   border-radius: 10px;
 }
+
+/* Professional Markdown Preview Styles */
+.preview-markdown h1 {
+  @apply text-4xl font-black text-dark mb-8 border-b-4 border-primary pb-4 inline-block;
+}
+.preview-markdown h2 {
+  @apply text-2xl font-black text-dark mt-12 mb-6 flex items-center gap-3;
+}
+.preview-markdown p {
+  @apply text-gray-600 leading-relaxed mb-6 text-lg;
+}
+.preview-markdown ul {
+  @apply mb-8 space-y-3 list-none;
+}
+.preview-markdown li {
+  @apply flex items-start gap-4 text-gray-600 font-medium;
+}
+.preview-markdown li::before {
+  content: "•";
+  @apply text-primary font-black text-xl leading-none;
+}
+.preview-markdown strong {
+  @apply text-dark font-bold;
+}

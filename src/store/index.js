@@ -18,9 +18,46 @@ export const useCourseStore = defineStore('course', {
       file: null
     },
     selectedModel: 'gemini', // 'gemini' or 'openai'
-    lastDiagnosis: null
+    lastDiagnosis: null,
+    teacherChatHistory: []
   }),
   actions: {
+    async askMentorTeacher(question) {
+      if (!question) return
+      this.isAskingTutor = true
+      
+      const newMessage = { role: 'user', content: question }
+      this.teacherChatHistory.push(newMessage)
+
+      try {
+        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+        const baseUrl = import.meta.env.VITE_SUPABASE_URL
+        const url = `${baseUrl}/functions/v1/tutor-chat`
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': anonKey
+          },
+          body: JSON.stringify({ 
+            pregunta: question, 
+            contexto: `Eres un Mentor para DOCENTES. Ayúdame a diseñar una clase creativa para mis alumnos. Dame ideas de actividades y prompts útiles.`, 
+            model: this.selectedModel 
+          })
+        })
+
+        if (!response.ok) throw new Error('Error al conectar con el Mentor')
+
+        const data = await response.json()
+        this.teacherChatHistory.push({ role: 'assistant', content: data.text })
+      } catch (error) {
+        console.error('Teacher Chat Error:', error)
+        this.teacherChatHistory.push({ role: 'system', content: 'Lo siento, tuve un problema. ¿Podrías intentar de nuevo?' })
+      } finally {
+        this.isAskingTutor = false
+      }
+    },
     setNewCourseDraft(data) {
       this.newCourseDraft = { ...this.newCourseDraft, ...data }
     },
