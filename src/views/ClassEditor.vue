@@ -20,11 +20,37 @@ import {
 const router = useRouter()
 const courseStore = useCourseStore()
 
-const blocks = ref([
-  { id: 1, type: 'text', content: 'Una fracción representa una parte de un todo, dividido en partes exactamente iguales. Se compone de dos números: el **numerador** y el **denominador**.' },
-  { id: 2, type: 'image', content: 'https://images.unsplash.com/photo-1509228468518-180dd48229d1?q=80&w=2070&auto=format&fit=crop', caption: 'Representación visual de 3/4' },
-  { id: 3, type: 'quiz', content: '¿Qué número indica en cuántas partes iguales se divide el todo?', options: ['Numerador', 'Denominador', 'Cociente', 'Resto'], answer: 1 }
-])
+const currentLesson = ref(null)
+const blocks = ref([])
+
+onMounted(async () => {
+  if (courseStore.currentCourse) {
+    await courseStore.fetchLessons(courseStore.currentCourse.id)
+    if (courseStore.lessons.length > 0) {
+      currentLesson.value = courseStore.lessons[0]
+      // Si el contenido es un string, lo ponemos en un bloque de texto inicial
+      if (currentLesson.value.content && blocks.value.length === 0) {
+        blocks.value.push({
+          id: Date.now(),
+          type: 'text',
+          content: currentLesson.value.content
+        })
+      }
+    }
+  }
+})
+
+const handleSave = async () => {
+  if (!currentLesson.value) return
+  
+  // Consolidar todos los bloques de texto en un string para el MVP
+  const fullContent = blocks.value
+    .map(b => b.content)
+    .join('\n\n')
+    
+  await courseStore.updateLesson(currentLesson.value.id, fullContent)
+  alert('Clase guardada con éxito')
+}
 
 const isOptimizing = ref(false)
 
@@ -73,7 +99,10 @@ const optimizeWithAI = () => {
         <button class="p-3 bg-white border border-gray-100 rounded-2xl text-gray-500 hover:text-primary shadow-soft active:scale-95 transition-all">
           <Eye class="w-6 h-6" />
         </button>
-        <button class="p-3 bg-white border border-gray-100 rounded-2xl text-gray-500 hover:text-primary shadow-soft active:scale-95 transition-all">
+        <button 
+          @click="handleSave"
+          class="p-3 bg-white border border-gray-100 rounded-2xl text-gray-500 hover:text-primary shadow-soft active:scale-95 transition-all"
+        >
           <Save class="w-6 h-6" />
         </button>
         <button 
@@ -90,13 +119,13 @@ const optimizeWithAI = () => {
     <div class="flex-1 flex gap-10 min-h-0">
       <!-- Sidebar Blocks -->
       <aside class="w-20 flex flex-col items-center gap-6 glass rounded-[2.5rem] py-10 shadow-premium h-fit border border-white/50 sticky top-10">
-        <button class="p-4 bg-gray-50 rounded-2xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm group">
+        <button @click="addBlock('text')" class="p-4 bg-gray-50 rounded-2xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm group">
           <Type class="w-6 h-6 group-hover:scale-110 transition-transform" />
         </button>
-        <button class="p-4 bg-gray-50 rounded-2xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm group">
+        <button @click="addBlock('image')" class="p-4 bg-gray-50 rounded-2xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm group">
           <ImageIcon class="w-6 h-6 group-hover:scale-110 transition-transform" />
         </button>
-        <button class="p-4 bg-gray-50 rounded-2xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm group">
+        <button @click="addBlock('quiz')" class="p-4 bg-gray-50 rounded-2xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm group">
           <CheckSquare class="w-6 h-6 group-hover:scale-110 transition-transform" />
         </button>
         <div class="h-px w-8 bg-gray-100"></div>
@@ -113,7 +142,8 @@ const optimizeWithAI = () => {
             type="text" 
             placeholder="Título de la lección"
             class="w-full text-5xl font-black text-dark mb-12 border-0 outline-none placeholder:text-gray-100 bg-transparent"
-            value="Introducción a las Fracciones"
+            v-if="currentLesson"
+            v-model="currentLesson.title"
           />
 
           <!-- Content Blocks -->

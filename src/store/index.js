@@ -3,47 +3,73 @@ import { supabase } from '../lib/supabase'
 
 export const useCourseStore = defineStore('course', {
   state: () => ({
-    courses: [
-      { id: 1, name: 'Matemáticas', grade: '6º Grado', progress: 70, color: 'from-blue-500 to-primary', classes: 24 },
-      { id: 2, name: 'Ciencias Naturales', grade: '8º Grado', progress: 45, color: 'from-secondary to-green-500', classes: 18 },
-      { id: 3, name: 'Historia Universal', grade: '10º Grado', progress: 90, color: 'from-orange-500 to-red-500', classes: 32 },
-    ],
+    courses: [],
     currentCourse: null,
     lessons: [],
     isGenerating: false,
     generationError: null,
     generatedContent: null,
+    tutorResponse: null,
+    isAskingTutor: false,
     newCourseDraft: {
       name: '',
       grade: '',
       objectives: '',
       file: null
-    }
+    },
+    selectedModel: 'gemini', // 'gemini' or 'openai'
+    lastDiagnosis: null
   }),
   actions: {
     setNewCourseDraft(data) {
       this.newCourseDraft = { ...this.newCourseDraft, ...data }
     },
-    async createCourseFromDraft() {
-      const newCourse = {
-        id: Date.now(),
-        name: this.newCourseDraft.name,
-        grade: this.newCourseDraft.grade,
-        progress: 0,
-        color: 'from-purple-500 to-indigo-500',
-        classes: 0
+    async fetchCourses() {
+      const { data, error } = await supabase
+        .from('courses')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (error) {
+        console.error('Error fetching courses:', error)
+        return
       }
-      this.courses.unshift(newCourse)
-      this.currentCourse = newCourse
-      return newCourse
+      this.courses = data
     },
-    async generateLessonsWithAI(topic) {
+    async createCourseFromDraft() {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.user) throw new Error('No authenticated user')
+
+      const { data, error } = await supabase
+        .from('courses')
+        .insert({
+          name: this.newCourseDraft.name,
+          grade: this.newCourseDraft.grade,
+          teacher_id: session.user.id,
+          color: 'from-purple-500 to-indigo-500'
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+      
+      this.courses.unshift(data)
+      this.currentCourse = data
+      return data
+    },
+    async generateLessonsWithAI(topic, extraData = {}) {
       this.isGenerating = true
       this.generationError = null
       this.generatedContent = null
+      this.lastDiagnosis = null
       
-      const grade = this.currentCourse?.grade || 'Educación General'
-      const prompt = `Create 5 structured lessons for grade ${grade} about ${topic}. Each lesson must include explanation, example and activity.`
+      const { 
+        grade = this.currentCourse?.grade || 'No especificado', 
+        subject = this.currentCourse?.name || 'General',
+        type = 'lesson' 
+      } = extraData
+
+      const prompt = `Materia: ${subject}. Grado: ${grade}. Tema: ${topic}. Tipo: ${type}.`
 
       try {
         // Direct fetch strategy (Nuclear Option)
@@ -62,7 +88,13 @@ export const useCourseStore = defineStore('course', {
             'apikey': anonKey,
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ prompt })
+          body: JSON.stringify({ 
+            prompt, 
+            model: this.selectedModel,
+            grade,
+            subject,
+            type
+          })
         })
 
         if (!response.ok) {
@@ -73,18 +105,95 @@ export const useCourseStore = defineStore('course', {
         const data = await response.json()
 
         this.generatedContent = data.text
-        this.lessons = [
-          { id: Date.now(), title: `Contenido generado para ${topic}`, status: 'ready', type: 'IA', content: data.text }
-        ]
         
+        // Persistir la lección en la base de datos
         if (this.currentCourse) {
-          this.currentCourse.classes = 1
+          const { data: lessonData, error: lessonError } = await supabase
+            .from('lessons')
+            .insert({
+              course_id: this.currentCourse.id,
+              title: type === 'lesson' ? `Lección de ${topic}` : type === 'workshop' ? `Taller de ${topic}` : `Examen de ${topic}`,
+              content: data.text,
+              status: 'draft'
+            })
+            .select()
+            .single()
+
+          if (lessonError) throw lessonError
+          
+          this.lessons = [lessonData]
+          
+          // Actualizar contador de clases en el curso
+          await supabase
+            .from('courses')
+            .update({ classes_count: (this.currentCourse.classes_count || 0) + 1 })
+            .eq('id', this.currentCourse.id)
         }
       } catch (error) {
-        console.error('Error generating lessons:', error)
-        this.generationError = 'No se pudo generar el contenido. Verifica tu conexión o intenta más tarde.'
+        console.error('Error generating content:', error)
+        this.generationError = error.message || 'Error desconocido'
+        this.lastDiagnosis = error.message
       } finally {
         this.isGenerating = false
+      }
+    },
+    async fetchLessons(courseId) {
+      const { data, error } = await supabase
+        .from('lessons')
+        .select('*')
+        .eq('course_id', courseId)
+        .order('created_at', { ascending: true })
+      
+      if (error) throw error
+      this.lessons = data
+    },
+    async updateLesson(lessonId, content) {
+      const { error } = await supabase
+        .from('lessons')
+        .update({ content })
+        .eq('id', lessonId)
+      
+      if (error) throw error
+      
+      const lesson = this.lessons.find(l => l.id === lessonId)
+      if (lesson) lesson.content = content
+    },
+    async askTutor(context, question) {
+      if (!question) return
+      
+      this.isAskingTutor = true
+      this.tutorResponse = null
+      
+      try {
+        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+        const baseUrl = import.meta.env.VITE_SUPABASE_URL
+        const url = `${baseUrl}/functions/v1/tutor-chat`
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': anonKey
+          },
+          body: JSON.stringify({ 
+            contexto: context, 
+            pregunta: question, 
+            model: this.selectedModel 
+          })
+        })
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          throw new Error(`Error del tutor: ${errorText}`)
+        }
+
+        const data = await response.json()
+        this.tutorResponse = data.text
+      } catch (error) {
+        console.error('Error asking tutor:', error)
+        this.tutorResponse = 'Lo siento, tuve un problema al procesar tu duda. ¿Podrías intentar de nuevo?'
+      } finally {
+        this.isAskingTutor = false
       }
     },
     async uploadMaterial(file) {

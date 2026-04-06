@@ -1,11 +1,14 @@
 <script setup>
-import { ArrowRight, MoreVertical, Plus } from 'lucide-vue-next'
+import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCourseStore } from '../store'
-import { computed } from 'vue'
 
 const router = useRouter()
 const courseStore = useCourseStore()
+
+onMounted(() => {
+  courseStore.fetchCourses()
+})
 
 const courses = computed(() => courseStore.courses)
 
@@ -35,43 +38,48 @@ const navigateToCreate = () => {
       </button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+    <div v-if="courses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
       <div 
         v-for="course in courses" 
         :key="course.id"
-        class="premium-card p-8 flex flex-col group cursor-pointer"
+        class="premium-card p-8 flex flex-col group cursor-pointer hover:-translate-y-2 transition-all duration-500"
         @click="handleViewCourse(course)"
       >
         <div class="flex items-start justify-between mb-8">
-          <div :class="`w-16 h-16 rounded-[1.5rem] bg-gradient-to-br ${course.color} flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition-transform duration-300 font-bold text-2xl` ">
-            {{ course.name[0] }}
+          <div :class="`w-16 h-16 rounded-[1.5rem] bg-gradient-to-br ${course.color || 'from-primary to-blue-400'} flex items-center justify-center text-white shadow-soft group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 font-bold text-2xl` ">
+            {{ (course.name || 'C')[0] }}
           </div>
-          <button class="p-2 text-gray-400 hover:text-dark">
+          <button class="p-2 text-gray-400 hover:text-dark transition-colors">
             <MoreVertical class="w-6 h-6" />
           </button>
         </div>
 
         <div class="flex-1">
-          <h3 class="text-2xl font-bold text-dark mb-1">{{ course.name }}</h3>
-          <p class="text-gray-400 font-bold text-sm uppercase tracking-wider mb-6">{{ course.grade }}</p>
+          <h3 class="text-2xl font-black text-dark mb-1 group-hover:text-primary transition-colors">{{ course.name }}</h3>
+          <p class="text-gray-400 font-bold text-sm uppercase tracking-widest mb-6">{{ course.grade }}</p>
           
           <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-bold text-gray-500">Progreso del curso</span>
-            <span class="text-sm font-black text-dark">{{ course.progress }}%</span>
+            <span class="text-sm font-bold text-gray-400">Progreso Curricular</span>
+            <span class="text-sm font-black text-dark">{{ course.progress || 0 }}%</span>
           </div>
-          <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-6">
+          <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-6 p-0.5 border border-gray-50">
             <div 
-              class="h-full bg-gradient-to-r transition-all duration-1000"
-              :class="course.color.includes('secondary') ? 'from-secondary to-green-400' : 'from-primary to-blue-400'"
-              :style="{ width: `${course.progress}%` }"
+              class="h-full bg-gradient-to-r rounded-full transition-all duration-1000"
+              :class="(course.color || '').includes('secondary') ? 'from-secondary to-green-400' : 'from-primary to-blue-400'"
+              :style="{ width: `${course.progress || 0}%` }"
             ></div>
           </div>
         </div>
 
         <div class="flex items-center justify-between pt-6 border-t border-gray-50">
-          <span class="text-sm font-bold text-gray-400">{{ course.classes }} Clases generadas</span>
-          <button class="flex items-center gap-2 text-primary font-black group-hover:translate-x-1 transition-transform">
-            Ver curso
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center">
+               <BookOpen class="w-4 h-4 text-gray-400" />
+            </div>
+            <span class="text-sm font-bold text-gray-500">{{ course.classes_count || 0 }} Lecciones</span>
+          </div>
+          <button class="flex items-center gap-2 text-primary font-black group-hover:translate-x-2 transition-transform">
+            Gestionar
             <ArrowRight class="w-5 h-5" />
           </button>
         </div>
@@ -80,20 +88,40 @@ const navigateToCreate = () => {
       <!-- Quick Add Card -->
       <div 
         @click="navigateToCreate"
-        class="border-4 border-dashed border-gray-200 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
+        class="border-4 border-dashed border-gray-100 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all duration-500 relative overflow-hidden"
       >
-        <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-20 h-20 rounded-3xl bg-gray-50 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-500 shadow-sm relative z-10">
           <Plus class="w-10 h-10 text-gray-400 group-hover:text-white" />
         </div>
-        <h4 class="text-xl font-bold text-gray-400 group-hover:text-primary mb-2 transition-colors">Añadir asignatura</h4>
-        <p class="text-sm text-gray-400 font-medium">Crea contenido estructurado con el poder de la IA en segundos.</p>
+        <h4 class="text-xl font-black text-gray-400 group-hover:text-primary mb-2 transition-colors relative z-10 uppercase tracking-tighter">Nueva Asignatura</h4>
+        <p class="text-sm text-gray-400 font-bold relative z-10">Expande tu currículo con IA.</p>
       </div>
     </div>
 
-    <!-- Analytics Snapshot -->
-    <div class="bg-dark rounded-[3rem] p-12 text-white overflow-hidden relative shadow-premium">
-      <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-20 blur-[100px] -mr-48 -mt-48"></div>
-      <div class="absolute bottom-0 left-0 w-64 h-64 bg-secondary opacity-20 blur-[80px] -ml-32 -mb-32"></div>
+    <!-- Empty State -->
+    <div v-else class="py-20 flex flex-col items-center text-center animate-slide-up">
+      <div class="w-40 h-40 bg-primary/5 rounded-[3.5rem] flex items-center justify-center mb-10 relative">
+        <div class="absolute inset-0 bg-primary/10 blur-3xl rounded-full scale-150 animate-pulse"></div>
+        <BrainCircuit class="w-20 h-20 text-primary relative z-10" />
+      </div>
+      <h2 class="text-4xl font-black text-dark mb-4 tracking-tighter">Tu Biblioteca está lista</h2>
+      <p class="text-xl text-gray-400 font-medium max-w-md mb-12">
+        Aún no has creado ningún curso. Deja que el **IA Mentor** te ayude a preparar tus clases en segundos.
+      </p>
+      <button 
+        @click="navigateToCreate"
+        class="px-12 py-6 bg-dark text-white rounded-[2.5rem] font-black text-xl shadow-premium hover:bg-primary hover:-translate-y-2 transition-all active:scale-95 group"
+      >
+        Crear mi primer curso
+        <Plus class="inline-block ml-2 group-hover:rotate-90 transition-transform" />
+      </button>
+    </div>
+
+    <!-- Impact Snapshot -->
+    <div class="bg-dark rounded-[3.5rem] p-12 text-white overflow-hidden relative shadow-premium mt-12 group">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-20 blur-[100px] -mr-48 -mt-48 group-hover:scale-150 transition-transform duration-1000"></div>
+      <div class="absolute bottom-0 left-0 w-64 h-64 bg-secondary opacity-20 blur-[80px] -ml-32 -mb-32 group-hover:scale-110 transition-transform duration-1000"></div>
       
       <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
         <div class="flex-1">

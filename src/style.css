@@ -3,25 +3,67 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #6C63FF;
+  --color-primary: #6366F1;
   --color-secondary: #00C9A7;
   --color-background: #F8FAFC;
-  --color-dark: #1F2937;
-  --radius-2xl: 1rem;
-  --shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --color-dark: #0F172A;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 3rem;
+  --shadow-soft: 0 4px 20px -1px rgb(0 0 0 / 0.05);
+  --shadow-premium: 0 25px 50px -12px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 30px 4px rgba(99, 102, 241, 0.15);
 }
 
 @layer base {
   body {
-    @apply bg-background text-dark font-sans;
+    @apply bg-background text-dark font-sans selection:bg-primary selection:text-white antialiased;
   }
 }
 
 .glass {
-  @apply bg-white/70 backdrop-blur-md border border-white/20;
+  @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-soft;
 }
 
 .premium-card {
-  @apply bg-white rounded-2xl shadow-soft hover:shadow-premium transition-all duration-300;
+  @apply bg-white rounded-[2.5rem] shadow-soft hover:shadow-premium transition-all duration-500 border border-transparent hover:border-primary/5;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #E2E8F0;
+  border-radius: 10px;
 }

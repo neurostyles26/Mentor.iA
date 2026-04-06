@@ -1,5 +1,5 @@
 <script setup>
-import { BrainCircuit, Chrome, Loader2 } from 'lucide-vue-next'
+import { BrainCircuit, Chrome, Loader2, Sparkles, ShieldCheck } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store'
 import { ref } from 'vue'
@@ -24,78 +24,83 @@ const handleGoogleLogin = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#6C63FF] via-[#8B8DFF] to-[#00C9A7] p-4 font-sans">
-    <div class="max-w-md w-full glass p-8 rounded-[2rem] shadow-premium animate-fade-in">
-      <div class="flex flex-col items-center mb-10">
-        <div class="p-3 bg-white rounded-2xl shadow-soft mb-4">
+  <div class="min-h-screen flex items-center justify-center bg-background p-6 font-sans relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <div class="absolute top-0 -left-64 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
+    <div class="absolute bottom-0 -right-64 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[100px] animate-pulse [animation-delay:2s]"></div>
+
+    <div class="max-w-md w-full relative z-10 animate-slide-up">
+      <!-- Logo & Welcome -->
+      <div class="flex flex-col items-center mb-12">
+        <div class="w-20 h-20 bg-white rounded-[2rem] shadow-premium flex items-center justify-center mb-6 border border-gray-50 transform hover:rotate-12 transition-transform duration-500">
           <BrainCircuit class="w-10 h-10 text-primary" />
         </div>
-        <h1 class="text-3xl font-bold text-dark mb-2 tracking-tight">MentorIA</h1>
-        <p class="text-gray-500 font-medium">Aprende. Enseña. Evoluciona.</p>
+        <h1 class="text-4xl font-black text-dark tracking-tighter mb-2">MentorIA</h1>
+        <div class="flex items-center gap-2 px-4 py-1 bg-primary/5 rounded-full">
+          <Sparkles class="w-3 h-3 text-primary" />
+          <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">SaaS Educativo v1.0</span>
+        </div>
       </div>
 
-      <form @submit.prevent="handleLogin" class="space-y-6">
-        <div>
-          <label for="email" class="block text-sm font-semibold text-dark mb-2 ml-1">Correo Electrónico</label>
-          <input 
-            type="email" 
-            id="email" 
-            placeholder="ejemplo@escuela.com"
-            class="w-full px-5 py-4 bg-gray-50/50 border-0 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white transition-all duration-300 outline-none placeholder:text-gray-400"
-            required
-          />
+      <!-- Login Card -->
+      <div class="glass p-10 rounded-[3rem] shadow-premium border border-white relative group">
+        <div class="absolute -top-4 -right-4 bg-secondary text-white px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-soft translate-x-2 -translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          Acceso Docente
         </div>
 
-        <div>
-          <label for="password" class="block text-sm font-semibold text-dark mb-2 ml-1">Password</label>
-          <input 
-            type="password" 
-            id="password" 
-            placeholder="••••••••"
-            class="w-full px-5 py-4 bg-gray-50/50 border-0 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white transition-all duration-300 outline-none placeholder:text-gray-400"
-            required
-          />
-        </div>
+        <form @submit.prevent="handleLogin" class="space-y-8">
+          <div class="space-y-2">
+            <label class="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">E-mail Institucional</label>
+            <input 
+              v-model="email"
+              type="email" 
+              placeholder="profesor@ejemplo.edu"
+              class="w-full px-6 py-5 bg-gray-50/50 border-2 border-transparent rounded-2xl focus:border-primary focus:bg-white transition-all duration-300 outline-none font-bold placeholder:text-gray-300 shadow-inner"
+              required
+            />
+          </div>
 
-        <button 
-          type="submit" 
-          :disabled="authStore.isLoading"
-          class="w-full py-4 bg-primary text-white rounded-2xl font-bold text-lg shadow-soft hover:shadow-premium hover:-translate-y-0.5 transition-all duration-300 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
-        >
-          <Loader2 v-if="authStore.isLoading" class="w-6 h-6 animate-spin" />
-          {{ authStore.isLoading ? 'Entrando...' : 'Entrar al aula' }}
-        </button>
+          <div class="space-y-2">
+            <label class="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Contraseña</label>
+            <input 
+              v-model="password"
+              type="password" 
+              placeholder="••••••••"
+              class="w-full px-6 py-5 bg-gray-50/50 border-2 border-transparent rounded-2xl focus:border-primary focus:bg-white transition-all duration-300 outline-none font-bold placeholder:text-gray-300 shadow-inner"
+              required
+            />
+          </div>
 
-        <div class="relative flex items-center py-2">
-          <div class="flex-grow border-t border-gray-200"></div>
-          <span class="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase tracking-wider">O también</span>
-          <div class="flex-grow border-t border-gray-200"></div>
-        </div>
+          <button 
+            type="submit" 
+            :disabled="authStore.isLoading"
+            class="w-full py-5 bg-dark text-white rounded-[1.5rem] font-black text-lg shadow-premium hover:bg-primary hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
+          >
+            <Loader2 v-if="authStore.isLoading" class="w-6 h-6 animate-spin" />
+            {{ authStore.isLoading ? 'Autenticando...' : 'Entrar al Campus' }}
+          </button>
 
-        <button 
-          type="button" 
-          @click="handleGoogleLogin"
-          class="w-full py-4 bg-white border border-gray-100 text-dark rounded-2xl font-semibold flex items-center justify-center gap-3 shadow-soft hover:bg-gray-50 transition-all duration-300 active:scale-95"
-        >
-          <Chrome class="w-5 h-5" />
-          Ingresar con Google
-        </button>
-      </form>
+          <div class="relative flex items-center py-4">
+            <div class="flex-grow border-t border-gray-100"></div>
+            <span class="flex-shrink mx-4 text-[10px] font-black text-gray-300 uppercase tracking-widest">O continúa con</span>
+            <div class="flex-grow border-t border-gray-100"></div>
+          </div>
+
+          <button 
+            type="button" 
+            @click="handleGoogleLogin"
+            class="w-full py-5 bg-white border-2 border-gray-50 text-dark rounded-[1.5rem] font-bold flex items-center justify-center gap-4 shadow-soft hover:bg-gray-50 transition-all active:scale-95"
+          >
+            <Chrome class="w-6 h-6" />
+            Google Workspace
+          </button>
+        </form>
+      </div>
       
-      <p class="mt-8 text-center text-sm text-gray-500 font-medium">
-        ¿Eres un tutor nuevo? <a href="#" class="text-primary font-bold hover:underline">Comienza aquí</a>
-      </p>
+      <div class="mt-12 flex items-center justify-center gap-3 text-gray-400">
+        <ShieldCheck class="w-5 h-5" />
+        <p class="text-xs font-bold uppercase tracking-widest">Conexión Segura vía Supabase</p>
+      </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-</style>
