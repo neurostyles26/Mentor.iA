@@ -59,6 +59,20 @@ npm run dev
 
 ---
 
+## Despliegue (Vercel)
+
+Este proyecto está optimizado para ser desplegado en **Vercel**.
+
+### Variables de Entorno en Vercel
+Para que la aplicación funcione correctamente en producción, debes configurar las siguientes variables en el panel de Vercel:
+- `VITE_SUPABASE_URL`: Tu URL de Supabase.
+- `VITE_SUPABASE_ANON_KEY`: Tu Anon Key de Supabase.
+
+> [!IMPORTANT]
+> La `GOOGLE_AI_KEY` no se configura en Vercel, sino en los **Secrets de Supabase**, ya que la utilizan las Edge Functions.
+
+---
+
 ## Base de Datos (Supabase)
 
 Para inicializar la base de datos, ejecuta el script SQL proporcionado en el SQL Editor de tu panel de Supabase. Este script creará las tablas necesarias:
