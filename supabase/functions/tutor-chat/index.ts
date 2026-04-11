@@ -24,12 +24,14 @@ Deno.serve(async (req: Request) => {
       throw new Error('La pregunta es requerida.')
     }
 
-    // --- Gemini Only (100% Free & Powerful) ---
-    // @ts-ignore
-    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('MentoriA2')
+    // --- Google AI (Gemini/Gemma) ---
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_AI_KEY') || 
+                          Deno.env.get('GEMINI_API_KEY') || 
+                          Deno.env.get('Mentoria') ||
+                          Deno.env.get('MentoriA2')
 
     if (!GEMINI_API_KEY) {
-      throw new Error('DIAGNOSTICO: No se encontró la llave GEMINI_API_KEY en los secretos de Supabase.')
+      throw new Error('CONFIG_ERROR: No se encontró la API Key de Google. Por favor, configura GOOGLE_AI_KEY en los secretos de Supabase.')
     }
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)

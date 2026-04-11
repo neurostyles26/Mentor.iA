@@ -246,7 +246,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
               <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
                 <span class="text-[10px] font-bold text-gray-400">MOTOR ACTIVO</span>
                 <span class="text-[10px] font-black flex items-center gap-2 text-primary">
-                  <Zap class="w-3 h-3" /> GEMINI 1.5
+                  <Zap class="w-3 h-3" /> GEMINI & GEMMA
                 </span>
               </div>
               <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">

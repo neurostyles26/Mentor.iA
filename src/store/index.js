@@ -134,7 +134,15 @@ export const useCourseStore = defineStore('course', {
         }
       } catch (error) {
         console.error('Error generating content:', error)
-        this.generationError = error.message
+        
+        let userMessage = error.message
+        if (error.message.includes('CONFIG_ERROR')) {
+          userMessage = '⚠️ Falta la configuración de la IA. Por favor, contacta al administrador para configurar la API Key.'
+        } else if (error.message.includes('quota')) {
+          userMessage = 'Limite de uso alcanzado. Por favor, intenta de nuevo en unos minutos.'
+        }
+        
+        this.generationError = userMessage
         this.lastDiagnosis = error.message
       } finally {
         this.isGenerating = false

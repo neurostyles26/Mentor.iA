@@ -31,12 +31,15 @@ Deno.serve(async (req: Request) => {
       throw new Error('El tema a desarrollar es requerido.')
     }
 
-    // --- Gemini Only (100% Free & Powerful) ---
-    // @ts-ignore
-    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('MentoriA2')
+    // --- Google AI (Gemini/Gemma) ---
+    // Try multiple possible secret names for convenience
+    const GEMINI_API_KEY = Deno.env.get('GOOGLE_AI_KEY') || 
+                          Deno.env.get('GEMINI_API_KEY') || 
+                          Deno.env.get('Mentoria') ||
+                          Deno.env.get('MentoriA2')
 
     if (!GEMINI_API_KEY) {
-      throw new Error('DIAGNOSTICO: No se encontró la llave GEMINI_API_KEY en los secretos de Supabase.')
+      throw new Error('CONFIG_ERROR: No se encontró la API Key de Google. Por favor, configura GOOGLE_AI_KEY en los secretos de Supabase.')
     }
 
     let systemPrompt = ''
@@ -55,6 +58,8 @@ Crea un EXAMEN con Selección Múltiple, Preguntas Abiertas y una LLAVE DE RESPU
     }
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
+    
+    // Using gemini-1.5-flash by default as it is the most efficient free-tier model
     const generativeModel = genAI.getGenerativeModel({ 
       model: "gemini-1.5-flash",
       generationConfig: { temperature: 0.7 }
