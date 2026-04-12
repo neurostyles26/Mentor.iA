@@ -28,7 +28,14 @@ Deno.serve(async (req: Request) => {
     const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
 
     if (!GEMINI_API_KEY) {
-      throw new Error('CONFIG_ERROR: No se encontró la API Key. Por favor, configura GEMINI_API_KEY en los secretos de Supabase.')
+      console.error('Edge Function Error: Missing GEMINI_API_KEY secret')
+      return new Response(
+        JSON.stringify({ 
+          error: 'CONFIG_ERROR: La API Key de Gemma 4 no está configurada en Supabase.',
+          details: 'Debes ejecutar: supabase secrets set GEMINI_API_KEY=tu_llave'
+        }),
+        { headers: { ...genCorsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      )
     }
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
@@ -36,7 +43,10 @@ Deno.serve(async (req: Request) => {
     // Using Gemma 4 model
     const generativeModel = genAI.getGenerativeModel({ 
       model: "gemma-4-31b-it",
-      generationConfig: { temperature: 0.75 }
+      generationConfig: { 
+        temperature: 0.75,
+        maxOutputTokens: 2048
+      }
     })
 
     const finalPrompt = `Actúa como un Mentor Pedagógico de Vanguardia (impulsado por Gemma 4). 
@@ -49,9 +59,15 @@ Instrucciones:
 3. Si el usuario es un docente, ofrece consejos prácticos para el aula.
 4. Mantén un tono empático y constructivo.`
 
+    console.log(`Asking tutor question: ${pregunta.substring(0, 50)}... using Gemma 4`)
+
     const result = await generativeModel.generateContent(finalPrompt)
     const res = await result.response
     const generatedText = res.text()
+
+    if (!generatedText) {
+      throw new Error('Gemma 4 no pudo generar una respuesta. Intenta reformular tu pregunta.')
+    }
 
     return new Response(
       JSON.stringify({ text: generatedText }),
@@ -63,11 +79,17 @@ Instrucciones:
 
   } catch (error: any) {
     console.error('Error in tutor-chat (Gemma 4):', error)
+    
+    const statusCode = error.message?.includes('404') || error.message?.includes('not found') ? 404 : 400
+
     return new Response(
-      JSON.stringify({ error: error.message || 'Error desconocido' }),
+      JSON.stringify({ 
+        error: error.message || 'Error desconocido en Tutor Chat',
+        stack: error.stack
+      }),
       { 
         headers: { ...genCorsHeaders, 'Content-Type': 'application/json' },
-        status: 400 
+        status: statusCode 
       }
     )
   }

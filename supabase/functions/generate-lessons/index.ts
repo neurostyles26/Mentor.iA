@@ -32,10 +32,18 @@ Deno.serve(async (req: Request) => {
     }
 
     // --- Gemma 4 via Gemini API ---
+    // Try both naming conventions for the secret
     const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
 
     if (!GEMINI_API_KEY) {
-      throw new Error('CONFIG_ERROR: No se encontró la API Key. Por favor, configura GEMINI_API_KEY en los secretos de Supabase.')
+      console.error('Edge Function Error: Missing GEMINI_API_KEY secret')
+      return new Response(
+        JSON.stringify({ 
+          error: 'CONFIG_ERROR: La API Key de Gemma 4 no está configurada en Supabase.',
+          details: 'Debes ejecutar: supabase secrets set GEMINI_API_KEY=tu_llave'
+        }),
+        { headers: { ...genCorsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      )
     }
 
     let systemPrompt = ''
@@ -55,19 +63,25 @@ Crea un EXAMEN que combine Selección Múltiple, Preguntas Abiertas de razonamie
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
     
-    // Using Gemma 4 model
+    // Using Gemma 4 model - Ensuring standard ID format
     const generativeModel = genAI.getGenerativeModel({ 
-      model: "gemma-4-31b-it",
+      model: "gemma-4-31b-it", 
       generationConfig: { 
         temperature: 0.7,
         topP: 0.95,
-        maxOutputTokens: 2048
+        maxOutputTokens: 3000 // Increased for more detailed content
       }
     })
+
+    console.log(`Generating ${type} for topic: ${prompt} using Gemma 4...`)
 
     const result = await generativeModel.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
     const res = await result.response
     const generatedText = res.text()
+
+    if (!generatedText) {
+      throw new Error('La IA no devolvió ningún contenido. Intenta con otro tema.')
+    }
 
     return new Response(
       JSON.stringify({ text: generatedText }),
@@ -79,11 +93,18 @@ Crea un EXAMEN que combine Selección Múltiple, Preguntas Abiertas de razonamie
 
   } catch (error: any) {
     console.error('Error in generate-lessons (Gemma 4):', error)
+    
+    // Differentiate between API errors and internal errors
+    const statusCode = error.message?.includes('404') || error.message?.includes('not found') ? 404 : 400
+    
     return new Response(
-      JSON.stringify({ error: error.message || 'Error desconocido' }),
+      JSON.stringify({ 
+        error: error.message || 'Error desconocido en Gemma 4',
+        stack: error.stack
+      }),
       { 
         headers: { ...genCorsHeaders, 'Content-Type': 'application/json' },
-        status: 400 
+        status: statusCode 
       }
     )
   }
