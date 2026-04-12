@@ -25,7 +25,7 @@ export const useCourseStore = defineStore('course', {
       if (!question) return
       this.isAskingTutor = true
       
-      const newMessage = { role: 'user', content: question }
+      const newMessage = { role: 'user', content: question, timestamp: new Date() }
       this.teacherChatHistory.push(newMessage)
 
       try {
@@ -38,13 +38,24 @@ export const useCourseStore = defineStore('course', {
 
         if (error) throw error
 
-        this.teacherChatHistory.push({ role: 'assistant', content: data.text })
+        this.teacherChatHistory.push({ 
+          role: 'assistant', 
+          content: data.text,
+          timestamp: new Date()
+        })
       } catch (error) {
         console.error('Teacher Chat Error:', error)
-        this.teacherChatHistory.push({ role: 'system', content: 'Lo siento, Gemma 4 tuvo un problema. ¿Podrías intentar de nuevo?' })
+        this.teacherChatHistory.push({ 
+          role: 'system', 
+          content: 'Lo siento, Gemma 4 tuvo un problema. ¿Podrías intentar de nuevo?',
+          timestamp: new Date()
+        })
       } finally {
         this.isAskingTutor = false
       }
+    },
+    clearTeacherChat() {
+      this.teacherChatHistory = []
     },
     setNewCourseDraft(data) {
       this.newCourseDraft = { ...this.newCourseDraft, ...data }

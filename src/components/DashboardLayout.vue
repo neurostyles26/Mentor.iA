@@ -12,11 +12,16 @@ import {
   Bell,
   User,
   LayoutDashboard,
-  Sparkles
+  Sparkles,
+  MessageCircle,
+  X
 } from 'lucide-vue-next'
+import ChatMentor from './ChatMentor.vue'
 
 const router = useRouter()
 const route = useRoute()
+
+const isChatOpen = ref(false)
 
 const navItems = [
   { name: 'Mis Cursos', icon: LayoutDashboard, path: '/dashboard' },
@@ -27,6 +32,10 @@ const navItems = [
 
 const handleLogout = () => {
   router.push('/login')
+}
+
+const toggleChat = () => {
+  isChatOpen.value = !isChatOpen.value
 }
 </script>
 
@@ -65,7 +74,10 @@ const handleLogout = () => {
           <div class="absolute top-0 right-0 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
           <p class="text-[10px] font-black text-primary uppercase tracking-widest mb-3">Soporte IA Activo</p>
           <p class="text-sm font-bold text-white/90 leading-snug mb-5">¿Necesitas ayuda con el diseño curricular?</p>
-          <button class="w-full py-3 bg-white text-dark rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 shadow-soft">
+          <button 
+            @click="toggleChat"
+            class="w-full py-3 bg-white text-dark rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 shadow-soft"
+          >
             Consultar
           </button>
         </div>
@@ -126,6 +138,20 @@ const handleLogout = () => {
           </transition>
         </router-view>
       </div>
+
+      <!-- Floating Chat Button -->
+      <button 
+        @click="toggleChat"
+        class="fixed bottom-10 right-10 w-20 h-20 bg-dark text-white rounded-[2rem] flex items-center justify-center shadow-premium hover:bg-primary transition-all duration-500 z-50 active:scale-90 group overflow-hidden"
+        :class="isChatOpen ? 'translate-x-32 opacity-0' : 'translate-x-0 opacity-100'"
+      >
+        <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
+        <MessageCircle class="w-8 h-8 relative z-10 group-hover:scale-110 transition-transform" />
+        <Sparkles class="absolute top-4 right-4 w-4 h-4 text-primary animate-pulse" />
+      </button>
+
+      <!-- Chat Component -->
+      <ChatMentor :is-open="isChatOpen" @close="isChatOpen = false" />
     </main>
   </div>
 </template>
