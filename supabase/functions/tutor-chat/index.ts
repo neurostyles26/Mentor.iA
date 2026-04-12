@@ -24,27 +24,30 @@ Deno.serve(async (req: Request) => {
       throw new Error('La pregunta es requerida.')
     }
 
-    // --- Google AI (Gemini/Gemma) ---
-    const GEMINI_API_KEY = Deno.env.get('GOOGLE_AI_KEY') || 
-                          Deno.env.get('GEMINI_API_KEY') || 
-                          Deno.env.get('Mentoria') ||
-                          Deno.env.get('MentoriA2')
+    // --- Gemma 4 via Gemini API ---
+    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
 
     if (!GEMINI_API_KEY) {
-      throw new Error('CONFIG_ERROR: No se encontró la API Key de Google. Por favor, configura GOOGLE_AI_KEY en los secretos de Supabase.')
+      throw new Error('CONFIG_ERROR: No se encontró la API Key. Por favor, configura GEMINI_API_KEY en los secretos de Supabase.')
     }
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
+    
+    // Using Gemma 4 model
     const generativeModel = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
-      generationConfig: { temperature: 0.7 }
+      model: "gemma-4-31b-it",
+      generationConfig: { temperature: 0.75 }
     })
 
-    const finalPrompt = `Actúa como un Mentor Pedagógico IA. 
+    const finalPrompt = `Actúa como un Mentor Pedagógico de Vanguardia (impulsado por Gemma 4). 
 Contexto: ${contexto}
 Pregunta: ${pregunta}
 
-Responde de forma clara, motivadora y pedagógica.`
+Instrucciones:
+1. Proporciona una respuesta clara, profesional y motivadora.
+2. Usa un lenguaje pedagógico moderno.
+3. Si el usuario es un docente, ofrece consejos prácticos para el aula.
+4. Mantén un tono empático y constructivo.`
 
     const result = await generativeModel.generateContent(finalPrompt)
     const res = await result.response
@@ -59,7 +62,7 @@ Responde de forma clara, motivadora y pedagógica.`
     )
 
   } catch (error: any) {
-    console.error('Error in tutor-chat:', error)
+    console.error('Error in tutor-chat (Gemma 4):', error)
     return new Response(
       JSON.stringify({ error: error.message || 'Error desconocido' }),
       { 

@@ -31,41 +31,41 @@ Deno.serve(async (req: Request) => {
       throw new Error('El tema a desarrollar es requerido.')
     }
 
-    // --- Google AI (Gemini/Gemma) ---
-    // Try multiple possible secret names for convenience
-    const GEMINI_API_KEY = Deno.env.get('GOOGLE_AI_KEY') || 
-                          Deno.env.get('GEMINI_API_KEY') || 
-                          Deno.env.get('Mentoria') ||
-                          Deno.env.get('MentoriA2')
+    // --- Gemma 4 via Gemini API ---
+    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
 
     if (!GEMINI_API_KEY) {
-      throw new Error('CONFIG_ERROR: No se encontró la API Key de Google. Por favor, configura GOOGLE_AI_KEY en los secretos de Supabase.')
+      throw new Error('CONFIG_ERROR: No se encontró la API Key. Por favor, configura GEMINI_API_KEY en los secretos de Supabase.')
     }
 
     let systemPrompt = ''
     if (type === 'lesson') {
-      systemPrompt = `Eres un Mentor IA experto en diseño curricular. 
+      systemPrompt = `Eres un Mentor IA basado en Gemma 4, experto en diseño curricular. 
 Materia: ${subject}. Grado: ${grade}. 
-Diseña una LECCIÓN profesional con Objetivos, Contenido Base (con ejemplos), Actividades Rápidas y Consejos Pedagógicos.`
+Diseña una LECCIÓN profesional con Objetivos de Aprendizaje, Contenido Base (con ejemplos detallados), Actividades Rápidas de refuerzo y Consejos Pedagógicos innovadores.`
     } else if (type === 'workshop') {
-      systemPrompt = `Eres un Mentor IA especialista en TALLERES PRÁCTICOS. 
+      systemPrompt = `Eres un Mentor IA basado en Gemma 4, especialista en TALLERES PRÁCTICOS. 
 Materia: ${subject}. Grado: ${grade}. 
-Crea un TALLER con Marco Teórico (Resumen), 5-10 Ejercicios Prácticos, un Reto Creativo y Criterios de Evaluación.`
+Crea un TALLER con Marco Teórico resumido, 5-10 Ejercicios Prácticos de dificultad progresiva, un Reto Creativo final y Criterios de Evaluación claros.`
     } else if (type === 'exam') {
-      systemPrompt = `Eres un Mentor IA experto en EVALUACIÓN. 
+      systemPrompt = `Eres un Mentor IA basado en Gemma 4, experto en EVALUACIÓN. 
 Materia: ${subject}. Grado: ${grade}. 
-Crea un EXAMEN con Selección Múltiple, Preguntas Abiertas y una LLAVE DE RESPUESTAS al final.`
+Crea un EXAMEN que combine Selección Múltiple, Preguntas Abiertas de razonamiento y una LLAVE DE RESPUESTAS detallada al final.`
     }
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
     
-    // Using gemini-1.5-flash by default as it is the most efficient free-tier model
+    // Using Gemma 4 model
     const generativeModel = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
-      generationConfig: { temperature: 0.7 }
+      model: "gemma-4-31b-it",
+      generationConfig: { 
+        temperature: 0.7,
+        topP: 0.95,
+        maxOutputTokens: 2048
+      }
     })
 
-    const result = await generativeModel.generateContent(`${systemPrompt}\n\nTema: ${prompt}`)
+    const result = await generativeModel.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
     const res = await result.response
     const generatedText = res.text()
 
@@ -78,7 +78,7 @@ Crea un EXAMEN con Selección Múltiple, Preguntas Abiertas y una LLAVE DE RESPU
     )
 
   } catch (error: any) {
-    console.error('Error in generate-lessons:', error)
+    console.error('Error in generate-lessons (Gemma 4):', error)
     return new Response(
       JSON.stringify({ error: error.message || 'Error desconocido' }),
       { 

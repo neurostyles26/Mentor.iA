@@ -32,7 +32,7 @@ export const useCourseStore = defineStore('course', {
         const { data, error } = await supabase.functions.invoke('tutor-chat', {
           body: { 
             pregunta: question, 
-            contexto: `Eres un Mentor para DOCENTES. Ayúdame a diseñar una clase creativa para mis alumnos.` 
+            contexto: `Eres un Mentor para DOCENTES. Ayúdame a diseñar una clase creativa para mis alumnos usando Gemma 4.` 
           }
         })
 
@@ -41,7 +41,7 @@ export const useCourseStore = defineStore('course', {
         this.teacherChatHistory.push({ role: 'assistant', content: data.text })
       } catch (error) {
         console.error('Teacher Chat Error:', error)
-        this.teacherChatHistory.push({ role: 'system', content: 'Lo siento, tuve un problema. ¿Podrías intentar de nuevo?' })
+        this.teacherChatHistory.push({ role: 'system', content: 'Lo siento, Gemma 4 tuvo un problema. ¿Podrías intentar de nuevo?' })
       } finally {
         this.isAskingTutor = false
       }
@@ -102,14 +102,12 @@ export const useCourseStore = defineStore('course', {
         })
 
         if (error) {
-          // Si el error es de HTTP (4xx o 5xx), intentamos ver si hay un mensaje personalizado
           const errorMsg = await error.context?.json().then(j => j.error).catch(() => null)
-          throw new Error(errorMsg || error.message || 'Error de servidor')
+          throw new Error(errorMsg || error.message || 'Error de servidor Gemma 4')
         }
 
         this.generatedContent = data.text
         
-        // Persistir la lección en la base de datos
         if (this.currentCourse) {
           const { data: lessonData, error: lessonError } = await supabase
             .from('lessons')
@@ -117,7 +115,8 @@ export const useCourseStore = defineStore('course', {
               course_id: this.currentCourse.id,
               title: type === 'lesson' ? `Lección de ${topic}` : type === 'workshop' ? `Taller de ${topic}` : `Examen de ${topic}`,
               content: data.text,
-              status: 'draft'
+              status: 'draft',
+              type: 'Gemma 4'
             })
             .select()
             .single()
@@ -126,20 +125,17 @@ export const useCourseStore = defineStore('course', {
           
           this.lessons = [lessonData]
           
-          // Actualizar contador de clases en el curso
           await supabase
             .from('courses')
             .update({ classes_count: (this.currentCourse.classes_count || 0) + 1 })
             .eq('id', this.currentCourse.id)
         }
       } catch (error) {
-        console.error('Error generating content:', error)
+        console.error('Error generating content with Gemma 4:', error)
         
         let userMessage = error.message
         if (error.message.includes('CONFIG_ERROR')) {
-          userMessage = '⚠️ Falta la configuración de la IA. Por favor, contacta al administrador para configurar la API Key.'
-        } else if (error.message.includes('quota')) {
-          userMessage = 'Limite de uso alcanzado. Por favor, intenta de nuevo en unos minutos.'
+          userMessage = '⚠️ Falta la configuración de Gemma 4. Por favor, asegúrate de tener la GEMINI_API_KEY configurada.'
         }
         
         this.generationError = userMessage
@@ -183,8 +179,8 @@ export const useCourseStore = defineStore('course', {
         if (error) throw error
         this.tutorResponse = data.text
       } catch (error) {
-        console.error('Error asking tutor:', error)
-        this.tutorResponse = 'Lo siento, tuve un problema al procesar tu duda. ¿Podrías intentar de nuevo?'
+        console.error('Error asking tutor (Gemma 4):', error)
+        this.tutorResponse = 'Lo siento, Gemma 4 tuvo un problema al procesar tu duda. ¿Podrías intentar de nuevo?'
       } finally {
         this.isAskingTutor = false
       }

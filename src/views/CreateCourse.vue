@@ -141,7 +141,7 @@ const prevStep = () => {
 
         <div v-if="currentStep === 3" class="space-y-8 animate-slide-up">
           <h2 class="text-3xl font-black text-dark">Sube tu plan de estudio</h2>
-          <p class="text-gray-500 font-medium">Nuestra IA analizará tu PDF para estructurar las clases automáticamente.</p>
+          <p class="text-gray-500 font-medium">Gemma 4 analizará tu PDF para estructurar las clases automáticamente.</p>
           
           <div 
             @click="triggerFileInput"
@@ -188,7 +188,7 @@ const prevStep = () => {
           </div>
           <h2 class="text-4xl font-black text-dark">¡Todo listo para la magia!</h2>
           <p class="text-gray-500 font-semibold text-lg max-w-lg mx-auto leading-relaxed">
-            Hemos procesado tus datos. Nuestra IA generará una estructura de 12 clases personalizadas con actividades interactivas.
+            Hemos procesado tus datos. Gemma 4 generará una estructura de 12 clases personalizadas con actividades interactivas.
           </p>
           
           <div class="bg-gray-50 p-8 rounded-[2rem] inline-block border border-gray-100 shadow-inner">

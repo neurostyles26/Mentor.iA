@@ -115,8 +115,8 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
           <ArrowLeft class="w-6 h-6 text-gray-400 group-hover:text-primary transition-colors" />
         </button>
         <div>
-          <h1 class="text-3xl font-black text-dark tracking-tight mb-1">Mentor IA 2.0</h1>
-          <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Planificación Profesional</p>
+          <h1 class="text-3xl font-black text-dark tracking-tight mb-1">Mentor IA Gemma 4</h1>
+          <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Planificación de Vanguardia</p>
         </div>
       </div>
 
@@ -172,8 +172,8 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                 <Bot class="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 class="font-black text-dark">Chat con el Mentor</h3>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Define tus ideas para la clase</p>
+                <h3 class="font-black text-dark">Chat con Gemma 4</h3>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Define el concepto de tu clase</p>
               </div>
             </div>
             <button @click="currentStep = 1" class="text-xs font-black text-gray-400 hover:text-dark flex items-center gap-1 uppercase transition-colors">
@@ -246,7 +246,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
               <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
                 <span class="text-[10px] font-bold text-gray-400">MOTOR ACTIVO</span>
                 <span class="text-[10px] font-black flex items-center gap-2 text-primary">
-                  <Zap class="w-3 h-3" /> GEMINI & GEMMA
+                  <Zap class="w-3 h-3" /> GOOGLE GEMMA 4
                 </span>
               </div>
               <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
