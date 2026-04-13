@@ -1,5 +1,6 @@
 // @ts-ignore
 import { GoogleGenerativeAI } from "googlegenai"
+// @ts-ignore
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const corsHeaders = {
@@ -29,7 +30,7 @@ serve(async (req: Request) => {
     }
 
     // Support multiple possible secret names
-    // @ts-ignore: Deno is available at runtime in Supabase Edge Functions
+    // @ts-ignore
     const API_KEY = Deno.env.get('GEMMA_API_KEY') || Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
 
     if (!API_KEY) {

@@ -20,6 +20,8 @@ onMounted(async () => {
 </template>
 
 <style>
+@reference "tailwindcss";
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
