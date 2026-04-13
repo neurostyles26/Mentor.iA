@@ -1,14 +1,18 @@
+// @ts-ignore
+import { GoogleGenerativeAI } from "googlegenai"
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-
-const GEMMA_API_KEY = Deno.env.get('GEMMA_API_KEY')
-const GEMMA_API_URL = Deno.env.get('GEMMA_API_URL') || 'https://api.google.com/v1/gemma/completions'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+interface Message {
+  role: string;
+  content: string;
+}
+
+serve(async (req: Request) => {
   // Handle CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -24,6 +28,25 @@ serve(async (req) => {
       })
     }
 
+    // Support multiple possible secret names
+    // @ts-ignore: Deno is available at runtime in Supabase Edge Functions
+    const API_KEY = Deno.env.get('GEMMA_API_KEY') || Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
+
+    if (!API_KEY) {
+      throw new Error('CONFIG_ERROR: Gemma API Key not found in Supabase secrets.')
+    }
+
+    const genAI = new GoogleGenerativeAI(API_KEY)
+    
+    // Using Gemma 4 model (31B is high-performance MoE)
+    const model = genAI.getGenerativeModel({ 
+      model: "gemma-4-31b-it",
+      generationConfig: { 
+        temperature: 0.7,
+        maxOutputTokens: 2048
+      }
+    })
+
     const systemPrompt = `
       Eres un asistente de IA experto diseñado específicamente para docentes en Colombia. 
       Tu objetivo es ayudar a los profesores a:
@@ -38,40 +61,30 @@ serve(async (req) => {
       - Sé conciso pero exhaustivo en la calidad pedagógica.
     `
 
-    // Mock/Generic call using fetch to the provider
-    // In a real scenario, this would be an OpenAI-compatible call or Google AI call
-    const response = await fetch(GEMMA_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GEMMA_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: "gemma-4", // Assuming the model name
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...(chatHistory || []),
-          { role: "user", content: message }
-        ],
-        temperature: 0.7,
-      }),
+    // Format chat history for Google AI SDK
+    const history = (chatHistory || []).map((m: Message) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }))
+
+    const chat = model.startChat({
+      history: [
+        { role: 'user', parts: [{ text: systemPrompt }] },
+        { role: 'model', parts: [{ text: "Entendido. Soy MentorIA, tu asistente experto para la educación en Colombia. ¿En qué puedo ayudarte hoy?" }] },
+        ...history
+      ]
     })
 
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.error?.message || 'Error calling Gemma API')
-    }
-
-    // Adapt response based on the provider's structure
-    // This assumes OpenAI-compatible response format
-    const reply = data.choices?.[0]?.message?.content || data.reply || "Lo siento, no pude procesar tu solicitud."
+    const result = await chat.sendMessage(message)
+    const response = await result.response
+    const reply = response.text()
 
     return new Response(JSON.stringify({ reply }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
 
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Edge Function Error:', error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
