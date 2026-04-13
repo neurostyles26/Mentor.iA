@@ -20,8 +20,6 @@ onMounted(async () => {
 </template>
 
 <style>
-@reference "tailwindcss";
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -30,10 +28,5 @@ onMounted(async () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-/* Global focus rings */
-*:focus-visible {
-  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-bg-deep;
 }
 </style>
