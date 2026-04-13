@@ -1,93 +1,60 @@
-/* stylelint-disable */
-/* css-lint: unknownAtRules: ignore */
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #6366F1;
+  --color-primary: #6C63FF;
   --color-secondary: #00C9A7;
-  --color-background: #F8FAFC;
-  --color-dark: #0F172A;
-  --radius-xl: 1.5rem;
-  --radius-2xl: 2rem;
-  --radius-3xl: 3rem;
-  --shadow-soft: 0 4px 20px -1px rgb(0 0 0 / 0.05);
-  --shadow-premium: 0 25px 50px -12px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 30px 4px rgba(99, 102, 241, 0.15);
+  --color-accent: #3B82F6;
+  --color-bg-deep: #0B1220;
+  --color-bg-card: #111A2E;
+  --color-text-main: #E5E7EB;
+  --color-text-muted: #9CA3AF;
+
+  --radius-2xl: 1.5rem;
 }
 
-@layer base {
-  body {
-    @apply bg-background text-dark font-sans selection:bg-primary selection:text-white antialiased;
-  }
+body {
+  background-color: var(--color-bg-deep);
+  color: var(--color-text-main);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-.glass {
-  @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-soft;
+.btn-primary {
+  @apply bg-primary hover:opacity-90 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg active:scale-95;
 }
 
-.premium-card {
-  @apply bg-white rounded-[2.5rem] shadow-soft hover:shadow-premium transition-all duration-500 border border-transparent hover:border-primary/5;
+.btn-secondary {
+  @apply bg-secondary hover:opacity-90 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg active:scale-95;
 }
 
-.animate-slide-up {
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+.btn-outline {
+  @apply border border-white/10 hover:bg-white/5 text-text-main font-medium py-2 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-95;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out;
+.glass-panel {
+  @apply bg-bg-card border border-white/5 backdrop-blur-md rounded-2xl shadow-xl;
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.input-field {
+  @apply bg-bg-deep border border-white/10 rounded-xl px-4 py-3 text-text-main placeholder:text-text-muted transition-colors;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+.input-field:focus {
+  outline: none;
+  border-color: rgba(108, 99, 255, 0.5);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #E2E8F0;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
 }
-
-/* Professional Markdown Preview Styles */
-.preview-markdown h1 {
-  @apply text-4xl font-black text-dark mb-8 border-b-4 border-primary pb-4 inline-block;
-}
-.preview-markdown h2 {
-  @apply text-2xl font-black text-dark mt-12 mb-6 flex items-center gap-3;
-}
-.preview-markdown p {
-  @apply text-gray-600 leading-relaxed mb-6 text-lg;
-}
-.preview-markdown ul {
-  @apply mb-8 space-y-3 list-none;
-}
-.preview-markdown li {
-  @apply flex items-start gap-4 text-gray-600 font-medium;
-}
-.preview-markdown li::before {
-  content: "•";
-  @apply text-primary font-black text-xl leading-none;
-}
-.preview-markdown strong {
-  @apply text-dark font-bold;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

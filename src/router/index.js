@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '../store'
+import { supabase } from '../lib/supabase'
 
 const routes = [
   {
@@ -8,41 +8,15 @@ const routes = [
     component: () => import('../views/Landing.vue')
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login.vue')
+    path: '/auth',
+    name: 'Auth',
+    component: () => import('../views/Auth.vue')
   },
   {
-    path: '/dashboard',
-    component: () => import('../components/DashboardLayout.vue'),
-    meta: { requiresAuth: true },
-    children: [
-      {
-        path: '',
-        name: 'Dashboard',
-        component: () => import('../views/Dashboard.vue')
-      },
-      {
-        path: 'create',
-        name: 'CreateCourse',
-        component: () => import('../views/CreateCourse.vue')
-      },
-      {
-        path: 'ai-generator',
-        name: 'AIGenerator',
-        component: () => import('../views/AIGenerator.vue')
-      },
-      {
-        path: 'editor',
-        name: 'ClassEditor',
-        component: () => import('../views/ClassEditor.vue')
-      }
-    ]
-  },
-  {
-    path: '/student',
-    name: 'StudentView',
-    component: () => import('../views/StudentView.vue')
+    path: '/app',
+    name: 'MainApp',
+    component: () => import('../views/MainApp.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -51,32 +25,16 @@ const router = createRouter({
   routes
 })
 
-// Helper to wait for auth
-const waitForAuth = (authStore) => {
-  return new Promise((resolve) => {
-    if (authStore.isAuthReady) return resolve()
-    const unwatch = authStore.$subscribe((_, state) => {
-      if (state.isAuthReady) {
-        unwatch()
-        resolve()
-      }
-    })
-  })
-}
-
 // Navigation Guard
 router.beforeEach(async (to, from, next) => {
-  const authStore = useAuthStore()
-  
-  // Wait for auth to be definitively ready
-  await waitForAuth(authStore)
-  
-  // If route requires auth and user is not logged in
-  if (to.meta.requiresAuth && !authStore.user) {
-    next('/login')
-  } 
-  // We removed the automatic redirect from Login -> Dashboard to allow the explicit flow.
-  else {
+  const { data: { session } } = await supabase.auth.getSession()
+  const isAuthenticated = !!session
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/auth')
+  } else if (to.path === '/auth' && isAuthenticated) {
+    next('/app')
+  } else {
     next()
   }
 })
