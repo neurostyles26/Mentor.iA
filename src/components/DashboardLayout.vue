@@ -40,51 +40,53 @@ const toggleChat = () => {
 </script>
 
 <template>
-  <div class="flex h-screen bg-background overflow-hidden font-sans">
+  <div class="flex h-screen bg-bg-deep overflow-hidden font-sans">
     <!-- Premium Sidebar -->
-    <aside class="w-80 bg-white flex flex-col border-r border-gray-100 z-50 shadow-soft">
-      <div class="px-10 py-12 flex flex-col items-center">
+    <aside class="w-80 bg-bg-card flex flex-col border-r border-white/5 z-50 shadow-premium relative">
+      <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+      
+      <div class="px-10 py-12 flex flex-col items-center relative z-10">
         <div class="flex items-center gap-4 group cursor-pointer mb-2" @click="router.push('/dashboard')">
-          <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-sm">
-            <BrainCircuit class="w-7 h-7 text-primary" />
+          <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-glow border border-primary/20">
+            <BrainCircuit class="w-8 h-8 text-primary" />
           </div>
-          <span class="text-3xl font-black text-dark tracking-tighter uppercase">MentorIA</span>
+          <span class="text-3xl font-black text-white tracking-tighter uppercase">MentorIA</span>
         </div>
-        <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">IA Pedagogical Suite</p>
+        <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.4em]">Intelligence Suite v4</p>
       </div>
 
       <!-- Navigation Content -->
-      <nav class="flex-1 px-6 space-y-3 mt-4">
+      <nav class="flex-1 px-6 space-y-4 mt-8 relative z-10">
         <router-link 
           v-for="item in navItems" 
           :key="item.name"
           :to="item.path"
-          class="flex items-center gap-4 px-6 py-5 rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all duration-300 relative group overflow-hidden"
-          :class="route.path === item.path ? 'bg-dark text-white shadow-premium' : 'text-gray-400 hover:bg-gray-50 hover:text-dark'"
+          class="flex items-center gap-5 px-8 py-5 rounded-[2.5rem] font-black text-[11px] uppercase tracking-widest transition-all duration-500 relative group overflow-hidden"
+          :class="route.path === item.path ? 'bg-white/5 text-white shadow-glow border border-white/5' : 'text-white/40 hover:bg-white/5 hover:text-white'"
         >
-          <component :is="item.icon" class="w-6 h-6" :class="route.path === item.path ? 'text-primary' : 'text-gray-400 group-hover:text-dark'" />
+          <component :is="item.icon" class="w-6 h-6 transition-transform group-hover:scale-110" :class="route.path === item.path ? 'text-primary' : 'text-white/20 group-hover:text-primary'" />
           {{ item.name }}
-          <div v-if="route.path === item.path" class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-8 bg-primary rounded-full blur-[2px]"></div>
+          <div v-if="route.path === item.path" class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-primary rounded-full blur-[1px]"></div>
         </router-link>
       </nav>
 
       <!-- Bottom Card & Logout -->
-      <div class="p-8 space-y-6">
-        <div class="p-6 bg-gradient-to-br from-[#1E293B] to-[#334155] rounded-[2.5rem] shadow-premium relative overflow-hidden group">
-          <div class="absolute top-0 right-0 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
-          <p class="text-[10px] font-black text-primary uppercase tracking-widest mb-3">Soporte IA Activo</p>
-          <p class="text-sm font-bold text-white/90 leading-snug mb-5">¿Necesitas ayuda con el diseño curricular?</p>
+      <div class="p-8 space-y-6 relative z-10">
+        <div class="p-8 bg-gradient-to-br from-primary to-secondary rounded-[2.5rem] shadow-premium relative overflow-hidden group">
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+          <p class="text-[10px] font-black text-white/60 uppercase tracking-widest mb-3">AI Engine: Gemma 4</p>
+          <p class="text-sm font-bold text-white leading-snug mb-6">Optimiza tus clases con IA de vanguardia</p>
           <button 
             @click="toggleChat"
-            class="w-full py-3 bg-white text-dark rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 shadow-soft"
+            class="w-full py-4 bg-white text-dark rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-bg-deep hover:text-white transition-all transform hover:-translate-y-1 shadow-lg active:scale-95"
           >
-            Consultar
+            Consultar al Mentor
           </button>
         </div>
         
         <button 
           @click="handleLogout"
-          class="flex items-center gap-4 px-8 py-5 w-full rounded-[2rem] font-black text-xs uppercase tracking-widest text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all active:scale-95 group"
+          class="flex items-center gap-5 px-10 py-5 w-full rounded-[2.5rem] font-black text-[10px] uppercase tracking-widest text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95 group border border-transparent hover:border-red-500/20"
         >
           <LogOut class="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
           Cerrar Sesión
@@ -93,34 +95,34 @@ const toggleChat = () => {
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-[#FBFDFF]">
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
       <!-- Refined Header -->
-      <header class="h-24 bg-white/60 backdrop-blur-xl border-b border-gray-100 px-12 flex items-center justify-between sticky top-0 z-40">
-        <div class="flex items-center gap-4 bg-gray-100 px-8 py-4 rounded-[2rem] w-[500px] border border-transparent focus-within:border-primary/20 focus-within:bg-white transition-all duration-500">
-          <Search class="w-5 h-5 text-gray-400" />
+      <header class="h-28 bg-bg-deep/50 backdrop-blur-2xl border-b border-white/5 px-14 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-5 bg-white/5 px-10 py-5 rounded-[2.5rem] w-[550px] border border-white/5 focus-within:border-primary/30 focus-within:bg-white/10 transition-all duration-700">
+          <Search class="w-6 h-6 text-white/20" />
           <input 
             type="text" 
-            placeholder="Encuentra asignaturas o lecciones..."
-            class="bg-transparent border-0 outline-none text-sm font-bold w-full placeholder:text-gray-400"
+            placeholder="Buscar lecciones, talleres o exámenes..."
+            class="bg-transparent border-0 outline-none text-sm font-bold w-full text-white placeholder:text-white/20"
           />
         </div>
 
-        <div class="flex items-center gap-8">
-          <button class="p-4 bg-white border border-gray-100 rounded-2xl text-gray-500 hover:text-primary relative transition-all active:scale-95 shadow-soft hover:shadow-md">
+        <div class="flex items-center gap-10">
+          <button class="p-5 bg-white/5 border border-white/10 rounded-2xl text-white/40 hover:text-primary relative transition-all active:scale-90 hover:bg-white/10">
             <Bell class="w-6 h-6" />
-            <span class="absolute top-4 right-4 w-3 h-3 bg-primary border-4 border-white rounded-full animate-pulse"></span>
+            <span class="absolute top-5 right-5 w-3 h-3 bg-primary border-4 border-bg-deep rounded-full shadow-glow"></span>
           </button>
           
-          <div class="h-10 w-px bg-gray-100 mx-2"></div>
+          <div class="h-12 w-px bg-white/5"></div>
 
-          <div class="flex items-center gap-4 cursor-pointer group p-2 rounded-3xl hover:bg-white hover:shadow-soft transition-all duration-500">
+          <div class="flex items-center gap-5 cursor-pointer group p-3 rounded-[2rem] hover:bg-white/5 transition-all duration-500">
             <div class="text-right hidden sm:block">
-              <p class="text-sm font-black text-dark tracking-tight">Profesor García</p>
-              <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em]">Educador Nivel II</p>
+              <p class="text-sm font-black text-white tracking-tight">Profesor García</p>
+              <p class="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Master Nivel IV</p>
             </div>
-            <div class="w-14 h-14 rounded-2xl bg-dark p-1 shadow-premium transform group-hover:rotate-3 transition-all duration-500">
-               <div class="w-full h-full rounded-xl bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center">
-                  <User class="w-8 h-8 text-white" />
+            <div class="w-16 h-16 rounded-[1.5rem] bg-white/5 p-1 transform group-hover:rotate-6 transition-all duration-700 shadow-glow border border-white/5">
+               <div class="w-full h-full rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                  <User class="w-9 h-9 text-white" />
                </div>
             </div>
           </div>
@@ -128,10 +130,10 @@ const toggleChat = () => {
       </header>
 
       <!-- Dynamic Page Content -->
-      <div class="flex-1 overflow-y-auto p-12 custom-scrollbar">
+      <div class="flex-1 overflow-y-auto p-14 custom-scrollbar">
         <router-view v-slot="{ Component }">
           <transition 
-            name="page-fade" 
+            name="page-premium" 
             mode="out-in"
           >
             <component :is="Component" />
@@ -139,15 +141,15 @@ const toggleChat = () => {
         </router-view>
       </div>
 
-      <!-- Floating Chat Button -->
+      <!-- Floating Chat Button Premium -->
       <button 
+        v-if="!isChatOpen"
         @click="toggleChat"
-        class="fixed bottom-10 right-10 w-20 h-20 bg-dark text-white rounded-[2rem] flex items-center justify-center shadow-premium hover:bg-primary transition-all duration-500 z-50 active:scale-90 group overflow-hidden"
-        :class="isChatOpen ? 'translate-x-32 opacity-0' : 'translate-x-0 opacity-100'"
+        class="fixed bottom-10 right-10 w-24 h-24 bg-primary text-white rounded-[2.5rem] flex items-center justify-center shadow-premium hover:bg-secondary transition-all duration-700 z-50 active:scale-90 group overflow-hidden"
       >
-        <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
-        <MessageCircle class="w-8 h-8 relative z-10 group-hover:scale-110 transition-transform" />
-        <Sparkles class="absolute top-4 right-4 w-4 h-4 text-primary animate-pulse" />
+        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
+        <MessageCircle class="w-9 h-9 relative z-10 group-hover:rotate-12 transition-transform" />
+        <Sparkles class="absolute top-5 right-5 w-5 h-5 text-white/50 animate-pulse" />
       </button>
 
       <!-- Chat Component -->
@@ -155,6 +157,34 @@ const toggleChat = () => {
     </main>
   </div>
 </template>
+
+<style scoped>
+.page-premium-enter-active,
+.page-premium-leave-active {
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-premium-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+  filter: blur(10px);
+}
+
+.page-premium-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+  filter: blur(10px);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+</style>
 
 <style scoped>
 .page-fade-enter-active,
