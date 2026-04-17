@@ -39,16 +39,10 @@ serve(async (req: Request) => {
 
     const genAI = new GoogleGenerativeAI(API_KEY)
     
-    // Using Gemma 4 model (31B MoE Performance)
-    const model = genAI.getGenerativeModel({ 
-      model: "gemma-4-31b-it",
-      generationConfig: { 
-        temperature: 0.8,
-        maxOutputTokens: 4096,
-        topP: 0.95,
-      }
-    })
-
+    // Model Selection with Fallback logic
+    const PRIMARY_MODEL = "gemma-4-31b-it" 
+    const FALLBACK_MODEL = "gemini-1.5-flash"
+    
     const systemPrompt = `
       Eres MentorIA, el asistente de inteligencia pedagógica más avanzado del mundo, especializado en el ecosistema educativo de Colombia (Contexto 2026).
       
@@ -77,26 +71,69 @@ serve(async (req: Request) => {
       parts: [{ text: m.content }]
     }))
 
-    const chat = model.startChat({
-      history: [
-        { role: 'user', parts: [{ text: systemPrompt }] },
-        { role: 'model', parts: [{ text: "Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. Estoy listo para transformar tus ideas en experiencias de aprendizaje excepcionales. ¿En qué desafío pedagógico trabajaremos hoy?" }] },
-        ...history
-      ]
-    })
+    let result;
+    try {
+      console.log(`Attempting to use primary model: ${PRIMARY_MODEL}`)
+      const model = genAI.getGenerativeModel({ 
+        model: PRIMARY_MODEL,
+        generationConfig: { 
+          temperature: 0.8,
+          maxOutputTokens: 4096,
+          topP: 0.95,
+        }
+      })
+      const chat = model.startChat({
+        history: [
+          { role: 'user', parts: [{ text: systemPrompt }] },
+          { role: 'model', parts: [{ text: "Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. Estoy listo para transformar tus ideas en experiencias de aprendizaje excepcionales. ¿En qué desafío pedagógico trabajaremos hoy?" }] },
+          ...history
+        ]
+      })
+      result = await chat.sendMessage(message)
+    } catch (modelError: any) {
+      console.warn(`Primary model ${PRIMARY_MODEL} failed, trying fallback ${FALLBACK_MODEL}:`, modelError.message)
+      const fallbackModel = genAI.getGenerativeModel({ 
+        model: FALLBACK_MODEL,
+        generationConfig: { 
+          temperature: 0.8,
+          maxOutputTokens: 4096,
+          topP: 0.95,
+        }
+      })
+      const chat = fallbackModel.startChat({
+        history: [
+          { role: 'user', parts: [{ text: systemPrompt }] },
+          { role: 'model', parts: [{ text: "Entendido (Motor de Respaldo). Soy MentorIA, tu colaborador estratégico. Estoy listo para apoyarte. ¿En qué trabajaremos hoy?" }] },
+          ...history
+        ]
+      })
+      result = await chat.sendMessage(message)
+    }
 
-    const result = await chat.sendMessage(message)
     const response = await result.response
     const reply = response.text()
 
-    return new Response(JSON.stringify({ reply }), {
+    if (!reply) {
+      throw new Error('La IA no pudo generar una respuesta. Por favor intenta de nuevo.')
+    }
+
+    return new Response(JSON.stringify({ reply, model_used: result.response ? 'primary' : 'fallback' }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
 
   } catch (error: any) {
     console.error('Edge Function Error:', error)
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
+    
+    let errorType = 'UNKNOWN_ERROR'
+    if (error.message?.includes('404')) errorType = 'MODEL_NOT_FOUND'
+    if (error.message?.includes('401') || error.message?.includes('403')) errorType = 'AUTH_ERROR'
+
+    return new Response(JSON.stringify({ 
+      error: error.message || 'Error en el Teacher Chat',
+      type: errorType,
+      details: 'Verifica los secretos en Supabase (GEMINI_API_KEY).'
+    }), {
+      status: error.message?.includes('404') ? 404 : 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   }

@@ -40,16 +40,22 @@ Deno.serve(async (req: Request) => {
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
     
-    // Using Gemma 4 model
-    const generativeModel = genAI.getGenerativeModel({ 
-      model: "gemma-4-31b-it",
-      generationConfig: { 
-        temperature: 0.75,
-        maxOutputTokens: 2048
-      }
-    })
-
-    const finalPrompt = `Actúa como un Mentor Pedagógico de Vanguardia (impulsado por Gemma 4). 
+    // Model Selection with Fallback logic
+    const PRIMARY_MODEL = "gemma-4-31b-it" 
+    const FALLBACK_MODEL = "gemini-1.5-flash"
+    
+    let result;
+    try {
+      console.log(`Attempting to use primary model: ${PRIMARY_MODEL}`)
+      const model = genAI.getGenerativeModel({ 
+        model: PRIMARY_MODEL,
+        generationConfig: { 
+          temperature: 0.75,
+          maxOutputTokens: 2048
+        }
+      })
+      
+      const finalPrompt = `Actúa como un Mentor Pedagógico de Vanguardia (impulsado por Gemma 4). 
 Contexto: ${contexto}
 Pregunta: ${pregunta}
 
@@ -59,18 +65,40 @@ Instrucciones:
 3. Si el usuario es un docente, ofrece consejos prácticos para el aula.
 4. Mantén un tono empático y constructivo.`
 
-    console.log(`Asking tutor question: ${pregunta.substring(0, 50)}... using Gemma 4`)
+      result = await model.generateContent(finalPrompt)
+    } catch (modelError: any) {
+      console.warn(`Primary model ${PRIMARY_MODEL} failed, trying fallback ${FALLBACK_MODEL}:`, modelError.message)
+      
+      const fallbackModel = genAI.getGenerativeModel({ 
+        model: FALLBACK_MODEL,
+        generationConfig: { 
+          temperature: 0.75,
+          maxOutputTokens: 2048
+        }
+      })
+      
+      const finalPrompt = `Actúa como un Mentor Pedagógico de Vanguardia (usando motor de respaldo). 
+Contexto: ${contexto}
+Pregunta: ${pregunta}
 
-    const result = await generativeModel.generateContent(finalPrompt)
+Instrucciones:
+1. Proporciona una respuesta clara, profesional y motivadora.
+2. Usa un lenguaje pedagógico moderno.
+3. Si el usuario es un docente, ofrece consejos prácticos para el aula.
+4. Mantén un tono empático y constructivo.`
+
+      result = await fallbackModel.generateContent(finalPrompt)
+    }
+
     const res = await result.response
     const generatedText = res.text()
 
     if (!generatedText) {
-      throw new Error('Gemma 4 no pudo generar una respuesta. Intenta reformular tu pregunta.')
+      throw new Error('La IA no pudo generar una respuesta. Intenta reformular tu pregunta.')
     }
 
     return new Response(
-      JSON.stringify({ text: generatedText }),
+      JSON.stringify({ text: generatedText, model_used: result.response ? 'primary' : 'fallback' }),
       { 
         headers: { ...genCorsHeaders, 'Content-Type': 'application/json' },
         status: 200 
@@ -78,18 +106,22 @@ Instrucciones:
     )
 
   } catch (error: any) {
-    console.error('Error in tutor-chat (Gemma 4):', error)
+    console.error('Error in tutor-chat:', error)
     
-    const statusCode = error.message?.includes('404') || error.message?.includes('not found') ? 404 : 400
+    let errorType = 'UNKNOWN_ERROR'
+    if (error.message?.includes('404')) errorType = 'MODEL_NOT_FOUND'
+    if (error.message?.includes('401') || error.message?.includes('403')) errorType = 'AUTH_ERROR'
+    if (error.message?.includes('API_KEY_INVALID')) errorType = 'INVALID_API_KEY'
 
     return new Response(
       JSON.stringify({ 
-        error: error.message || 'Error desconocido en Tutor Chat',
-        stack: error.stack
+        error: error.message || 'Error en el Tutor Chat',
+        type: errorType,
+        details: 'Asegúrate de que GEMINI_API_KEY esté configurada correctamente en Supabase Secrets.'
       }),
       { 
         headers: { ...genCorsHeaders, 'Content-Type': 'application/json' },
-        status: statusCode 
+        status: error.message?.includes('404') ? 404 : 500
       }
     )
   }

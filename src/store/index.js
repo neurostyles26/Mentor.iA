@@ -45,9 +45,23 @@ export const useCourseStore = defineStore('course', {
         })
       } catch (error) {
         console.error('Teacher Chat Error:', error)
+        let message = 'Lo siento, Gemma 4 tuvo un problema. ¿Podrías intentar de nuevo?'
+        
+        // Check for specific error details from Supabase Function
+        if (error.context) {
+          try {
+            const errData = await error.context.json()
+            if (errData.type === 'AUTH_ERROR' || errData.type === 'INVALID_API_KEY') {
+              message = '⚠️ Error de Autenticación: La API Key de Gemma 4 no es válida o falta en el servidor.'
+            } else if (errData.type === 'MODEL_NOT_FOUND') {
+              message = '⚠️ Error de Modelo: El modelo Gemma 4 no está disponible en esta región actualmente.'
+            }
+          } catch (e) { /* ignore parse error */ }
+        }
+
         this.teacherChatHistory.push({ 
           role: 'system', 
-          content: 'Lo siento, Gemma 4 tuvo un problema. ¿Podrías intentar de nuevo?',
+          content: message,
           timestamp: new Date()
         })
       } finally {
@@ -145,7 +159,20 @@ export const useCourseStore = defineStore('course', {
         console.error('Error generating content with Gemma 4:', error)
         
         let userMessage = error.message
-        if (error.message.includes('CONFIG_ERROR')) {
+        
+        // Attempt to parse structured error from Edge Function
+        if (error.context) {
+          try {
+            const errData = await error.context.json()
+            if (errData.type === 'AUTH_ERROR' || errData.type === 'INVALID_API_KEY') {
+              userMessage = '⚠️ Configuración Incómoda: La API Key de Gemma 4 no es válida o falta en Supabase.'
+            } else if (errData.type === 'MODEL_NOT_FOUND') {
+              userMessage = '⚠️ Desconexión de Modelo: Gemma 4 no respondió. Intentando con motor de respaldo...'
+            } else if (errData.details) {
+              userMessage = errData.error + ' - ' + errData.details
+            }
+          } catch (e) { /* ignore */ }
+        } else if (error.message.includes('CONFIG_ERROR')) {
           userMessage = '⚠️ Falta la configuración de Gemma 4. Por favor, asegúrate de tener la GEMINI_API_KEY configurada.'
         }
         

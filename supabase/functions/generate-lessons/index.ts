@@ -63,19 +63,35 @@ Crea un EXAMEN que combine Selección Múltiple, Preguntas Abiertas de razonamie
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
     
-    // Using Gemma 4 model - Ensuring standard ID format
-    const generativeModel = genAI.getGenerativeModel({ 
-      model: "gemma-4-31b-it", 
-      generationConfig: { 
-        temperature: 0.7,
-        topP: 0.95,
-        maxOutputTokens: 3000 // Increased for more detailed content
-      }
-    })
+    // Model Selection with Fallback logic
+    const PRIMARY_MODEL = "gemma-4-31b-it"
+    const FALLBACK_MODEL = "gemini-1.5-flash"
+    
+    let result;
+    try {
+      console.log(`Attempting to use primary model: ${PRIMARY_MODEL}`)
+      const model = genAI.getGenerativeModel({ 
+        model: PRIMARY_MODEL, 
+        generationConfig: { 
+          temperature: 0.7,
+          topP: 0.95,
+          maxOutputTokens: 3000
+        }
+      })
+      result = await model.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
+    } catch (modelError: any) {
+      console.warn(`Primary model ${PRIMARY_MODEL} failed, trying fallback ${FALLBACK_MODEL}:`, modelError.message)
+      const fallbackModel = genAI.getGenerativeModel({ 
+        model: FALLBACK_MODEL,
+        generationConfig: { 
+          temperature: 0.7,
+          topP: 0.95,
+          maxOutputTokens: 3000
+        }
+      })
+      result = await fallbackModel.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
+    }
 
-    console.log(`Generating ${type} for topic: ${prompt} using Gemma 4...`)
-
-    const result = await generativeModel.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
     const res = await result.response
     const generatedText = res.text()
 
@@ -84,7 +100,7 @@ Crea un EXAMEN que combine Selección Múltiple, Preguntas Abiertas de razonamie
     }
 
     return new Response(
-      JSON.stringify({ text: generatedText }),
+      JSON.stringify({ text: generatedText, model_used: result.response ? 'primary' : 'fallback' }),
       { 
         headers: { ...genCorsHeaders, 'Content-Type': 'application/json' },
         status: 200 
@@ -92,19 +108,21 @@ Crea un EXAMEN que combine Selección Múltiple, Preguntas Abiertas de razonamie
     )
 
   } catch (error: any) {
-    console.error('Error in generate-lessons (Gemma 4):', error)
+    console.error('Error in generate-lessons:', error)
     
-    // Differentiate between API errors and internal errors
-    const statusCode = error.message?.includes('404') || error.message?.includes('not found') ? 404 : 400
+    let errorType = 'UNKNOWN_ERROR'
+    if (error.message?.includes('404')) errorType = 'MODEL_NOT_FOUND'
+    if (error.message?.includes('401') || error.message?.includes('403')) errorType = 'AUTH_ERROR'
     
     return new Response(
       JSON.stringify({ 
-        error: error.message || 'Error desconocido en Gemma 4',
-        stack: error.stack
+        error: error.message || 'Error en Gemma 4',
+        type: errorType,
+        details: 'Verifica la GEMINI_API_KEY en Supabase Secrets.'
       }),
       { 
         headers: { ...genCorsHeaders, 'Content-Type': 'application/json' },
-        status: statusCode 
+        status: error.message?.includes('404') ? 404 : 500
       }
     )
   }
