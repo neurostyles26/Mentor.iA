@@ -166,7 +166,7 @@ onMounted(() => {
 
       <button 
         @click="showAddModal = true"
-        class="flex items-center gap-4 px-10 py-5 bg-primary text-white rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-premium hover:bg-secondary transition-all transform hover:-translate-y-1 active:scale-95 group"
+        class="flex items-center gap-4 px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-2xl font-black text-[10px] md:text-[11px] uppercase tracking-widest shadow-premium hover:bg-secondary transition-all transform hover:-translate-y-1 active:scale-95 group w-full md:w-auto justify-center"
       >
         <Plus class="w-4 h-4 group-hover:rotate-90 transition-transform" />
         Agendar Clase
@@ -176,7 +176,7 @@ onMounted(() => {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       <!-- Calendar Grid -->
       <div class="lg:col-span-8 space-y-6">
-        <div class="glass-panel p-8">
+        <div class="glass-panel p-6 md:p-8">
           <!-- Calendar Controls -->
           <div class="flex items-center justify-between mb-10">
              <h2 class="text-2xl font-black text-white uppercase italic tracking-tight">
@@ -237,7 +237,7 @@ onMounted(() => {
 
       <!-- Agenda Side Details -->
       <div class="lg:col-span-4 space-y-8">
-        <div class="glass-panel p-8 relative overflow-hidden group border-primary/20">
+        <div class="glass-panel p-6 md:p-8 relative overflow-hidden group border-primary/20">
           <div class="absolute top-0 right-0 p-8 opacity-5">
             <CalendarIcon :size="120" />
           </div>
@@ -282,7 +282,7 @@ onMounted(() => {
         </div>
 
         <!-- Productivity Note -->
-        <div class="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 border-dashed">
+        <div class="p-6 md:p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 border-dashed">
           <p class="text-[9px] font-black text-primary uppercase tracking-[0.5em] mb-4">Consejo Pedagógico</p>
           <p class="text-xs text-white/40 font-bold leading-relaxed italic">
             "Sincronizar tus momentos de ideación con tu agenda reduce la carga cognitiva. Tu cerebro IA se encarga de los recordatorios."
@@ -296,7 +296,7 @@ onMounted(() => {
       <div v-if="showAddModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-xl" @click="showAddModal = false"></div>
         
-        <div class="glass-panel w-full max-w-xl p-10 relative z-10 border-primary/20 shadow-2xl animate-scale-up">
+        <div class="glass-panel w-full max-w-xl p-8 lg:p-10 relative z-10 border-primary/20 shadow-2xl animate-scale-up">
           <header class="flex items-center justify-between mb-10">
             <div>
               <h2 class="text-3xl font-black text-white uppercase tracking-tighter italic">Nueva Sesión</h2>
@@ -348,7 +348,7 @@ onMounted(() => {
 
             <button 
               type="submit" 
-              class="w-full py-6 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-1.5 transition-all active:scale-95"
+              class="w-full py-5 md:py-6 bg-primary text-white rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-1.5 transition-all active:scale-95"
             >
               Confirmar en la Agenda
             </button>

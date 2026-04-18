@@ -134,12 +134,12 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       
       <!-- STEP 1: CONTEXTO -->
-      <section v-if="currentStep === 1" class="lg:col-span-12 max-w-2xl mx-auto w-full animate-slide-up">
-        <div class="glass-panel p-8 lg:p-14 text-center relative overflow-hidden group">
+       <section v-if="currentStep === 1" class="lg:col-span-12 max-w-2xl mx-auto w-full animate-slide-up">
+        <div class="glass-panel p-6 md:p-10 lg:p-14 text-center relative overflow-hidden group">
           <div class="absolute -top-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl animate-pulse group-hover:scale-125 transition-transform"></div>
           
-          <div class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-primary/20 shadow-glow group-hover:rotate-6 transition-transform">
-            <Cpu class="w-10 h-10 text-primary" />
+          <div class="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-primary/20 shadow-glow group-hover:rotate-6 transition-transform">
+            <Cpu class="w-8 h-8 md:w-10 md:h-10 text-primary" />
           </div>
           <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Núcleo del Aprendizaje</h2>
           <p class="text-white/60 font-black mb-12 uppercase text-[10px] tracking-[0.3em]">Configura las bases de la intervención</p>
@@ -156,7 +156,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
               </div>
             </div>
             
-            <button @click="currentStep = 2" :disabled="!isContextValid" class="btn-primary w-full py-6 disabled:opacity-20 uppercase tracking-[0.2em] text-xs">
+            <button @click="currentStep = 2" :disabled="!isContextValid" class="btn-primary w-full py-5 md:py-6 disabled:opacity-20 uppercase tracking-[0.2em] text-[10px] md:text-xs">
               Siguiente Fase: Ideación
               <ChevronRight class="w-5 h-5 ml-2" />
             </button>
@@ -238,7 +238,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                 @keyup.enter="sendToMentor"
                 type="text" 
                 placeholder="Prescribe tu visión pedagógica..." 
-                class="input-field w-full pr-16 py-5 relative z-10"
+                class="input-field w-full pr-16 py-4 md:py-5 relative z-10"
               />
               <button @click="sendToMentor" class="absolute right-2 top-2 p-3 bg-primary text-white rounded-xl hover:bg-secondary transition-all shadow-glow active:scale-90 z-20">
                 <Send class="w-5 h-5" />
@@ -310,13 +310,13 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
               </div>
              </div>
 
-             <button @click="handleGenerate" :disabled="courseStore.isGenerating"
-               class="btn-primary w-full py-5 text-xs uppercase tracking-widest disabled:opacity-20"
-             >
+              <button @click="handleGenerate" :disabled="courseStore.isGenerating"
+                class="btn-primary w-full py-4 md:py-5 text-[10px] md:text-xs uppercase tracking-widest disabled:opacity-20"
+              >
                 <Loader2 v-if="courseStore.isGenerating" class="w-5 h-5 animate-spin mr-2" />
                 <Sparkles v-else class="w-5 h-5 mr-2" />
                 {{ courseStore.isGenerating ? 'Trascendiendo...' : 'Generar Artefacto' }}
-             </button>
+              </button>
           </div>
         </aside>
 

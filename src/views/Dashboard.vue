@@ -55,20 +55,20 @@ const getInitials = (name) => {
       
       <button 
         @click="navigateToCreate"
-        class="flex items-center justify-center gap-4 px-10 py-6 bg-primary text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-1 active:scale-95 group overflow-hidden relative"
+        class="flex items-center justify-center gap-4 px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-[2.5rem] font-black text-xs md:text-sm uppercase tracking-[0.2em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-1 active:scale-95 group overflow-hidden relative w-full md:w-auto"
       >
         <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
-        <Plus class="w-6 h-6 group-hover:rotate-90 transition-transform relative z-10" />
+        <Plus class="w-5 h-5 md:w-6 md:h-6 group-hover:rotate-90 transition-transform relative z-10" />
         <span class="relative z-10">Nueva Experiencia IA</span>
       </button>
     </section>
 
     <!-- Content Grid -->
-    <div v-if="courses.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+    <div v-if="courses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
       <div 
         v-for="course in courses" 
         :key="course.id"
-        class="glass-panel p-8 flex flex-col group cursor-pointer hover:border-primary/40 hover:bg-white/5 transition-all duration-500 relative overflow-hidden"
+        class="glass-panel p-6 md:p-8 flex flex-col group cursor-pointer hover:border-primary/40 hover:bg-white/5 transition-all duration-500 relative overflow-hidden"
         @click="handleViewCourse(course)"
       >
         <!-- Card Background Glow -->
@@ -123,14 +123,14 @@ const getInitials = (name) => {
       <!-- Quick Add Card -->
       <div 
         @click="navigateToCreate"
-        class="border-4 border-dashed border-white/5 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all duration-500 relative overflow-hidden h-full min-h-[350px]"
+        class="border-4 border-dashed border-white/5 rounded-[2.5rem] p-8 md:p-10 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all duration-500 relative overflow-hidden h-full min-h-[300px]"
       >
         <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity blur-3xl"></div>
-        <div class="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-glow relative z-10">
-          <Plus class="w-10 h-10 text-white/50 group-hover:text-white" />
+        <div class="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-glow relative z-10">
+          <Plus class="w-8 h-8 md:w-10 md:h-10 text-white/50 group-hover:text-white" />
         </div>
-        <h4 class="text-xl font-black text-white/20 group-hover:text-white mb-2 transition-colors relative z-10 uppercase tracking-tighter">Nueva Asignatura</h4>
-        <p class="text-[10px] text-white/40 uppercase tracking-widest font-black relative z-10">Impulsado por IA Elite</p>
+        <h4 class="text-lg md:text-xl font-black text-white/20 group-hover:text-white mb-2 transition-colors relative z-10 uppercase tracking-tighter">Nueva Asignatura</h4>
+        <p class="text-[9px] text-white/40 uppercase tracking-widest font-black relative z-10">Impulsado por IA Elite</p>
       </div>
     </div>
 
@@ -157,7 +157,7 @@ const getInitials = (name) => {
     <div class="glass-panel p-12 text-white overflow-hidden relative shadow-premium mt-12 group border-primary/20 bg-gradient-to-br from-bg-card to-primary/5">
       <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-20 blur-[100px] -mr-48 -mt-48 group-hover:scale-150 transition-transform duration-1000"></div>
       
-      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+      <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
         <div class="flex-1 space-y-4">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-glow">
