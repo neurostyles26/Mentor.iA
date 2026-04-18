@@ -6,18 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface RequestBody {
-  pregunta: string;
-  contexto?: string;
-}
-
-Deno.serve(async (req: Request) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const body: RequestBody = await req.json().catch(() => ({}))
+    const body = await req.json().catch(() => ({}))
     const { pregunta, contexto = 'General' } = body
 
     if (!pregunta) {
@@ -36,8 +31,6 @@ Deno.serve(async (req: Request) => {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY)
-    const PRIMARY_MODEL = "gemma-4-31b-it"
-    const FALLBACK_MODEL = "gemini-1.5-flash"
 
     const finalPrompt = `Actúa como un Mentor Pedagógico experto en educación colombiana.
 Contexto: ${contexto}
@@ -45,36 +38,29 @@ Pregunta: ${pregunta}
 
 Instrucciones:
 1. Proporciona una respuesta clara, profesional y motivadora.
-2. Usa un lenguaje pedagógico moderno.
+2. Usa un lenguaje pedagógico moderno en español colombiano.
 3. Si el usuario es un docente, ofrece consejos prácticos para el aula.
 4. Mantén un tono empático y constructivo.
-5. Usa Markdown para formatear tu respuesta.`
+5. Usa Markdown para formatear tu respuesta (negritas, listas, tablas si aplica).`
 
-    let responseText = '';
-    let modelUsed = 'primary';
-
-    try {
-      const model = genAI.getGenerativeModel({ model: PRIMARY_MODEL })
-      const result = await model.generateContent(finalPrompt)
-      responseText = result.response.text()
-    } catch (primaryError) {
-      console.warn('Primary model failed, using fallback:', primaryError)
-      modelUsed = 'fallback'
-      try {
-        const model = genAI.getGenerativeModel({ model: FALLBACK_MODEL })
-        const result = await model.generateContent(finalPrompt)
-        responseText = result.response.text()
-      } catch (fallbackError) {
-        throw new Error(`Ambos modelos fallaron. Último error: ${fallbackError}`)
+    // Usar Gemini 3 Flash (2026) como modelo principal
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3-flash",
+      generationConfig: {
+        temperature: 0.75,
+        maxOutputTokens: 2048,
       }
-    }
+    })
+
+    const result = await model.generateContent(finalPrompt)
+    const responseText = result.response.text()
 
     return new Response(
-      JSON.stringify({ text: responseText, model_used: modelUsed }),
+      JSON.stringify({ text: responseText, model_used: 'gemini-3-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error in tutor-chat:', error)
     return new Response(
       JSON.stringify({ error: error.message || 'Error interno del servidor' }),

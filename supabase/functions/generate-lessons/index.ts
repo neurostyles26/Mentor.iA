@@ -6,20 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface RequestBody {
-  prompt: string;
-  grade?: string;
-  subject?: string;
-  type?: 'lesson' | 'workshop' | 'exam';
-}
-
-Deno.serve(async (req: Request) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const body: RequestBody = await req.json().catch(() => ({}))
+    const body = await req.json().catch(() => ({}))
     const { prompt, grade = 'No especificado', subject = 'General', type = 'lesson' } = body
 
     if (!prompt) {
@@ -38,52 +31,55 @@ Deno.serve(async (req: Request) => {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY)
-    const PRIMARY_MODEL = "gemma-4-31b-it"
-    const FALLBACK_MODEL = "gemini-1.5-flash"
 
     let systemPrompt = ''
     if (type === 'lesson') {
-      systemPrompt = `Eres un Mentor IA experto en diseño curricular.
+      systemPrompt = `Eres un Mentor IA experto en diseño curricular colombiano.
 Materia: ${subject}. Grado: ${grade}.
-Diseña una LECCIÓN profesional con Objetivos de Aprendizaje, Contenido Base (con ejemplos detallados), Actividades Rápidas de refuerzo y Consejos Pedagógicos innovadores.
+Diseña una LECCIÓN profesional con:
+- Objetivos de Aprendizaje alineados con los DBA
+- Contenido Base con ejemplos detallados
+- Actividades Rápidas de refuerzo
+- Consejos Pedagógicos innovadores
 Usa Markdown elegante con Tablas, Listas y Negritas.`
     } else if (type === 'workshop') {
       systemPrompt = `Eres un Mentor IA especialista en TALLERES PRÁCTICOS.
 Materia: ${subject}. Grado: ${grade}.
-Crea un TALLER con Marco Teórico resumido, 5-10 Ejercicios Prácticos de dificultad progresiva, un Reto Creativo final y Criterios de Evaluación claros.
+Crea un TALLER con:
+- Marco Teórico resumido
+- 5-10 Ejercicios Prácticos de dificultad progresiva
+- Un Reto Creativo final
+- Criterios de Evaluación claros
 Usa Markdown elegante.`
     } else {
       systemPrompt = `Eres un Mentor IA experto en EVALUACIÓN.
 Materia: ${subject}. Grado: ${grade}.
-Crea un EXAMEN que combine Selección Múltiple, Preguntas Abiertas de razonamiento y una LLAVE DE RESPUESTAS detallada al final.
+Crea un EXAMEN que incluya:
+- Selección Múltiple (5-10 preguntas)
+- Preguntas Abiertas de razonamiento (3-5)
+- LLAVE DE RESPUESTAS detallada al final
 Usa Markdown elegante.`
     }
 
-    let responseText = '';
-    let modelUsed = 'primary';
-
-    try {
-      const model = genAI.getGenerativeModel({ model: PRIMARY_MODEL })
-      const result = await model.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
-      responseText = result.response.text()
-    } catch (primaryError) {
-      console.warn('Primary model failed, using fallback:', primaryError)
-      modelUsed = 'fallback'
-      try {
-        const model = genAI.getGenerativeModel({ model: FALLBACK_MODEL })
-        const result = await model.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
-        responseText = result.response.text()
-      } catch (fallbackError) {
-        throw new Error(`Ambos modelos fallaron. Error: ${fallbackError}`)
+    // Usar Gemini 3 Flash (2026) como modelo principal
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3-flash",
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 4096,
+        topP: 0.95,
       }
-    }
+    })
+
+    const result = await model.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
+    const responseText = result.response.text()
 
     return new Response(
-      JSON.stringify({ text: responseText, model_used: modelUsed }),
+      JSON.stringify({ text: responseText, model_used: 'gemini-3-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error in generate-lessons:', error)
     return new Response(
       JSON.stringify({ error: error.message || 'Error interno del servidor' }),

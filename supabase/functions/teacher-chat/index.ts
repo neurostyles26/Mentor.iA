@@ -6,12 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface Message {
-  role: string;
-  content: string;
-}
-
-Deno.serve(async (req: Request) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -36,62 +31,52 @@ Deno.serve(async (req: Request) => {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY)
-    const PRIMARY_MODEL = "gemma-4-31b-it"
-    const FALLBACK_MODEL = "gemini-1.5-flash"
 
     const systemPrompt = `Eres MentorIA, el asistente de inteligencia pedagógica más avanzado, especializado en el ecosistema educativo de Colombia.
 
 Tu misión es asistir a docentes en:
-1. Co-diseño curricular alineado con los DBA.
-2. Creación de experiencias de aprendizaje innovadoras (Gamificación, CBL).
+1. Co-diseño curricular alineado con los Derechos Básicos de Aprendizaje (DBA).
+2. Creación de experiencias de aprendizaje innovadoras (Gamificación, CBL, Pensamiento Crítico).
 3. Diagnóstico pedagógico y remediación personalizada.
+4. Secuencias didácticas (Inicio, Desarrollo, Cierre) con rúbricas.
 
-Siempre responde en español colombiano. Usa Markdown elegante con Tablas, Listas y Negritas.`
+Reglas:
+- Tono profesional, inspirador y empático.
+- Español colombiano fluido y claro.
+- Siempre usa Markdown elegante con Tablas, Listas y Negritas.`
 
-    const history = (chatHistory || []).map((m: Message) => ({
+    const history = (chatHistory || []).map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
     }))
 
-    let reply = '';
-    let modelUsed = 'primary';
-
-    try {
-      const model = genAI.getGenerativeModel({ model: PRIMARY_MODEL })
-      const chat = model.startChat({
-        history: [
-          { role: 'user', parts: [{ text: systemPrompt }] },
-          { role: 'model', parts: [{ text: "Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. ¿En qué trabajaremos hoy?" }] },
-          ...history
-        ]
-      })
-      const result = await chat.sendMessage(message)
-      reply = result.response.text()
-    } catch (primaryError) {
-      console.warn('Primary model failed, using fallback:', primaryError)
-      modelUsed = 'fallback'
-      try {
-        const model = genAI.getGenerativeModel({ model: FALLBACK_MODEL })
-        const chat = model.startChat({
-          history: [
-            { role: 'user', parts: [{ text: systemPrompt }] },
-            { role: 'model', parts: [{ text: "Entendido. Soy MentorIA (Motor de Respaldo). ¿En qué te puedo apoyar?" }] },
-            ...history
-          ]
-        })
-        const result = await chat.sendMessage(message)
-        reply = result.response.text()
-      } catch (fallbackError) {
-        throw new Error(`Ambos modelos fallaron. Error: ${fallbackError}`)
+    // Usar Gemini 3 Flash (2026) como modelo principal
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3-flash",
+      generationConfig: {
+        temperature: 0.8,
+        maxOutputTokens: 4096,
+        topP: 0.95,
       }
-    }
+    })
+
+    const chat = model.startChat({
+      history: [
+        { role: 'user', parts: [{ text: systemPrompt }] },
+        { role: 'model', parts: [{ text: "Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. ¿En qué desafío pedagógico trabajaremos hoy?" }] },
+        ...history
+      ]
+    })
+
+    const result = await chat.sendMessage(message)
+    const reply = result.response.text()
 
     return new Response(
-      JSON.stringify({ reply, model_used: modelUsed }),
+      JSON.stringify({ reply, model_used: 'gemini-3-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Edge Function Error:', error)
     return new Response(
       JSON.stringify({ error: error.message || 'Error interno del servidor' }),

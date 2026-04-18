@@ -45,7 +45,7 @@ export const useCourseStore = defineStore('course', {
         })
       } catch (error) {
         console.error('Teacher Chat Error:', error)
-        let message = 'Lo siento, Gemma 4 tuvo un problema. ¿Podrías intentar de nuevo?'
+        let message = 'Lo siento, la IA tuvo un problema. ¿Podrías intentar de nuevo?'
         
         // Handle Gateway errors (401/403/500)
         if (error.message?.includes('401') || error.message?.includes('403')) {
@@ -59,9 +59,9 @@ export const useCourseStore = defineStore('course', {
           try {
             const errData = await error.context.json()
             if (errData.type === 'AUTH_ERROR' || errData.type === 'INVALID_API_KEY') {
-              message = '⚠️ Error de API Key: La llave de Gemma 4 no es válida o falta en Supabase Secrets.'
+              message = '⚠️ Error de API Key: La llave de la IA no es válida o falta en Supabase Secrets.'
             } else if (errData.type === 'MODEL_NOT_FOUND') {
-              message = '⚠️ Error de Modelo: Gemma 4 no está disponible. Intentando reconexión...'
+              message = '⚠️ Error de Modelo: El modelo de IA no está disponible. Intentando reconexión...'
             } else if (errData.error) {
               message = `⚠️ Error de Servidor: ${errData.error}`
             }
@@ -137,7 +137,7 @@ export const useCourseStore = defineStore('course', {
 
         if (error) {
           const errorMsg = await error.context?.json().then(j => j.error).catch(() => null)
-          throw new Error(errorMsg || error.message || 'Error de servidor Gemma 4')
+          throw new Error(errorMsg || error.message || 'Error de servidor Gemini')
         }
 
         this.generatedContent = data.text
@@ -150,7 +150,7 @@ export const useCourseStore = defineStore('course', {
               title: type === 'lesson' ? `Lección de ${topic}` : type === 'workshop' ? `Taller de ${topic}` : `Examen de ${topic}`,
               content: data.text,
               status: 'draft',
-              type: 'Gemma 4'
+              type: 'Gemini 3 Flash'
             })
             .select()
             .single()
@@ -165,7 +165,7 @@ export const useCourseStore = defineStore('course', {
             .eq('id', this.currentCourse.id)
         }
       } catch (error) {
-        console.error('Error generating content with Gemma 4:', error)
+        console.error('Error generating content:', error)
         
         let userMessage = error.message
         
@@ -182,7 +182,7 @@ export const useCourseStore = defineStore('course', {
             }
           } catch (e) { /* ignore */ }
         } else if (error.message.includes('CONFIG_ERROR')) {
-          userMessage = '⚠️ Falta la configuración de Gemma 4. Por favor, asegúrate de tener la GEMINI_API_KEY configurada.'
+          userMessage = '⚠️ Falta la configuración de la IA. Por favor, asegúrate de tener la GEMINI_API_KEY configurada.'
         }
         
         this.generationError = userMessage
@@ -227,7 +227,7 @@ export const useCourseStore = defineStore('course', {
         this.tutorResponse = data.text
       } catch (error) {
         console.error('Error asking tutor (Gemma 4):', error)
-        this.tutorResponse = 'Lo siento, Gemma 4 tuvo un problema al procesar tu duda. ¿Podrías intentar de nuevo?'
+        this.tutorResponse = 'Lo siento, la IA tuvo un problema al procesar tu duda. ¿Podrías intentar de nuevo?'
       } finally {
         this.isAskingTutor = false
       }
