@@ -116,6 +116,8 @@ const router = useRouter()
 </template>
 
 <style scoped>
+@reference "../style.css";
+
 .animation-delay-300 { animation-delay: 0.3s; }
 .animation-delay-600 { animation-delay: 0.6s; }
 .animation-delay-900 { animation-delay: 0.9s; }
