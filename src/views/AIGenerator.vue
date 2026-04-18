@@ -350,6 +350,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 </template>
 
 <style scoped>
+@reference "../style.css";
 .preview-markdown :deep(h1) { @apply text-3xl font-black mb-10 text-white tracking-tight; }
 .preview-markdown :deep(h2) { @apply text-2xl font-black mt-12 mb-6 text-primary tracking-tight uppercase; }
 .preview-markdown :deep(h3) { @apply text-xl font-black mt-8 mb-4 text-white/80; }
@@ -367,6 +368,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 </style>
 
 <style scoped>
+@reference "../style.css";
 .custom-scrollbar::-webkit-scrollbar { width: 6px; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
 

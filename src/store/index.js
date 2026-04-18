@@ -256,8 +256,3 @@ export const useCourseStore = defineStore('course', {
     }
   }
 })
-
-      this.currentCourse = course
-    }
-  }
-})
