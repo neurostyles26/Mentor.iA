@@ -55,6 +55,10 @@ const routes = [
   }
 ]
 
+import { useAuthStore } from '../store/auth'
+
+// ... (routes definition)
+
 const router = createRouter({
   history: createWebHistory(),
   routes
@@ -62,8 +66,15 @@ const router = createRouter({
 
 // Navigation Guard
 router.beforeEach(async (to, from, next) => {
-  const { data: { session } } = await supabase.auth.getSession()
-  const isAuthenticated = !!session
+  const authStore = useAuthStore()
+  
+  // Wait if auth is not ready yet
+  if (!authStore.isAuthReady) {
+    // Initial wait for Supabase to resolve the session
+    await authStore.initAuth()
+  }
+
+  const isAuthenticated = !!authStore.user
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login')

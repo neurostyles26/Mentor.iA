@@ -351,6 +351,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 
 <style scoped>
 @reference "../style.css";
+
 .preview-markdown :deep(h1) { @apply text-3xl font-black mb-10 text-white tracking-tight; }
 .preview-markdown :deep(h2) { @apply text-2xl font-black mt-12 mb-6 text-primary tracking-tight uppercase; }
 .preview-markdown :deep(h3) { @apply text-xl font-black mt-8 mb-4 text-white/80; }
@@ -365,15 +366,9 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 
 .animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes slideUp { from { opacity: 0; transform: translateY(40px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-</style>
 
-<style scoped>
-@reference "../style.css";
 .custom-scrollbar::-webkit-scrollbar { width: 6px; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
-
-.animate-slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
 .premium-card { border-radius: 2.5rem; transition: all 0.4s ease; }
 .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
