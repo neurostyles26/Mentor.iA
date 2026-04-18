@@ -48,7 +48,7 @@ const getInitials = (name) => {
         <h1 class="text-4xl lg:text-5xl font-black text-white tracking-tight leading-none">
           Hola, <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{{ authStore.displayName }}</span>
         </h1>
-        <p class="text-white/40 font-bold text-lg lg:text-xl max-w-xl">
+        <p class="text-white/70 font-bold text-lg lg:text-xl max-w-xl">
           ¿Qué vamos a transformar hoy en el ecosistema educativo?
         </p>
       </div>
@@ -78,7 +78,7 @@ const getInitials = (name) => {
           <div :class="`w-14 h-14 rounded-2xl bg-gradient-to-br ${course.color || 'from-primary to-secondary'} flex items-center justify-center text-white shadow-glow group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 font-black text-xl border border-white/20` ">
             {{ getInitials(course.name) }}
           </div>
-          <button class="p-2 text-white/20 hover:text-primary transition-colors">
+          <button class="p-2 text-white/50 hover:text-primary transition-colors">
             <MoreVertical class="w-6 h-6" />
           </button>
         </div>
@@ -87,14 +87,14 @@ const getInitials = (name) => {
           <h3 class="text-2xl font-black text-white mb-2 group-hover:text-primary transition-colors tracking-tight line-clamp-1 italic">{{ course.name }}</h3>
           <div class="flex items-center gap-3 mb-8">
             <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-black text-primary uppercase tracking-widest">{{ course.grade }}</span>
-            <span class="text-[9px] font-black text-white/30 uppercase tracking-widest flex items-center gap-1">
+            <span class="text-[9px] font-black text-white/60 uppercase tracking-widest flex items-center gap-1">
               <Clock class="w-3 h-3" /> Hace 2 días
             </span>
           </div>
           
           <div class="space-y-3 mb-8">
             <div class="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-              <span class="text-white/30">Progreso Curricular</span>
+              <span class="text-white/60">Progreso Curricular</span>
               <span class="text-primary">{{ course.progress || 0 }}%</span>
             </div>
             <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden p-0 border border-white/5">
@@ -111,7 +111,7 @@ const getInitials = (name) => {
             <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/5">
                <BookOpen class="w-4 h-4 text-primary" />
             </div>
-            <span class="text-[10px] font-black text-white/40 uppercase tracking-widest">{{ course.classes_count || 0 }} Piezas</span>
+            <span class="text-[10px] font-black text-white/70 uppercase tracking-widest">{{ course.classes_count || 0 }} Piezas</span>
           </div>
           <button class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary group-hover:translate-x-2 transition-transform">
             Entrar
@@ -127,10 +127,10 @@ const getInitials = (name) => {
       >
         <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity blur-3xl"></div>
         <div class="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-glow relative z-10">
-          <Plus class="w-10 h-10 text-white/20 group-hover:text-white" />
+          <Plus class="w-10 h-10 text-white/50 group-hover:text-white" />
         </div>
         <h4 class="text-xl font-black text-white/20 group-hover:text-white mb-2 transition-colors relative z-10 uppercase tracking-tighter">Nueva Asignatura</h4>
-        <p class="text-[10px] text-white/10 uppercase tracking-widest font-black relative z-10">Impulsado por Gemini 2.5</p>
+        <p class="text-[10px] text-white/40 uppercase tracking-widest font-black relative z-10">Impulsado por Gemini 2.5</p>
       </div>
     </div>
 
@@ -141,7 +141,7 @@ const getInitials = (name) => {
         <BrainCircuit class="w-20 h-20 text-primary relative z-10" />
       </div>
       <h2 class="text-4xl font-black text-white mb-4 tracking-tighter">Tu Biblioteca está vacía</h2>
-      <p class="text-gray-400 font-bold text-lg max-w-md mb-12">
+      <p class="text-white/60 font-bold text-lg max-w-md mb-12">
         Aún no has creado ningún curso. El **Mentor IA** te ayudará a preparar clases innovadoras en cuestión de segundos.
       </p>
       <button 
@@ -165,7 +165,7 @@ const getInitials = (name) => {
             </div>
             <h2 class="text-3xl font-black italic tracking-tighter">Impacto Pedagógico</h2>
           </div>
-          <p class="text-white/40 font-bold text-lg leading-relaxed max-w-xl">
+          <p class="text-white/70 font-bold text-lg leading-relaxed max-w-xl">
             Tu ecosistema ha procesado lecciones que impactan al <span class="text-primary">92%</span> de tus objetivos curriculares este periodo.
           </p>
         </div>
@@ -178,7 +178,7 @@ const getInitials = (name) => {
           <div class="h-20 w-px bg-white/10 hidden md:block"></div>
           <div class="text-center group-hover:scale-110 transition-transform duration-500">
             <p class="text-6xl font-black text-secondary mb-2 tracking-tighter">24%</p>
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-white/30">Más Eficiencia</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-white/60">Más Eficiencia</p>
           </div>
         </div>
       </div>

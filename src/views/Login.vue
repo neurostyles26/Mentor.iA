@@ -94,7 +94,7 @@ const toggleMode = () => {
             Trascendiendo la <br />
             <span class="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent italic">educación convencional</span>
           </h1>
-          <p class="text-xl text-white/40 font-bold max-w-md leading-relaxed">
+          <p class="text-xl text-white/70 font-bold max-w-md leading-relaxed">
             Diseñamos el futuro del aprendizaje interactivo. Accede a herramientas pedagógicas impulsadas por neuronas digitales.
           </p>
         </div>
@@ -103,18 +103,18 @@ const toggleMode = () => {
         <div class="grid grid-cols-2 gap-8 pt-10">
           <div class="space-y-2 group">
             <p class="text-4xl font-black text-white group-hover:text-primary transition-colors tracking-tighter">12k+</p>
-            <p class="text-[9px] font-black text-white/20 uppercase tracking-[0.3em]">Sesiones Diarias</p>
+            <p class="text-[9px] font-black text-white/50 uppercase tracking-[0.3em]">Sesiones Diarias</p>
           </div>
           <div class="space-y-2 group">
             <p class="text-4xl font-black text-white group-hover:text-secondary transition-colors tracking-tighter">99.9%</p>
-            <p class="text-[9px] font-black text-white/20 uppercase tracking-[0.3em]">Precisión IA</p>
+            <p class="text-[9px] font-black text-white/50 uppercase tracking-[0.3em]">Precisión IA</p>
           </div>
         </div>
       </div>
 
       <!-- Footer Info -->
       <div class="relative z-10 flex items-center justify-between">
-        <div class="flex items-center gap-3 text-white/30">
+        <div class="flex items-center gap-3 text-white/60">
           <ShieldCheck class="w-4 h-4" />
           <p class="text-[9px] font-black uppercase tracking-widest">Protocolo de Cifrado v4.2</p>
         </div>
@@ -146,7 +146,7 @@ const toggleMode = () => {
                </div>
                <h2 class="text-4xl font-black text-white tracking-tighter">{{ isSignup ? 'Comenzar' : 'Entrar' }}</h2>
              </div>
-             <p class="text-white/40 font-bold text-lg leading-tight lg:pr-10">
+             <p class="text-white/70 font-bold text-lg leading-tight lg:pr-10">
                {{ isSignup ? 'Únete a la red neuronal de docentes más innovadora de Colombia.' : 'Bienvenido de nuevo al ecosistema pedagógico inteligente.' }}
              </p>
           </header>
@@ -168,7 +168,7 @@ const toggleMode = () => {
 
             <div class="relative flex items-center py-10">
               <div class="flex-grow border-t border-white/5"></div>
-              <span class="flex-shrink mx-6 text-[10px] font-black text-white/10 uppercase tracking-[0.4em]">O usa tus credenciales</span>
+              <span class="flex-shrink mx-6 text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">O usa tus credenciales</span>
               <div class="flex-grow border-t border-white/5"></div>
             </div>
           </footer>
@@ -179,28 +179,28 @@ const toggleMode = () => {
 
           <form @submit.prevent="handleAuth" class="space-y-6 animate-fade-in-up animation-delay-400">
             <div class="space-y-3">
-              <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-1">Ecosistema Email</label>
+              <label class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] ml-1">Ecosistema Email</label>
               <div class="relative group">
-                <Mail class="absolute left-5 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-primary transition-colors duration-500" :size="20" />
+                <Mail class="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors duration-500" :size="20" />
                 <input 
                   v-model="email"
                   type="email" 
                   placeholder="profesor@ejemplo.edu"
-                  class="input-field w-full pl-14 h-16 text-[15px] font-bold placeholder:text-white/10 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
+                  class="input-field w-full pl-14 h-16 text-[15px] font-bold placeholder:text-white/40 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
                   required
                 />
               </div>
             </div>
 
             <div class="space-y-3">
-              <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-1">Clave de Acceso</label>
+              <label class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] ml-1">Clave de Acceso</label>
               <div class="relative group">
-                <Lock class="absolute left-5 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-primary transition-colors duration-500" :size="20" />
+                <Lock class="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors duration-500" :size="20" />
                 <input 
                   v-model="password"
                   type="password" 
                   placeholder="••••••••••••"
-                  class="input-field w-full pl-14 h-16 text-[15px] font-bold placeholder:text-white/10 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
+                  class="input-field w-full pl-14 h-16 text-[15px] font-bold placeholder:text-white/40 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
                   required
                 />
               </div>
@@ -225,7 +225,7 @@ const toggleMode = () => {
 
           <footer class="text-center animate-fade-in-up animation-delay-600">
             <p class="mb-4">
-              <span class="text-white/30 text-[11px] font-bold uppercase tracking-widest">{{ isSignup ? '¿Ya posees una suscripción?' : '¿Nuevo en el ecosistema?' }}</span>
+              <span class="text-white/60 text-[11px] font-bold uppercase tracking-widest">{{ isSignup ? '¿Ya posees una suscripción?' : '¿Nuevo en el ecosistema?' }}</span>
               <button @click="toggleMode" class="ml-2 text-primary font-black uppercase text-[11px] tracking-widest hover:text-white transition-colors">
                 {{ isSignup ? 'Sincronizar aquí' : 'Generar Acceso' }}
               </button>

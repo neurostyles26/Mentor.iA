@@ -37,7 +37,7 @@ const router = useRouter()
       </div>
       
       <div class="flex items-center gap-8">
-        <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors">Sincronizar Panel</button>
+        <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors">Sincronizar Panel</button>
         <button @click="router.push('/login?signup=true')" class="px-8 py-3 bg-white text-bg-deep rounded-xl font-black text-[10px] uppercase tracking-widest shadow-premium hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95">
           Crear Cuenta
         </button>
@@ -57,7 +57,7 @@ const router = useRouter()
           <span class="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent italic">se diseña hoy</span>
         </h1>
         
-        <p class="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto font-bold animate-fade-in-up animation-delay-300 leading-relaxed">
+        <p class="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto font-bold animate-fade-in-up animation-delay-300 leading-relaxed">
           MentorIA es la red neuronal de apoyo para docentes que transforma ideas en piezas pedagógicas de clase mundial.
         </p>
       </div>
@@ -81,7 +81,7 @@ const router = useRouter()
             <Zap class="text-primary w-8 h-8" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Generación Veloz</h3>
-          <p class="text-white/30 font-bold leading-relaxed lg:text-left">Crea lecciones, talleres y exámenes en segundos optimizados con Gemini 2.5.</p>
+          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Crea lecciones, talleres y exámenes en segundos optimizados con Gemini 2.5.</p>
         </div>
 
         <div class="feature-card animate-fade-in-up animation-delay-1100 group">
@@ -89,7 +89,7 @@ const router = useRouter()
             <ClipboardList class="text-secondary w-8 h-8" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Organización IA</h3>
-          <p class="text-white/30 font-bold leading-relaxed lg:text-left">Sincroniza tus ideas directamente en un ecosistema persistente y estructurado.</p>
+          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Sincroniza tus ideas directamente en un ecosistema persistente y estructurado.</p>
         </div>
 
         <div class="feature-card animate-fade-in-up animation-delay-1300 group">
@@ -97,7 +97,7 @@ const router = useRouter()
             <ShieldCheck class="text-accent w-8 h-8" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Sello Pedagógico</h3>
-          <p class="text-white/30 font-bold leading-relaxed lg:text-left">Alineado con los Derechos Básicos de Aprendizaje (DBA) de Colombia.</p>
+          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Alineado con los Derechos Básicos de Aprendizaje (DBA) de Colombia.</p>
         </div>
       </div>
     </main>
@@ -107,9 +107,9 @@ const router = useRouter()
       <div class="container mx-auto px-6 text-center space-y-8 leading-none">
         <div class="flex items-center justify-center gap-3 mb-4">
            <div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-           <p class="text-[9px] font-black text-white/20 uppercase tracking-[0.5em]">Ecosistema MentorIA 2026</p>
+           <p class="text-[9px] font-black text-white/50 uppercase tracking-[0.5em]">Ecosistema MentorIA 2026</p>
         </div>
-        <p class="text-white/10 font-black uppercase text-[10px] tracking-widest">Diseñado para docentes, impulsado por neuronas digitales</p>
+        <p class="text-white/40 font-black uppercase text-[10px] tracking-widest">Diseñado para docentes, impulsado por neuronas digitales</p>
       </div>
     </footer>
   </div>

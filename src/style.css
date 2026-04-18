@@ -8,7 +8,7 @@
   --color-bg-deep: #030712; /* Rich Black */
   --color-bg-card: #111827; /* Gray 900 */
   --color-text-main: #F9FAFB;
-  --color-text-muted: #9CA3AF;
+  --color-text-muted: #D1D5DB; /* Brighter than 9CA3AF for better visibility */
   
   --color-primary-glow: rgba(99, 102, 241, 0.4);
   --color-secondary-glow: rgba(139, 92, 246, 0.4);

@@ -107,13 +107,13 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
     <header class="py-8 lg:py-12 flex flex-col md:flex-row items-center justify-between gap-8">
       <div class="flex items-center gap-6 lg:gap-8 w-full md:w-auto">
         <button @click="router.push('/dashboard')" class="p-4 lg:p-5 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all active:scale-95 group shrink-0">
-          <ArrowLeft class="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
+          <ArrowLeft class="w-6 h-6 text-white/70 group-hover:text-primary transition-colors" />
         </button>
         <div>
           <h1 class="text-3xl lg:text-4xl font-black text-white tracking-tight leading-none mb-2">
             Arquitecto <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Gemini AI</span>
           </h1>
-          <p class="text-[9px] font-black text-white/20 uppercase tracking-[0.4em]">Soporte Pedagógico de Próxima Generación</p>
+          <p class="text-[9px] font-black text-white/50 uppercase tracking-[0.4em]">Soporte Pedagógico de Próxima Generación</p>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
       <div class="flex items-center gap-3 lg:gap-4 bg-white/2 p-2 rounded-[2rem] border border-white/5 w-full md:w-auto justify-center">
         <div v-for="s in [1,2,3]" :key="s" 
           :class="['px-6 py-2 rounded-xl flex items-center gap-2 transition-all duration-500', 
-          currentStep === s ? 'bg-primary text-white shadow-glow' : 'text-white/20']"
+          currentStep === s ? 'bg-primary text-white shadow-glow' : 'text-white/50']"
         >
           <span class="text-xs font-black">{{ s }}</span>
           <span v-if="currentStep === s" class="text-[10px] font-black uppercase tracking-widest hidden sm:block animate-fade-in">
@@ -142,16 +142,16 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
             <Cpu class="w-10 h-10 text-primary" />
           </div>
           <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Núcleo del Aprendizaje</h2>
-          <p class="text-white/30 font-black mb-12 uppercase text-[10px] tracking-[0.3em]">Configura las bases de la intervención</p>
+          <p class="text-white/60 font-black mb-12 uppercase text-[10px] tracking-[0.3em]">Configura las bases de la intervención</p>
           
           <div class="space-y-8 text-left">
             <div class="grid grid-cols-1 gap-6">
               <div class="space-y-3">
-                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Materia / Disciplina</label>
+                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Materia / Disciplina</label>
                 <input v-model="subject" type="text" placeholder="Ej: Pensamiento Crítico" class="input-field w-full text-lg" />
               </div>
               <div class="space-y-3">
-                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Nivel Educativo</label>
+                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Nivel Educativo</label>
                 <input v-model="grade" type="text" placeholder="Ej: Grado 11" class="input-field w-full text-lg" />
               </div>
             </div>
@@ -178,7 +178,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                 <p class="text-[9px] font-black text-emerald-400 uppercase tracking-widest animate-pulse">Online & Listo</p>
               </div>
             </div>
-            <button @click="currentStep = 1" class="text-[9px] font-black text-white/20 hover:text-white flex items-center gap-2 uppercase tracking-widest transition-colors">
+            <button @click="currentStep = 1" class="text-[9px] font-black text-white/50 hover:text-white flex items-center gap-2 uppercase tracking-widest transition-colors">
               <ChevronLeft class="w-4 h-4" /> Volver
             </button>
           </div>
@@ -187,10 +187,10 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
           <div ref="chatContainer" class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar scroll-smooth">
             <div v-if="courseStore.teacherChatHistory.length === 0" class="text-center py-16">
               <Sparkles class="w-12 h-12 text-primary/10 mx-auto mb-6" />
-              <p class="text-white/20 font-black uppercase tracking-[0.4em] text-[10px] mb-8">Empieza a describir tu idea...</p>
+              <p class="text-white/50 font-black uppercase tracking-[0.4em] text-[10px] mb-8">Empieza a describir tu idea...</p>
               <div class="flex flex-wrap justify-center gap-3">
-                <button @click="teacherMessage = 'Idea para una clase dinámica sobre ' + subject; sendToMentor()" class="px-5 py-2 bg-white/2 border border-white/5 rounded-full text-[9px] font-black text-white/30 uppercase tracking-widest hover:border-primary/40 hover:text-primary transition-all">Dinámica Grupal</button>
-                <button @click="teacherMessage = '¿Cómo evaluar competencias en ' + subject + '?'; sendToMentor()" class="px-5 py-2 bg-white/2 border border-white/5 rounded-full text-[9px] font-black text-white/30 uppercase tracking-widest hover:border-primary/40 hover:text-primary transition-all">Evaluación DBA</button>
+                <button @click="teacherMessage = 'Idea para una clase dinámica sobre ' + subject; sendToMentor()" class="px-5 py-2 bg-white/2 border border-white/5 rounded-full text-[9px] font-black text-white/60 uppercase tracking-widest hover:border-primary/40 hover:text-primary transition-all">Dinámica Grupal</button>
+                <button @click="teacherMessage = '¿Cómo evaluar competencias en ' + subject + '?'; sendToMentor()" class="px-5 py-2 bg-white/2 border border-white/5 rounded-full text-[9px] font-black text-white/60 uppercase tracking-widest hover:border-primary/40 hover:text-primary transition-all">Evaluación DBA</button>
               </div>
             </div>
 
@@ -256,11 +256,11 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
             </h4>
             <div class="space-y-4">
               <div class="flex justify-between items-center p-3.5 bg-white/2 rounded-xl border border-white/5">
-                <span class="text-[9px] font-black text-white/20 uppercase tracking-widest">Motor</span>
+                <span class="text-[9px] font-black text-white/50 uppercase tracking-widest">Motor</span>
                 <span class="text-[10px] font-black text-white/60 tracking-widest italic">Gemini 2.5</span>
               </div>
               <div class="flex justify-between items-center p-3.5 bg-white/2 rounded-xl border border-white/5">
-                <span class="text-[9px] font-black text-white/20 uppercase tracking-widest">Nivel</span>
+                <span class="text-[9px] font-black text-white/50 uppercase tracking-widest">Nivel</span>
                 <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Optimizado</span>
               </div>
             </div>
@@ -275,7 +275,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
             <p class="text-[9px] font-black text-primary uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
               <Sparkles class="w-4 h-4" /> Mentor Insight
             </p>
-            <p class="text-xs text-white/40 leading-relaxed font-bold italic group-hover:text-white/60 transition-colors">
+            <p class="text-xs text-white/70 leading-relaxed font-bold italic group-hover:text-white/90 transition-colors">
               "La ideación ha detectado patrones transdisciplinares. Procede a la fase de síntesis documental."
             </p>
           </div>
@@ -293,19 +293,19 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
              </div>
 
              <div class="space-y-3">
-              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Núcleo Temático</label>
+              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Núcleo Temático</label>
               <textarea v-model="topic" class="input-field w-full h-40 resize-none text-[13px]"></textarea>
              </div>
 
              <div class="space-y-4">
-              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Estructura Deseada</label>
+              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Estructura Deseada</label>
               <div class="grid grid-cols-1 gap-2">
                 <button v-for="t in types" :key="t.id" @click="type = t.id"
                   :class="['flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-300', 
                   type === t.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-white/5 hover:bg-white/5']"
                 >
-                  <component :is="t.icon" :class="['w-5 h-5', type === t.id ? 'text-primary' : 'text-white/20']" />
-                  <p :class="['font-black text-[10px] uppercase tracking-widest', type === t.id ? 'text-white' : 'text-white/30']">{{ t.name }}</p>
+                  <component :is="t.icon" :class="['w-5 h-5', type === t.id ? 'text-primary' : 'text-white/50']" />
+                  <p :class="['font-black text-[10px] uppercase tracking-widest', type === t.id ? 'text-white' : 'text-white/60']">{{ t.name }}</p>
                 </button>
               </div>
              </div>
@@ -325,7 +325,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
           <div v-if="courseStore.generatedContent" class="glass-panel min-h-[600px] flex flex-col overflow-hidden animate-slide-up border-primary/10">
              <div class="p-6 bg-white/2 border-b border-white/5 flex items-center justify-between">
                 <h3 class="text-sm font-black text-white uppercase tracking-widest italic outline-primary">Resultado Pedagógico</h3>
-                <button @click="copyToClipboard" class="text-[9px] font-black uppercase text-white/40 hover:text-primary flex items-center gap-2 transition-all p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10">
+                <button @click="copyToClipboard" class="text-[9px] font-black uppercase text-white/70 hover:text-primary flex items-center gap-2 transition-all p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10">
                    <Copy class="w-4 h-4" /> {{ copySuccess ? 'Copiado' : 'Copiar' }}
                 </button>
              </div>
@@ -337,14 +337,14 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
           <div v-else-if="courseStore.generationError" class="glass-panel bg-red-500/5 p-12 text-center border-red-500/20">
              <AlertCircle class="w-16 h-16 text-red-500 mx-auto mb-6 animate-pulse" />
              <h3 class="text-2xl font-black text-red-100 mb-4 uppercase tracking-tight">Anomalía de Generación</h3>
-             <p class="text-red-200/40 mb-8 font-bold text-sm leading-relaxed">{{ courseStore.generationError }}</p>
+             <p class="text-red-100/70 mb-8 font-bold text-sm leading-relaxed">{{ courseStore.generationError }}</p>
              <button @click="showDiagnosis = !showDiagnosis" class="text-[9px] font-black text-red-400 uppercase underline tracking-[0.3em]">Telemetría de Error</button>
              <pre v-if="showDiagnosis" class="mt-8 p-6 bg-black/60 text-red-400 text-left text-[10px] rounded-2xl border border-red-500/20 overflow-x-auto">{{ courseStore.lastDiagnosis }}</pre>
           </div>
 
           <div v-else class="h-full min-h-[500px] flex flex-col items-center justify-center glass-panel border-2 border-dashed border-white/5 text-center p-12 relative opacity-50">
              <BrainCircuit class="w-20 h-20 text-white/5 mb-8 animate-float" />
-             <p class="text-white/10 font-black uppercase tracking-[0.5em] text-[10px]">Arquitectura lista para sintetizar</p>
+             <p class="text-white/40 font-black uppercase tracking-[0.5em] text-[10px]">Arquitectura lista para sintetizar</p>
           </div>
         </main>
       </section>
