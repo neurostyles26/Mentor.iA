@@ -48,7 +48,7 @@ const router = useRouter()
     <main class="container mx-auto px-6 lg:px-12 pt-16 pb-32 text-center relative z-10">
       <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-primary/5 border border-primary/10 text-primary mb-10 animate-fade-in shadow-glow">
         <Sparkles class="w-4 h-4 animate-pulse" />
-        <span class="text-[9px] font-black uppercase tracking-[0.2em]">Soporte Gemini 2.5 Flash Activo</span>
+        <span class="text-[9px] font-black uppercase tracking-[0.2em]">Motor Neuronal Avanzado Activo</span>
       </div>
       
       <div class="max-w-5xl mx-auto space-y-8 mb-20">
@@ -81,7 +81,7 @@ const router = useRouter()
             <Zap class="text-primary w-8 h-8" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Generación Veloz</h3>
-          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Crea lecciones, talleres y exámenes en segundos optimizados con Gemini 2.5.</p>
+          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Crea lecciones, talleres y exámenes en segundos optimizados con IA Cuántica.</p>
         </div>
 
         <div class="feature-card animate-fade-in-up animation-delay-1100 group">

@@ -66,7 +66,7 @@ onMounted(() => {
     // Welcome message
     courseStore.teacherChatHistory.push({
       role: 'assistant',
-      content: '¡Hola! Soy tu **Mentor IA (Gemini 2.5 Flash)**. Estoy aquí para ayudarte a diseñar clases innovadoras, resolver dudas pedagógicas o darte ideas creativas para tu aula. ¿En qué puedo apoyarte hoy?',
+      content: '¡Hola! Soy tu **Mentor IA**. Estoy aquí para ayudarte a diseñar clases innovadoras, resolver dudas pedagógicas o darte ideas creativas para tu aula. ¿En qué puedo apoyarte hoy?',
       timestamp: new Date()
     })
   }
@@ -93,7 +93,7 @@ onMounted(() => {
               <h3 id="chat-title" class="text-2xl font-black tracking-tight text-white leading-tight">Mentor IA</h3>
               <div class="flex items-center gap-2">
                 <span class="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse"></span>
-                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">Gemini 2.5 Flash • Online</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">Motor Neuronal • Online</p>
               </div>
             </div>
           </div>
@@ -153,7 +153,7 @@ onMounted(() => {
               <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
               <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
             </div>
-            <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em] animate-pulse">Procesando con Gemini 2.5 Flash...</span>
+            <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em] animate-pulse">Procesando con IA Avanzada...</span>
           </div>
         </div>
       </div>

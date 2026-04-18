@@ -137,7 +137,7 @@ export const useCourseStore = defineStore('course', {
 
         if (error) {
           const errorMsg = await error.context?.json().then(j => j.error).catch(() => null)
-          throw new Error(errorMsg || error.message || 'Error de servidor Gemini')
+          throw new Error(errorMsg || error.message || 'Error de servidor IA')
         }
 
         this.generatedContent = data.text
@@ -150,7 +150,7 @@ export const useCourseStore = defineStore('course', {
               title: type === 'lesson' ? `Lección de ${topic}` : type === 'workshop' ? `Taller de ${topic}` : `Examen de ${topic}`,
               content: data.text,
               status: 'draft',
-              type: 'Gemini 3 Flash'
+              type: 'Motor Neuronal'
             })
             .select()
             .single()
@@ -174,15 +174,15 @@ export const useCourseStore = defineStore('course', {
           try {
             const errData = await error.context.json()
             if (errData.type === 'AUTH_ERROR' || errData.type === 'INVALID_API_KEY') {
-              userMessage = '⚠️ Configuración Incómoda: La API Key de Gemma 4 no es válida o falta en Supabase.'
+              userMessage = '⚠️ Configuración Incómoda: La API Key de la IA no es válida o falta en Supabase.'
             } else if (errData.type === 'MODEL_NOT_FOUND') {
-              userMessage = '⚠️ Desconexión de Modelo: Gemma 4 no respondió. Intentando con motor de respaldo...'
+              userMessage = '⚠️ Desconexión de Modelo: El motor neuronal no respondió. Intentando reconexión...'
             } else if (errData.details) {
               userMessage = errData.error + ' - ' + errData.details
             }
           } catch (e) { /* ignore */ }
         } else if (error.message.includes('CONFIG_ERROR')) {
-          userMessage = '⚠️ Falta la configuración de la IA. Por favor, asegúrate de tener la GEMINI_API_KEY configurada.'
+          userMessage = '⚠️ Falta la configuración de la IA. Por favor, asegúrate de tener la API_KEY configurada.'
         }
         
         this.generationError = userMessage

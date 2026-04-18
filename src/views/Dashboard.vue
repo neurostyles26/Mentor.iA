@@ -130,7 +130,7 @@ const getInitials = (name) => {
           <Plus class="w-10 h-10 text-white/50 group-hover:text-white" />
         </div>
         <h4 class="text-xl font-black text-white/20 group-hover:text-white mb-2 transition-colors relative z-10 uppercase tracking-tighter">Nueva Asignatura</h4>
-        <p class="text-[10px] text-white/40 uppercase tracking-widest font-black relative z-10">Impulsado por Gemini 2.5</p>
+        <p class="text-[10px] text-white/40 uppercase tracking-widest font-black relative z-10">Impulsado por IA Elite</p>
       </div>
     </div>
 

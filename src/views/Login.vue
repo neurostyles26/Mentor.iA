@@ -88,7 +88,7 @@ const toggleMode = () => {
         <div class="space-y-4">
           <div class="inline-flex items-center gap-3 px-4 py-2 bg-primary/5 border border-primary/10 rounded-full">
             <Sparkles class="w-4 h-4 text-primary animate-pulse" />
-            <span class="text-[10px] font-black text-primary uppercase tracking-[0.3em] leading-none">Gemini AI Support Active</span>
+            <span class="text-[10px] font-black text-primary uppercase tracking-[0.3em] leading-none">Motor Neuronal Activo</span>
           </div>
           <h1 class="text-6xl font-black text-white leading-[0.9] tracking-tighter">
             Trascendiendo la <br />

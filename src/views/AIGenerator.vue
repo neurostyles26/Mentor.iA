@@ -111,7 +111,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
         </button>
         <div>
           <h1 class="text-3xl lg:text-4xl font-black text-white tracking-tight leading-none mb-2">
-            Arquitecto <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Gemini AI</span>
+            Arquitecto <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Inteligente</span>
           </h1>
           <p class="text-[9px] font-black text-white/50 uppercase tracking-[0.4em]">Soporte Pedagógico de Próxima Generación</p>
         </div>
@@ -257,7 +257,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
             <div class="space-y-4">
               <div class="flex justify-between items-center p-3.5 bg-white/2 rounded-xl border border-white/5">
                 <span class="text-[9px] font-black text-white/50 uppercase tracking-widest">Motor</span>
-                <span class="text-[10px] font-black text-white/60 tracking-widest italic">Gemini 2.5</span>
+                <span class="text-[10px] font-black text-white/60 tracking-widest italic">Motor v2.5</span>
               </div>
               <div class="flex justify-between items-center p-3.5 bg-white/2 rounded-xl border border-white/5">
                 <span class="text-[9px] font-black text-white/50 uppercase tracking-widest">Nivel</span>
