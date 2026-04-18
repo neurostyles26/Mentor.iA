@@ -1,94 +1,157 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { Sparkles, ArrowRight, BrainCircuit, ClipboardList, Zap } from 'lucide-vue-next'
+import { 
+  Sparkles, 
+  ArrowRight, 
+  BrainCircuit, 
+  ClipboardList, 
+  Zap,
+  Globe,
+  Rocket,
+  ShieldCheck,
+  ChevronRight
+} from 'lucide-vue-next'
 
 const router = useRouter()
 </script>
 
 <template>
-  <div class="min-h-screen bg-bg-deep selection:bg-primary/30">
+  <div class="min-h-screen bg-bg-deep selection:bg-primary/30 overflow-x-hidden font-sans">
+    <!-- Animated background layers -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
+      <div class="absolute bottom-[10%] right-[10%] w-[30%] h-[30%] bg-secondary/10 rounded-full blur-[100px] animate-pulse" style="animation-delay: 3s"></div>
+      <div class="absolute inset-0 bg-grid-white/[0.01] bg-[size:60px_60px]"></div>
+    </div>
+
     <!-- Nav -->
-    <nav class="container mx-auto px-6 py-8 flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-          <BrainCircuit class="text-white" :size="24" />
+    <nav class="container mx-auto px-6 lg:px-12 py-10 flex justify-between items-center relative z-20 animate-fade-in-down">
+      <div class="flex items-center gap-4 group cursor-pointer" @click="router.push('/')">
+        <div class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center border border-primary/20 shadow-glow transform group-hover:rotate-12 transition-all duration-500">
+          <BrainCircuit class="text-primary w-7 h-7" />
         </div>
-        <span class="text-2xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">MentorIA</span>
+        <div>
+          <span class="text-2xl font-black text-white tracking-tighter uppercase leading-none">MentorIA</span>
+          <p class="text-[8px] font-black text-primary uppercase tracking-[0.4em] mt-1">Intelligence Suite v2.5</p>
+        </div>
       </div>
       
-      <div class="flex gap-4">
-        <button @click="router.push('/auth')" class="text-text-muted hover:text-white transition-colors">Entrar</button>
-        <button @click="router.push('/auth?signup=true')" class="btn-primary">Crear cuenta</button>
+      <div class="flex items-center gap-8">
+        <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors">Sincronizar Panel</button>
+        <button @click="router.push('/login?signup=true')" class="px-8 py-3 bg-white text-bg-deep rounded-xl font-black text-[10px] uppercase tracking-widest shadow-premium hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95">
+          Crear Cuenta
+        </button>
       </div>
     </nav>
 
     <!-- Hero -->
-    <main class="container mx-auto px-6 pt-20 pb-32 text-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary mb-8 animate-fade-in">
-        <Sparkles :size="14" />
-        <span class="text-sm font-medium">Gemini AI Potenciado</span>
+    <main class="container mx-auto px-6 lg:px-12 pt-16 pb-32 text-center relative z-10">
+      <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-primary/5 border border-primary/10 text-primary mb-10 animate-fade-in shadow-glow">
+        <Sparkles class="w-4 h-4 animate-pulse" />
+        <span class="text-[9px] font-black uppercase tracking-[0.2em]">Soporte Gemini 2.5 Flash Activo</span>
       </div>
       
-      <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
-        Tu asistente inteligente para <br />
-        <span class="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent italic">una enseñanza sin límites</span>
-      </h1>
+      <div class="max-w-5xl mx-auto space-y-8 mb-20">
+        <h1 class="text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] animate-fade-in-up">
+          El Aula del Futuro <br />
+          <span class="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent italic">se diseña hoy</span>
+        </h1>
+        
+        <p class="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto font-bold animate-fade-in-up animation-delay-300 leading-relaxed">
+          MentorIA es la red neuronal de apoyo para docentes que transforma ideas en piezas pedagógicas de clase mundial.
+        </p>
+      </div>
       
-      <p class="text-xl text-text-muted max-w-2xl mx-auto mb-12">
-        MentorIA ayuda a docentes colombianos a generar contenido educativo de alta calidad en segundos. 
-        Chatea con la IA, guarda fragmentos y organiza tu material.
-      </p>
-      
-      <div class="flex flex-col sm:flex-row justify-center gap-4 mb-24">
-        <button @click="router.push('/auth')" class="btn-primary px-8 py-4 text-lg">
-          Empezar ahora <ArrowRight :size="20" />
+      <div class="flex flex-col sm:flex-row justify-center gap-6 mb-32 animate-fade-in-up animation-delay-600">
+        <button @click="router.push('/login')" class="px-12 py-6 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-2 transition-all active:scale-95 group relative overflow-hidden">
+          <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity"></div>
+          <span class="relative z-10 flex items-center justify-center gap-4">
+            Empezar Experiencia <ArrowRight class="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+          </span>
         </button>
-        <button class="btn-outline px-8 py-4 text-lg">
-          Ver demostración
+        <button class="px-12 py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all hover:-translate-y-2 active:scale-95">
+          Ver Demostración
         </button>
       </div>
 
-      <!-- Features -->
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="glass-panel p-8 text-left hover:border-primary/30 transition-all duration-300 group">
-          <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-            <Zap class="text-primary" />
+      <!-- Features Grid with animations -->
+      <div class="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+        <div class="feature-card animate-fade-in-up animation-delay-900 group">
+          <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 mx-auto lg:mx-0 group-hover:scale-110 group-hover:rotate-6 transition-all border border-primary/20 shadow-glow">
+            <Zap class="text-primary w-8 h-8" />
           </div>
-          <h3 class="text-xl font-bold text-white mb-2">Generación Veloz</h3>
-          <p class="text-text-muted leading-relaxed">Exámenes, planes de clase y actividades listos en segundos con la potencia de Gemini AI.</p>
+          <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Generación Veloz</h3>
+          <p class="text-white/30 font-bold leading-relaxed lg:text-left">Crea lecciones, talleres y exámenes en segundos optimizados con Gemini 2.5.</p>
         </div>
 
-        <div class="glass-panel p-8 text-left hover:border-secondary/30 transition-all duration-300 group">
-          <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-            <ClipboardList class="text-secondary" />
+        <div class="feature-card animate-fade-in-up animation-delay-1100 group">
+          <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-8 mx-auto lg:mx-0 group-hover:scale-110 group-hover:-rotate-6 transition-all border border-secondary/20 shadow-glow">
+            <ClipboardList class="text-secondary w-8 h-8" />
           </div>
-          <h3 class="text-xl font-bold text-white mb-2">Portapapeles Inteligente</h3>
-          <p class="text-text-muted leading-relaxed">Guarda las mejores respuestas directamente en tu panel personal para usarlas luego.</p>
+          <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Organización IA</h3>
+          <p class="text-white/30 font-bold leading-relaxed lg:text-left">Sincroniza tus ideas directamente en un ecosistema persistente y estructurado.</p>
         </div>
 
-        <div class="glass-panel p-8 text-left hover:border-accent/30 transition-all duration-300 group">
-          <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-            <BrainCircuit class="text-accent" />
+        <div class="feature-card animate-fade-in-up animation-delay-1300 group">
+          <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-8 mx-auto lg:mx-0 group-hover:scale-110 group-hover:rotate-12 transition-all border border-accent/20 shadow-glow">
+            <ShieldCheck class="text-accent w-8 h-8" />
           </div>
-          <h3 class="text-xl font-bold text-white mb-2">Contexto Local</h3>
-          <p class="text-text-muted leading-relaxed">Entrenado para alinearse con los Derechos Básicos de Aprendizaje (DBA) de Colombia.</p>
+          <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Sello Pedagógico</h3>
+          <p class="text-white/30 font-bold leading-relaxed lg:text-left">Alineado con los Derechos Básicos de Aprendizaje (DBA) de Colombia.</p>
         </div>
       </div>
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 py-12 text-center text-text-muted text-sm">
-      <p>© 2026 MentorIA. Hecho para docentes, potenciado por IA.</p>
+    <footer class="border-t border-white/5 py-20 bg-black/20 relative z-20">
+      <div class="container mx-auto px-6 text-center space-y-8 leading-none">
+        <div class="flex items-center justify-center gap-3 mb-4">
+           <div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+           <p class="text-[9px] font-black text-white/20 uppercase tracking-[0.5em]">Ecosistema MentorIA 2026</p>
+        </div>
+        <p class="text-white/10 font-black uppercase text-[10px] tracking-widest">Diseñado para docentes, impulsado por neuronas digitales</p>
+      </div>
     </footer>
   </div>
 </template>
 
 <style scoped>
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-600 { animation-delay: 0.6s; }
+.animation-delay-900 { animation-delay: 0.9s; }
+.animation-delay-1100 { animation-delay: 1.1s; }
+.animation-delay-1300 { animation-delay: 1.3s; }
+
+.animate-fade-in { animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-fade-in-up { 
+  opacity: 0;
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
 }
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out forwards;
+.animate-fade-in-down { 
+  opacity: 0;
+  animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); filter: blur(10px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); filter: blur(10px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.feature-card {
+  @apply glass-panel p-10 bg-white/2 border-white/5 hover:border-primary/40 transition-all duration-700;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 40px -10px var(--color-primary-glow);
 }
 </style>
