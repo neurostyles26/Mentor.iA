@@ -26,7 +26,7 @@ const router = useRouter()
     <main class="container mx-auto px-6 pt-20 pb-32 text-center">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary mb-8 animate-fade-in">
         <Sparkles :size="14" />
-        <span class="text-sm font-medium">Gemma 4 Potenciado</span>
+        <span class="text-sm font-medium">Gemini AI Potenciado</span>
       </div>
       
       <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
@@ -55,7 +55,7 @@ const router = useRouter()
             <Zap class="text-primary" />
           </div>
           <h3 class="text-xl font-bold text-white mb-2">Generación Veloz</h3>
-          <p class="text-text-muted leading-relaxed">Exámenes, planes de clase y actividades listos en segundos con la potencia de Gemma 4.</p>
+          <p class="text-text-muted leading-relaxed">Exámenes, planes de clase y actividades listos en segundos con la potencia de Gemini AI.</p>
         </div>
 
         <div class="glass-panel p-8 text-left hover:border-secondary/30 transition-all duration-300 group">

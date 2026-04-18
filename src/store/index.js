@@ -226,7 +226,7 @@ export const useCourseStore = defineStore('course', {
         if (error) throw error
         this.tutorResponse = data.text
       } catch (error) {
-        console.error('Error asking tutor (Gemma 4):', error)
+        console.error('Error asking tutor:', error)
         this.tutorResponse = 'Lo siento, la IA tuvo un problema al procesar tu duda. ¿Podrías intentar de nuevo?'
       } finally {
         this.isAskingTutor = false

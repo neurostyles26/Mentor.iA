@@ -10,21 +10,18 @@ import {
   BrainCircuit, 
   Loader2, 
   AlertCircle,
-  CheckCircle2,
   Copy,
   ChevronRight,
-  Cpu,
-  Zap,
   BookOpen,
   ClipboardList,
   GraduationCap,
-  History,
-  Terminal,
   Send,
   User,
   Bot,
   Wand2,
-  ChevronLeft
+  ChevronLeft,
+  Cpu,
+  Zap
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -56,11 +53,10 @@ onMounted(() => {
 // Types of content to generate
 const types = [
   { id: 'lesson', name: 'Lección', desc: 'Pensum y Teoría', icon: BookOpen },
-  { id: 'workshop', name: 'Taller', desc: 'Ejercicios Prácticos', icon: ClipboardList },
-  { id: 'exam', name: 'Examen', desc: 'Evaluación y Respuestas', icon: GraduationCap }
+  { id: 'workshop', name: 'Taller', desc: 'Práctica Intensiva', icon: ClipboardList },
+  { id: 'exam', name: 'Examen', desc: 'Evaluación Técnica', icon: GraduationCap }
 ]
 
-// Handle chat with mentor
 const sendToMentor = async () => {
   if (!teacherMessage.value.trim() || courseStore.isAskingTutor) return
   const msg = teacherMessage.value
@@ -77,9 +73,8 @@ const scrollToBottom = () => {
   })
 }
 
-// "Magic" feature: Extract topic from chat
 const useIdeaFromChat = (content) => {
-  topic.value = content.substring(0, 500) // Take first 500 chars as a base
+  topic.value = content.substring(0, 1000)
   currentStep.value = 3
 }
 
@@ -108,240 +103,248 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto pb-20 px-4 lg:px-8">
-    <header class="py-12 flex items-center justify-between">
-      <div class="flex items-center gap-8">
-        <button @click="router.push('/dashboard')" class="p-5 bg-white/5 rounded-3xl border border-white/5 hover:bg-white/10 transition-all active:scale-95 group">
-          <ArrowLeft class="w-7 h-7 text-white/40 group-hover:text-primary transition-colors" />
+  <div class="max-w-7xl mx-auto pb-20">
+    <header class="py-8 lg:py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="flex items-center gap-6 lg:gap-8 w-full md:w-auto">
+        <button @click="router.push('/dashboard')" class="p-4 lg:p-5 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all active:scale-95 group shrink-0">
+          <ArrowLeft class="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
         </button>
         <div>
-          <h1 class="text-4xl font-black text-white tracking-tight mb-2">Mentor IA <span class="text-primary">Gemma 4</span></h1>
-          <p class="text-[11px] font-black text-white/20 uppercase tracking-[0.4em]">Arquitectura Pedagógica de Vanguardia</p>
+          <h1 class="text-3xl lg:text-4xl font-black text-white tracking-tight leading-none mb-2">
+            Arquitecto <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Gemini AI</span>
+          </h1>
+          <p class="text-[9px] font-black text-white/20 uppercase tracking-[0.4em]">Soporte Pedagógico de Próxima Generación</p>
         </div>
       </div>
 
-      <!-- Step Indicator Premium -->
-      <div class="hidden md:flex items-center gap-6 bg-white/5 p-3 rounded-[2.5rem] border border-white/5 shadow-inner">
+      <!-- Step Indicator -->
+      <div class="flex items-center gap-3 lg:gap-4 bg-white/2 p-2 rounded-[2rem] border border-white/5 w-full md:w-auto justify-center">
         <div v-for="s in [1,2,3]" :key="s" 
-          :class="['w-12 h-12 rounded-2xl flex items-center justify-center font-black transition-all duration-500', 
-          currentStep === s ? 'bg-primary text-white scale-110 shadow-glow' : 'bg-white/5 text-white/10']"
+          :class="['px-6 py-2 rounded-xl flex items-center gap-2 transition-all duration-500', 
+          currentStep === s ? 'bg-primary text-white shadow-glow' : 'text-white/20']"
         >
-          {{ s }}
+          <span class="text-xs font-black">{{ s }}</span>
+          <span v-if="currentStep === s" class="text-[10px] font-black uppercase tracking-widest hidden sm:block animate-fade-in">
+            {{ s === 1 ? 'Contexto' : s === 2 ? 'Ideación' : 'Generación' }}
+          </span>
         </div>
       </div>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       
       <!-- STEP 1: CONTEXTO -->
-      <section v-if="currentStep === 1" class="lg:col-span-12 max-w-3xl mx-auto w-full animate-slide-up">
-        <div class="glass-panel p-16 text-center relative overflow-hidden">
-          <div class="absolute -top-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+      <section v-if="currentStep === 1" class="lg:col-span-12 max-w-2xl mx-auto w-full animate-slide-up">
+        <div class="glass-panel p-8 lg:p-14 text-center relative overflow-hidden group">
+          <div class="absolute -top-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl animate-pulse group-hover:scale-125 transition-transform"></div>
           
-          <div class="w-24 h-24 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-10 border border-primary/20 shadow-glow">
-            <BookOpen class="w-10 h-10 text-primary" />
+          <div class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-primary/20 shadow-glow group-hover:rotate-6 transition-transform">
+            <Cpu class="w-10 h-10 text-primary" />
           </div>
-          <h2 class="text-4xl font-black text-white mb-6 tracking-tight">¿Qué vamos a transformar hoy?</h2>
-          <p class="text-white/30 font-bold mb-14 uppercase text-[10px] tracking-[0.3em]">Define el contexto pedagógico elemental</p>
+          <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Núcleo del Aprendizaje</h2>
+          <p class="text-white/30 font-black mb-12 uppercase text-[10px] tracking-[0.3em]">Configura las bases de la intervención</p>
           
-          <div class="space-y-10 text-left">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div class="space-y-4">
-                <label class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Materia / Asignatura</label>
-                <input v-model="subject" type="text" placeholder="Ej: Neurociencia, Ética..." class="input-field w-full text-xl" />
+          <div class="space-y-8 text-left">
+            <div class="grid grid-cols-1 gap-6">
+              <div class="space-y-3">
+                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Materia / Disciplina</label>
+                <input v-model="subject" type="text" placeholder="Ej: Pensamiento Crítico" class="input-field w-full text-lg" />
               </div>
-              <div class="space-y-4">
-                <label class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Grado o Nivel</label>
-                <input v-model="grade" type="text" placeholder="Ej: Postgrado, 11º..." class="input-field w-full text-xl" />
+              <div class="space-y-3">
+                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Nivel Educativo</label>
+                <input v-model="grade" type="text" placeholder="Ej: Grado 11" class="input-field w-full text-lg" />
               </div>
             </div>
             
-            <button @click="currentStep = 2" :disabled="!isContextValid" class="w-full py-7 bg-primary text-white rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-xs hover:bg-secondary transition-all active:scale-95 shadow-glow disabled:opacity-20 flex items-center justify-center gap-4 group">
-              Iniciar Fase de Ideación
-              <ChevronRight class="w-6 h-6 transition-transform group-hover:translate-x-2" />
+            <button @click="currentStep = 2" :disabled="!isContextValid" class="btn-primary w-full py-6 disabled:opacity-20 uppercase tracking-[0.2em] text-xs">
+              Siguiente Fase: Ideación
+              <ChevronRight class="w-5 h-5 ml-2" />
             </button>
           </div>
         </div>
       </section>
 
       <!-- STEP 2: BRAINSTORMING (CHAT) -->
-      <section v-if="currentStep === 2" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-10 animate-slide-up">
+      <section v-if="currentStep === 2" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-slide-up">
         <!-- Chat Side -->
-        <div class="lg:col-span-8 flex flex-col h-[750px] glass-panel overflow-hidden">
-          <div class="p-8 bg-white/5 border-b border-white/5 flex items-center justify-between">
-            <div class="flex items-center gap-6">
-              <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center shadow-glow border border-primary/20">
-                <Bot class="w-7 h-7 text-primary" />
+        <div class="lg:col-span-8 flex flex-col h-[700px] glass-panel overflow-hidden border-primary/10">
+          <div class="p-6 bg-white/2 border-b border-white/5 flex items-center justify-between">
+            <div class="flex items-center gap-5">
+              <div class="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center border border-primary/30">
+                <BrainCircuit class="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 class="text-xl font-black text-white tracking-tight">Ideación con Gemma 4</h3>
-                <p class="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Define el núcleo de tu lección</p>
+                <h3 class="text-sm font-black text-white uppercase tracking-widest">Cocreación IA</h3>
+                <p class="text-[9px] font-black text-emerald-400 uppercase tracking-widest animate-pulse">Online & Listo</p>
               </div>
             </div>
-            <button @click="currentStep = 1" class="text-[10px] font-black text-white/20 hover:text-white flex items-center gap-2 uppercase tracking-widest transition-colors">
-              <ChevronLeft class="w-5 h-5" /> Volver al contexto
+            <button @click="currentStep = 1" class="text-[9px] font-black text-white/20 hover:text-white flex items-center gap-2 uppercase tracking-widest transition-colors">
+              <ChevronLeft class="w-4 h-4" /> Volver
             </button>
           </div>
 
-          <!-- Messages Premium -->
-          <div ref="chatContainer" class="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar scroll-smooth">
-            <div v-if="courseStore.teacherChatHistory.length === 0" class="text-center py-20 animate-fade-in">
-              <Sparkles class="w-16 h-16 text-primary/20 mx-auto mb-8 animate-pulse" />
-              <p class="text-white/40 font-black uppercase tracking-[0.3em] text-xs mb-8">"Describe tu visión y la haré pedágogicamente brillante"</p>
-              <div class="flex flex-wrap justify-center gap-4">
-                <button @click="teacherMessage = 'Necesito un enfoque lúdico para este tema'; sendToMentor()" class="px-6 py-3 bg-white/5 border border-white/5 rounded-full text-[10px] font-black text-white/40 uppercase tracking-widest hover:bg-primary/10 hover:text-primary transition-all">Enfoque Lúdico</button>
-                <button @click="teacherMessage = '¿Cómo puedo aplicar los DBA en esta clase?'; sendToMentor()" class="px-6 py-3 bg-white/5 border border-white/5 rounded-full text-[10px] font-black text-white/40 uppercase tracking-widest hover:bg-primary/10 hover:text-primary transition-all">Alinear con DBA</button>
+          <!-- Messages -->
+          <div ref="chatContainer" class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar scroll-smooth">
+            <div v-if="courseStore.teacherChatHistory.length === 0" class="text-center py-16">
+              <Sparkles class="w-12 h-12 text-primary/10 mx-auto mb-6" />
+              <p class="text-white/20 font-black uppercase tracking-[0.4em] text-[10px] mb-8">Empieza a describir tu idea...</p>
+              <div class="flex flex-wrap justify-center gap-3">
+                <button @click="teacherMessage = 'Idea para una clase dinámica sobre ' + subject; sendToMentor()" class="px-5 py-2 bg-white/2 border border-white/5 rounded-full text-[9px] font-black text-white/30 uppercase tracking-widest hover:border-primary/40 hover:text-primary transition-all">Dinámica Grupal</button>
+                <button @click="teacherMessage = '¿Cómo evaluar competencias en ' + subject + '?'; sendToMentor()" class="px-5 py-2 bg-white/2 border border-white/5 rounded-full text-[9px] font-black text-white/30 uppercase tracking-widest hover:border-primary/40 hover:text-primary transition-all">Evaluación DBA</button>
               </div>
             </div>
 
             <div v-for="(msg, i) in courseStore.teacherChatHistory" :key="i" 
-              :class="['flex gap-6 max-w-[85%]', msg.role === 'user' ? 'ml-auto flex-row-reverse' : '']"
+              :class="['flex gap-4 max-w-[90%]', msg.role === 'user' ? 'ml-auto flex-row-reverse' : '']"
             >
-              <div :class="['w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-white/5', msg.role === 'user' ? 'bg-primary text-white shadow-glow' : 'bg-white/5 text-white/40']">
+              <div :class="['w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border border-white/10 transition-all', msg.role === 'user' ? 'bg-primary text-white shadow-glow rotate-3' : 'bg-white/5 text-primary']">
                 <User v-if="msg.role === 'user'" class="w-5 h-5" />
-                <Bot v-else class="w-5 h-5" />
+                <Bot v-else class="w-5 h-5 shadow-glow" />
               </div>
-              <div class="space-y-4">
-                <div :class="['p-6 rounded-[2rem] text-sm leading-relaxed shadow-lg font-medium', msg.role === 'user' ? 'bg-gradient-to-br from-primary to-secondary text-white rounded-br-none' : 'bg-white/5 text-gray-300 rounded-bl-none border border-white/5']">
+              <div class="space-y-3" :class="msg.role === 'user' ? 'text-right' : ''">
+                <div :class="['p-5 rounded-2xl text-[13px] leading-relaxed shadow-lg font-medium whitespace-pre-wrap transition-all', 
+                  msg.role === 'user' ? 'bg-gradient-to-br from-primary to-secondary text-white rounded-tr-none' : 'bg-white/5 text-text-main rounded-tl-none border border-white/10']">
                   {{ msg.content }}
                 </div>
-                <!-- Magic Button for Bot messages -->
-                <button v-if="msg.role === 'assistant'" @click="useIdeaFromChat(msg.content)" class="flex items-center gap-3 px-5 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black text-white/30 uppercase tracking-[0.2em] hover:text-primary hover:border-primary transition-all hover:bg-white/10">
-                  <Wand2 class="w-4 h-4" /> Usar esta propuesta
+                <!-- Magic Button -->
+                <button 
+                  v-if="msg.role === 'assistant'" 
+                  @click="useIdeaFromChat(msg.content)" 
+                  class="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[9px] font-black text-emerald-400 uppercase tracking-widest hover:bg-emerald-500/20 transition-all active:scale-95"
+                >
+                  <Wand2 class="w-3.5 h-3.5" /> Trascender a Documento
                 </button>
               </div>
             </div>
             
-            <div v-if="courseStore.isAskingTutor" class="flex gap-6 animate-pulse">
-              <div class="w-10 h-10 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center">
-                <Loader2 class="w-5 h-5 text-primary animate-spin" />
+            <div v-if="courseStore.isAskingTutor" class="flex gap-4">
+              <div class="w-9 h-9 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center">
+                <Loader2 class="w-4 h-4 text-primary animate-spin" />
               </div>
-              <div class="p-6 bg-white/5 border border-white/5 rounded-[2rem] flex gap-2">
-                <span class="w-2 h-2 bg-primary rounded-full animate-bounce"></span>
-                <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-                <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+              <div class="p-5 bg-white/5 border border-white/10 rounded-2xl flex gap-1.5 items-center">
+                <span class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></span>
+                <span class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                <span class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
               </div>
             </div>
           </div>
 
-          <!-- Input Premium -->
-          <div class="p-8 bg-white/5 border-t border-white/5">
-            <div class="relative">
+          <!-- Input -->
+          <div class="p-6 bg-white/2 border-t border-white/5">
+            <div class="relative group">
+              <div class="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-focus-within:opacity-20 transition-opacity"></div>
               <input 
                 v-model="teacherMessage" 
                 @keyup.enter="sendToMentor"
                 type="text" 
-                placeholder="Solicita sugerencias o describe tu clase..." 
-                class="input-field w-full pr-20 py-6"
+                placeholder="Prescribe tu visión pedagógica..." 
+                class="input-field w-full pr-16 py-5 relative z-10"
               />
-              <button @click="sendToMentor" class="absolute right-3 top-3 p-4 bg-primary text-white rounded-2xl hover:bg-secondary transition-all shadow-glow active:scale-95">
-                <Send class="w-6 h-6" />
+              <button @click="sendToMentor" class="absolute right-2 top-2 p-3 bg-primary text-white rounded-xl hover:bg-secondary transition-all shadow-glow active:scale-90 z-20">
+                <Send class="w-5 h-5" />
               </button>
             </div>
           </div>
         </div>
 
         <!-- Right Side: Mini Summary -->
-        <div class="lg:col-span-4 space-y-8">
-          <div class="glass-panel p-10 relative overflow-hidden group">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
-            <h4 class="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-10">Estado Cuántico</h4>
-            <div class="space-y-6">
-              <div class="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/10">
-                <span class="text-[10px] font-black text-white/30 uppercase tracking-widest">NÚCLEO IA</span>
-                <span class="text-[11px] font-black flex items-center gap-2 text-primary">
-                  <Zap class="w-4 h-4" /> GEMMA 4 31B
-                </span>
+        <div class="lg:col-span-4 space-y-6">
+          <div class="glass-panel p-8 relative overflow-hidden group border-white/10">
+            <div class="absolute -top-10 -right-10 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
+            <h4 class="text-[9px] font-black uppercase tracking-[0.4em] text-primary mb-8 flex items-center gap-2">
+              <Zap class="w-4 h-4" /> Telemetría IA
+            </h4>
+            <div class="space-y-4">
+              <div class="flex justify-between items-center p-3.5 bg-white/2 rounded-xl border border-white/5">
+                <span class="text-[9px] font-black text-white/20 uppercase tracking-widest">Motor</span>
+                <span class="text-[10px] font-black text-white/60 tracking-widest italic">Gemini 2.5</span>
               </div>
-              <div class="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/10">
-                <span class="text-[10px] font-black text-white/30 uppercase tracking-widest">LATENCIA</span>
-                <span class="text-[11px] font-black text-emerald-400 uppercase tracking-widest">ULTRA FAST</span>
+              <div class="flex justify-between items-center p-3.5 bg-white/2 rounded-xl border border-white/5">
+                <span class="text-[9px] font-black text-white/20 uppercase tracking-widest">Nivel</span>
+                <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Optimizado</span>
               </div>
             </div>
-            <hr class="my-10 border-white/5" />
-            <button @click="currentStep = 3" class="w-full py-5 bg-white text-dark rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-[10px] hover:bg-primary hover:text-white transition-all shadow-premium group">
+            <hr class="my-8 border-white/5" />
+            <button @click="currentStep = 3" class="w-full py-5 bg-white text-bg-deep rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-primary hover:text-white transition-all shadow-premium group">
               Confirmar Diseño
-              <ChevronRight class="w-4 h-4 inline-block group-hover:translate-x-1 transition-transform" />
+              <ChevronRight class="w-4 h-4 inline-block group-hover:translate-x-1 transition-transform ml-1" />
             </button>
           </div>
           
-          <div class="p-10 bg-primary/5 rounded-4xl border border-primary/10 relative">
-            <p class="text-[11px] font-black text-primary uppercase tracking-[0.4em] mb-6 flex items-center gap-3">
-              <Sparkles class="w-5 h-5" /> Mentor Insigth
+          <div class="p-8 bg-primary/5 rounded-[2rem] border border-primary/10 relative group border-dashed">
+            <p class="text-[9px] font-black text-primary uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
+              <Sparkles class="w-4 h-4" /> Mentor Insight
             </p>
-            <p class="text-sm text-gray-400 leading-relaxed font-bold italic">"Estamos listos. Gemma 4 ha detectado patrones creativos. Procede a generar el documento final para tu aula."</p>
+            <p class="text-xs text-white/40 leading-relaxed font-bold italic group-hover:text-white/60 transition-colors">
+              "La ideación ha detectado patrones transdisciplinares. Procede a la fase de síntesis documental."
+            </p>
           </div>
         </div>
       </section>
 
       <!-- STEP 3: GENERATE & RESULT -->
-      <section v-if="currentStep === 3" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-10 animate-slide-up">
+      <section v-if="currentStep === 3" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-slide-up">
         <!-- Configuration Column -->
-        <aside class="lg:col-span-4 space-y-8">
-          <div class="glass-panel p-10 space-y-10">
-             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.4em]">Arquitectura Final</h3>
-                <button @click="currentStep = 2" class="text-[10px] font-black text-primary uppercase underline tracking-widest">Editar Ideación</button>
+        <aside class="lg:col-span-4 space-y-6">
+          <div class="glass-panel p-8 space-y-8">
+             <div class="flex items-center justify-between mb-2">
+                <h3 class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Síntesis Final</h3>
+                <button @click="currentStep = 2" class="text-[9px] font-black text-primary uppercase underline tracking-widest">Ajustar</button>
+             </div>
+
+             <div class="space-y-3">
+              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Núcleo Temático</label>
+              <textarea v-model="topic" class="input-field w-full h-40 resize-none text-[13px]"></textarea>
              </div>
 
              <div class="space-y-4">
-              <label class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Núcleo Temático</label>
-              <textarea v-model="topic" class="input-field w-full h-44 resize-none"></textarea>
-             </div>
-
-             <div class="space-y-6">
-              <label class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">Estructura Deseada</label>
-              <div class="grid grid-cols-1 gap-3">
+              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 ml-1">Estructura Deseada</label>
+              <div class="grid grid-cols-1 gap-2">
                 <button v-for="t in types" :key="t.id" @click="type = t.id"
-                  :class="['flex items-center gap-5 p-5 rounded-[2rem] border-2 transition-all text-left duration-500', 
-                  type === t.id ? 'border-primary bg-primary/10 shadow-glow' : 'border-white/5 hover:border-white/10 hover:bg-white/5']"
+                  :class="['flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-300', 
+                  type === t.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-white/5 hover:bg-white/5']"
                 >
-                  <component :is="t.icon" :class="['w-6 h-6', type === t.id ? 'text-primary' : 'text-white/20']" />
-                  <div>
-                    <p :class="['font-black text-xs uppercase tracking-widest', type === t.id ? 'text-white' : 'text-white/30']">{{ t.name }}</p>
-                  </div>
+                  <component :is="t.icon" :class="['w-5 h-5', type === t.id ? 'text-primary' : 'text-white/20']" />
+                  <p :class="['font-black text-[10px] uppercase tracking-widest', type === t.id ? 'text-white' : 'text-white/30']">{{ t.name }}</p>
                 </button>
               </div>
              </div>
 
              <button @click="handleGenerate" :disabled="courseStore.isGenerating"
-               class="w-full py-6 bg-white text-dark rounded-[2.5rem] font-black uppercase tracking-[0.4em] text-xs hover:bg-primary hover:text-white transition-all shadow-glow flex items-center justify-center gap-4 active:scale-95 disabled:opacity-20"
+               class="btn-primary w-full py-5 text-xs uppercase tracking-widest disabled:opacity-20"
              >
-                <Loader2 v-if="courseStore.isGenerating" class="w-6 h-6 animate-spin" />
-                <Sparkles v-else class="w-6 h-6" />
+                <Loader2 v-if="courseStore.isGenerating" class="w-5 h-5 animate-spin mr-2" />
+                <Sparkles v-else class="w-5 h-5 mr-2" />
                 {{ courseStore.isGenerating ? 'Trascendiendo...' : 'Generar Artefacto' }}
              </button>
           </div>
         </aside>
 
         <!-- Result Column -->
-        <main class="lg:col-span-8">
-          <div v-if="courseStore.generatedContent" class="glass-panel h-full min-h-[700px] flex flex-col overflow-hidden animate-slide-up">
-             <div class="p-10 bg-white/5 border-b border-white/5 flex items-center justify-between">
-                <h3 class="text-xl font-black text-white uppercase tracking-[0.2em]">Salida Pedagógica</h3>
-                <div class="flex gap-6">
-                  <button @click="copyToClipboard" class="text-[11px] font-black uppercase text-white/30 hover:text-primary flex items-center gap-3 transition-all">
-                    <Copy class="w-5 h-5" /> {{ copySuccess ? 'Transferido' : 'Transferir a Portapapeles' }}
-                  </button>
-                </div>
+        <main class="lg:col-span-8 flex flex-col h-full">
+          <div v-if="courseStore.generatedContent" class="glass-panel min-h-[600px] flex flex-col overflow-hidden animate-slide-up border-primary/10">
+             <div class="p-6 bg-white/2 border-b border-white/5 flex items-center justify-between">
+                <h3 class="text-sm font-black text-white uppercase tracking-widest italic outline-primary">Resultado Pedagógico</h3>
+                <button @click="copyToClipboard" class="text-[9px] font-black uppercase text-white/40 hover:text-primary flex items-center gap-2 transition-all p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10">
+                   <Copy class="w-4 h-4" /> {{ copySuccess ? 'Copiado' : 'Copiar' }}
+                </button>
              </div>
-             <div class="flex-1 p-14 overflow-y-auto preview-markdown custom-scrollbar">
-                <div v-html="renderedContent" class="prose prose-invert prose-lg max-w-none font-medium text-gray-300"></div>
+             <div class="flex-1 p-8 lg:p-12 overflow-y-auto preview-markdown custom-scrollbar">
+                <div v-html="renderedContent" class="prose prose-invert prose-emerald max-w-none font-medium text-white/80 transition-all duration-700"></div>
              </div>
           </div>
 
-          <div v-else-if="courseStore.generationError" class="glass-panel bg-red-500/5 p-16 text-center border-red-500/20">
-             <AlertCircle class="w-20 h-20 text-red-500 mx-auto mb-8 animate-pulse" />
-             <h3 class="text-3xl font-black text-red-100 mb-6 uppercase tracking-tight">Colapso de Generación</h3>
-             <p class="text-red-200/40 mb-10 font-bold">{{ courseStore.generationError }}</p>
-             <button @click="showDiagnosis = !showDiagnosis" class="text-[10px] font-black text-red-400 uppercase underline tracking-[0.3em]">Acceder a Telemetría de Error</button>
-             <pre v-if="showDiagnosis" class="mt-10 p-8 bg-black/40 text-red-400 text-left text-xs rounded-3xl border border-red-500/20 overflow-x-auto">{{ courseStore.lastDiagnosis }}</pre>
+          <div v-else-if="courseStore.generationError" class="glass-panel bg-red-500/5 p-12 text-center border-red-500/20">
+             <AlertCircle class="w-16 h-16 text-red-500 mx-auto mb-6 animate-pulse" />
+             <h3 class="text-2xl font-black text-red-100 mb-4 uppercase tracking-tight">Anomalía de Generación</h3>
+             <p class="text-red-200/40 mb-8 font-bold text-sm leading-relaxed">{{ courseStore.generationError }}</p>
+             <button @click="showDiagnosis = !showDiagnosis" class="text-[9px] font-black text-red-400 uppercase underline tracking-[0.3em]">Telemetría de Error</button>
+             <pre v-if="showDiagnosis" class="mt-8 p-6 bg-black/60 text-red-400 text-left text-[10px] rounded-2xl border border-red-500/20 overflow-x-auto">{{ courseStore.lastDiagnosis }}</pre>
           </div>
 
-          <div v-else class="h-full min-h-[600px] flex flex-col items-center justify-center glass-panel border-4 border-dashed border-white/5 text-center p-20 relative">
-             <div class="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent pointer-events-none"></div>
-             <BrainCircuit class="w-24 h-24 text-white/5 mb-10 animate-float" />
-             <p class="text-white/10 font-black uppercase tracking-[0.5em] text-sm">Arquitectura en espera de ideación</p>
+          <div v-else class="h-full min-h-[500px] flex flex-col items-center justify-center glass-panel border-2 border-dashed border-white/5 text-center p-12 relative opacity-50">
+             <BrainCircuit class="w-20 h-20 text-white/5 mb-8 animate-float" />
+             <p class="text-white/10 font-black uppercase tracking-[0.5em] text-[10px]">Arquitectura lista para sintetizar</p>
           </div>
         </main>
       </section>
@@ -352,26 +355,23 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 <style scoped>
 @reference "../style.css";
 
-.preview-markdown :deep(h1) { @apply text-3xl font-black mb-10 text-white tracking-tight; }
-.preview-markdown :deep(h2) { @apply text-2xl font-black mt-12 mb-6 text-primary tracking-tight uppercase; }
-.preview-markdown :deep(h3) { @apply text-xl font-black mt-8 mb-4 text-white/80; }
-.preview-markdown :deep(p) { @apply mb-8 leading-relaxed; }
-.preview-markdown :deep(ul) { @apply mb-8 space-y-3; }
-.preview-markdown :deep(li) { @apply flex items-start gap-3; }
-.preview-markdown :deep(li::before) { content: "•"; @apply text-primary font-black; }
-.preview-markdown :deep(strong) { @apply text-primary font-black; }
-.preview-markdown :deep(table) { @apply w-full mb-10 border-collapse bg-white/5 rounded-3xl overflow-hidden shadow-inner; }
-.preview-markdown :deep(th) { @apply bg-white/10 p-5 text-left text-[11px] font-black uppercase tracking-widest text-primary border-b border-white/10; }
-.preview-markdown :deep(td) { @apply p-5 border-b border-white/5 text-sm; }
+.preview-markdown :deep(h1) { @apply text-4xl font-black mb-10 text-white tracking-tight italic border-b-4 border-primary/20 pb-4 inline-block; }
+.preview-markdown :deep(h2) { @apply text-2xl font-black mt-12 mb-6 text-primary tracking-tight uppercase flex items-center gap-3; }
+.preview-markdown :deep(h2::before) { content: ""; @apply block w-2 h-8 bg-primary rounded-full; }
+.preview-markdown :deep(h3) { @apply text-xl font-black mt-8 mb-4 text-white/80 border-l-4 border-white/10 pl-4; }
+.preview-markdown :deep(p) { @apply mb-8 leading-relaxed text-[15px] text-white/70; }
+.preview-markdown :deep(ul) { @apply mb-8 space-y-4; }
+.preview-markdown :deep(li) { @apply flex items-start gap-4 text-[14px]; }
+.preview-markdown :deep(li::before) { content: "›"; @apply text-emerald-400 font-black text-xl leading-none; }
+.preview-markdown :deep(strong) { @apply text-emerald-400 font-black; }
+.preview-markdown :deep(table) { @apply w-full mb-10 border-collapse bg-white/2 rounded-2xl overflow-hidden shadow-inner border border-white/5; }
+.preview-markdown :deep(th) { @apply bg-white/5 p-4 text-left text-[10px] font-black uppercase tracking-widest text-primary border-b border-white/10; }
+.preview-markdown :deep(td) { @apply p-4 border-b border-white/5 text-[13px] text-white/60; }
+.preview-markdown :deep(blockquote) { @apply border-l-4 border-emerald-500/40 bg-emerald-500/5 px-8 py-6 rounded-r-2xl mb-8 italic text-emerald-100/80; }
 
 .animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes slideUp { from { opacity: 0; transform: translateY(40px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 
-.custom-scrollbar::-webkit-scrollbar { width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
-
-.premium-card { border-radius: 2.5rem; transition: all 0.4s ease; }
-.shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
-.shadow-premium { box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
-.shadow-glow { box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.2); }
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { @apply bg-white/5 rounded-full; }
 </style>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { supabase } from '../lib/supabase'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -68,8 +68,31 @@ export const useAuthStore = defineStore('auth', () => {
     if (error) throw error
   }
 
+  const displayName = computed(() => {
+    if (!user.value) return 'Invitado'
+    
+    // 1. Try metadata (from Google or Manual Signup)
+    const meta = user.value.user_metadata
+    if (meta?.full_name) return meta.full_name
+    if (meta?.display_name) return meta.display_name
+    if (meta?.name) return meta.name
+    
+    // 2. Fallback to parsing email (e.g., pepito.peres@gmail.com -> Pepito Peres)
+    const email = user.value.email
+    if (email) {
+      const namePart = email.split('@')[0]
+      return namePart
+        .split(/[._-]/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    }
+    
+    return 'Usuario MentorIA'
+  })
+
   return {
     user,
+    displayName,
     loading,
     isAuthReady,
     initAuth,

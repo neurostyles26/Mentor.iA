@@ -1,10 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useAuthStore } from '../store/auth'
 import { 
   BarChart3, 
-  BookOpen, 
-  PlusCircle, 
   Settings, 
   LogOut,
   BrainCircuit,
@@ -14,13 +13,19 @@ import {
   LayoutDashboard,
   Sparkles,
   MessageCircle,
+  Menu,
+  ChevronLeft,
+  ChevronRight,
   X
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
 
 const router = useRouter()
 const route = useRoute()
+const authStore = useAuthStore()
 
+const isSidebarCollapsed = ref(false)
+const isMobileMenuOpen = ref(false)
 const isChatOpen = ref(false)
 
 const navItems = [
@@ -30,8 +35,13 @@ const navItems = [
   { name: 'Configuraciones', icon: Settings, path: '/dashboard/settings' },
 ]
 
-const handleLogout = () => {
+const handleLogout = async () => {
+  await authStore.logout()
   router.push('/login')
+}
+
+const toggleSidebar = () => {
+  isSidebarCollapsed.value = !isSidebarCollapsed.value
 }
 
 const toggleChat = () => {
@@ -41,96 +51,146 @@ const toggleChat = () => {
 
 <template>
   <div class="flex h-screen bg-bg-deep overflow-hidden font-sans">
-    <!-- Premium Sidebar -->
-    <aside class="w-80 bg-bg-card flex flex-col border-r border-white/5 z-50 shadow-premium relative">
-      <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
-      
-      <div class="px-10 py-12 flex flex-col items-center relative z-10">
-        <div class="flex items-center gap-4 group cursor-pointer mb-2" @click="router.push('/dashboard')">
-          <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-glow border border-primary/20">
-            <BrainCircuit class="w-8 h-8 text-primary" />
+    <!-- Mobile Overlay -->
+    <div 
+      v-if="isMobileMenuOpen" 
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+      @click="isMobileMenuOpen = false"
+    ></div>
+
+    <!-- Sidebar -->
+    <aside 
+      class="sidebar-transition bg-bg-card flex flex-col border-r border-white/5 z-[70] shadow-premium relative h-full"
+      :class="[
+        isSidebarCollapsed ? 'w-24' : 'w-80',
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
+        'fixed lg:relative'
+      ]"
+    >
+      <!-- Toggle Button (Desktop) -->
+      <button 
+        @click="toggleSidebar"
+        class="absolute -right-4 top-12 w-8 h-8 bg-primary rounded-full hidden lg:flex items-center justify-center text-white shadow-glow hover:scale-110 transition-transform z-50 border border-white/10"
+      >
+        <ChevronLeft v-if="!isSidebarCollapsed" class="w-5 h-5" />
+        <ChevronRight v-else class="w-5 h-5" />
+      </button>
+
+      <!-- Logo Section -->
+      <div class="px-6 py-10 flex flex-col items-center relative z-10 transition-all duration-500 overflow-hidden">
+        <div 
+          class="flex items-center gap-4 group cursor-pointer" 
+          @click="router.push('/dashboard')"
+          :class="isSidebarCollapsed ? 'flex-col' : ''"
+        >
+          <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-glow border border-primary/20 shrink-0">
+            <BrainCircuit class="w-7 h-7 text-primary" />
           </div>
-          <span class="text-3xl font-black text-white tracking-tighter uppercase">MentorIA</span>
+          <span 
+            v-if="!isSidebarCollapsed" 
+            class="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap animate-fade-in"
+          >
+            MentorIA
+          </span>
         </div>
-        <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.4em]">Intelligence Suite v4</p>
+        <p v-if="!isSidebarCollapsed" class="text-[9px] font-black text-white/30 uppercase tracking-[0.4em] mt-3 animate-fade-in">Intelligence Suite v2.5</p>
       </div>
 
-      <!-- Navigation Content -->
-      <nav class="flex-1 px-6 space-y-4 mt-8 relative z-10">
+      <!-- Navigation -->
+      <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto custom-scrollbar relative z-10">
         <router-link 
           v-for="item in navItems" 
           :key="item.name"
           :to="item.path"
-          class="flex items-center gap-5 px-8 py-5 rounded-[2.5rem] font-black text-[11px] uppercase tracking-widest transition-all duration-500 relative group overflow-hidden"
-          :class="route.path === item.path ? 'bg-white/5 text-white shadow-glow border border-white/5' : 'text-white/40 hover:bg-white/5 hover:text-white'"
+          class="flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 relative group overflow-hidden"
+          :class="[
+            route.path === item.path ? 'bg-primary/10 text-primary shadow-sm border border-primary/10' : 'text-white/40 hover:bg-white/5 hover:text-white',
+            isSidebarCollapsed ? 'justify-center px-0' : ''
+          ]"
+          @click="isMobileMenuOpen = false"
         >
-          <component :is="item.icon" class="w-6 h-6 transition-transform group-hover:scale-110" :class="route.path === item.path ? 'text-primary' : 'text-white/20 group-hover:text-primary'" />
-          {{ item.name }}
-          <div v-if="route.path === item.path" class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-primary rounded-full blur-[1px]"></div>
+          <component :is="item.icon" class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110" />
+          <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in">{{ item.name }}</span>
+          
+          <!-- Tooltip for collapsed mode -->
+          <div v-if="isSidebarCollapsed" class="absolute left-full ml-4 px-4 py-2 bg-primary text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-glow">
+            {{ item.name }}
+          </div>
         </router-link>
       </nav>
 
-      <!-- Bottom Card & Logout -->
-      <div class="p-8 space-y-6 relative z-10">
-        <div class="p-8 bg-gradient-to-br from-primary to-secondary rounded-[2.5rem] shadow-premium relative overflow-hidden group">
-          <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-          <p class="text-[10px] font-black text-white/60 uppercase tracking-widest mb-3">AI Engine: Gemma 4</p>
-          <p class="text-sm font-bold text-white leading-snug mb-6">Optimiza tus clases con IA de vanguardia</p>
-          <button 
-            @click="toggleChat"
-            class="w-full py-4 bg-white text-dark rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-bg-deep hover:text-white transition-all transform hover:-translate-y-1 shadow-lg active:scale-95"
-          >
-            Consultar al Mentor
-          </button>
-        </div>
-        
-        <button 
-          @click="handleLogout"
-          class="flex items-center gap-5 px-10 py-5 w-full rounded-[2.5rem] font-black text-[10px] uppercase tracking-widest text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95 group border border-transparent hover:border-red-500/20"
+      <!-- Bottom Profile / Logout -->
+      <div class="p-4 space-y-4 relative z-10 border-t border-white/5 bg-white/2">
+        <!-- AI Assistant Mini Banner -->
+        <div 
+          v-if="!isSidebarCollapsed"
+          class="p-5 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl border border-white/5 mb-2 relative overflow-hidden group cursor-pointer"
+          @click="toggleChat"
         >
-          <LogOut class="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
-          Cerrar Sesión
-        </button>
+           <div class="flex items-center gap-3">
+             <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-glow">
+               <Sparkles class="w-4 h-4" />
+             </div>
+             <p class="text-[9px] font-black text-white uppercase tracking-widest">Mentor Online</p>
+           </div>
+        </div>
+
+        <div class="flex items-center flex-col gap-2">
+           <button 
+             @click="handleLogout"
+             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-widest text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all group border border-transparent"
+             :class="isSidebarCollapsed ? 'justify-center' : ''"
+           >
+             <LogOut class="w-5 h-5 shrink-0 group-hover:-translate-x-1 transition-transform" />
+             <span v-if="!isSidebarCollapsed" class="whitespace-nowrap">Cerrar Sesión</span>
+           </button>
+        </div>
       </div>
     </aside>
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
       <!-- Refined Header -->
-      <header class="h-28 bg-bg-deep/50 backdrop-blur-2xl border-b border-white/5 px-14 flex items-center justify-between sticky top-0 z-40">
-        <div class="flex items-center gap-5 bg-white/5 px-10 py-5 rounded-[2.5rem] w-[550px] border border-white/5 focus-within:border-primary/30 focus-within:bg-white/10 transition-all duration-700">
-          <Search class="w-6 h-6 text-white/20" />
+      <header class="h-20 bg-bg-deep/80 backdrop-blur-xl border-b border-white/5 px-6 lg:px-12 flex items-center justify-between sticky top-0 z-40">
+        <!-- Mobile Menu Toggle -->
+        <button @click="isMobileMenuOpen = true" class="p-3 bg-white/5 rounded-xl lg:hidden text-white/60">
+          <Menu class="w-6 h-6" />
+        </button>
+
+        <!-- Search Bar (Responsive) -->
+        <div class="hidden sm:flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl w-[300px] lg:w-[450px] border border-white/5 focus-within:border-primary/50 transition-all duration-500">
+          <Search class="w-5 h-5 text-white/20" />
           <input 
             type="text" 
-            placeholder="Buscar lecciones, talleres o exámenes..."
-            class="bg-transparent border-0 outline-none text-sm font-bold w-full text-white placeholder:text-white/20"
+            placeholder="Buscar en mi ecosistema..."
+            class="bg-transparent border-0 outline-none text-xs font-bold w-full text-white placeholder:text-white/20"
           />
         </div>
 
-        <div class="flex items-center gap-10">
-          <button class="p-5 bg-white/5 border border-white/10 rounded-2xl text-white/40 hover:text-primary relative transition-all active:scale-90 hover:bg-white/10">
-            <Bell class="w-6 h-6" />
-            <span class="absolute top-5 right-5 w-3 h-3 bg-primary border-4 border-bg-deep rounded-full shadow-glow"></span>
+        <div class="flex items-center gap-4 lg:gap-8">
+          <button class="p-3 bg-white/5 border border-white/10 rounded-xl text-white/40 hover:text-primary relative transition-all active:scale-90">
+            <Bell class="w-5 h-5" />
+            <span class="absolute top-3 right-3 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
           </button>
           
-          <div class="h-12 w-px bg-white/5"></div>
+          <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
 
-          <div class="flex items-center gap-5 cursor-pointer group p-3 rounded-[2rem] hover:bg-white/5 transition-all duration-500">
-            <div class="text-right hidden sm:block">
-              <p class="text-sm font-black text-white tracking-tight">Profesor García</p>
-              <p class="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Master Nivel IV</p>
-            </div>
-            <div class="w-16 h-16 rounded-[1.5rem] bg-white/5 p-1 transform group-hover:rotate-6 transition-all duration-700 shadow-glow border border-white/5">
-               <div class="w-full h-full rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                  <User class="w-9 h-9 text-white" />
+          <div class="flex items-center gap-4 group p-1 pr-3 rounded-2xl hover:bg-white/5 transition-all duration-500">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary p-0.5 transform group-hover:rotate-6 transition-all duration-700">
+               <div class="w-full h-full rounded-[10px] bg-bg-card flex items-center justify-center">
+                  <User class="w-6 h-6 text-primary" />
                </div>
+            </div>
+            <div class="text-right hidden md:block">
+              <p class="text-xs font-black text-white tracking-tight leading-none mb-1">{{ authStore.displayName }}</p>
+              <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] leading-none">Miembro Premium</p>
             </div>
           </div>
         </div>
       </header>
 
       <!-- Dynamic Page Content -->
-      <div class="flex-1 overflow-y-auto p-14 custom-scrollbar">
+      <div class="flex-1 overflow-y-auto p-6 lg:p-12 custom-scrollbar scroll-smooth">
         <router-view v-slot="{ Component }">
           <transition 
             name="page-premium" 
@@ -141,73 +201,48 @@ const toggleChat = () => {
         </router-view>
       </div>
 
-      <!-- Floating Chat Button Premium -->
-      <button 
-        v-if="!isChatOpen"
-        @click="toggleChat"
-        class="fixed bottom-10 right-10 w-24 h-24 bg-primary text-white rounded-[2.5rem] flex items-center justify-center shadow-premium hover:bg-secondary transition-all duration-700 z-50 active:scale-90 group overflow-hidden"
-      >
-        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
-        <MessageCircle class="w-9 h-9 relative z-10 group-hover:rotate-12 transition-transform" />
-        <Sparkles class="absolute top-5 right-5 w-5 h-5 text-white/50 animate-pulse" />
-      </button>
-
-      <!-- Chat Component -->
+      <!-- Floating Chat Component -->
       <ChatMentor :is-open="isChatOpen" @close="isChatOpen = false" />
     </main>
   </div>
 </template>
 
 <style scoped>
+.sidebar-transition {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 .page-premium-enter-active,
 .page-premium-leave-active {
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-premium-enter-from {
   opacity: 0;
-  transform: translateY(30px);
-  filter: blur(10px);
+  transform: translateY(20px);
+  filter: blur(5px);
 }
 
 .page-premium-leave-to {
   opacity: 0;
-  transform: translateY(-30px);
-  filter: blur(10px);
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-}
-</style>
-
-<style scoped>
-.page-fade-enter-active,
-.page-fade-leave-active {
-  transition: all 0.4s ease;
-}
-
-.page-fade-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.page-fade-leave-to {
-  opacity: 0;
   transform: translateY(-20px);
+  filter: blur(5px);
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #E2E8F0;
-  border-radius: 10px;
+  @apply bg-white/5 rounded-full;
 }
 </style>
