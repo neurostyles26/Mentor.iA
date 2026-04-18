@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GoogleGenerativeAI } from "googlegenai"
+import { GoogleGenAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
       )
     }
 
-    const genAI = new GoogleGenerativeAI(API_KEY)
+    const ai = new GoogleGenAI({ apiKey: API_KEY })
 
     const systemPrompt = `Eres MentorIA, el asistente de inteligencia pedagógica más avanzado, especializado en el ecosistema educativo de Colombia.
 
@@ -45,34 +45,26 @@ Reglas:
 - Español colombiano fluido y claro.
 - Siempre usa Markdown elegante con Tablas, Listas y Negritas.`
 
+    // Build conversation history
     const history = (chatHistory || []).map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
     }))
 
-    // Usar Gemini 3 Flash (2026) como modelo principal
-    const model = genAI.getGenerativeModel({
-      model: "gemini-3-flash",
-      generationConfig: {
-        temperature: 0.8,
-        maxOutputTokens: 4096,
-        topP: 0.95,
-      }
-    })
+    const contents = [
+      { role: 'user', parts: [{ text: systemPrompt }] },
+      { role: 'model', parts: [{ text: 'Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. ¿En qué desafío pedagógico trabajaremos hoy?' }] },
+      ...history,
+      { role: 'user', parts: [{ text: message }] }
+    ]
 
-    const chat = model.startChat({
-      history: [
-        { role: 'user', parts: [{ text: systemPrompt }] },
-        { role: 'model', parts: [{ text: "Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. ¿En qué desafío pedagógico trabajaremos hoy?" }] },
-        ...history
-      ]
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: contents,
     })
-
-    const result = await chat.sendMessage(message)
-    const reply = result.response.text()
 
     return new Response(
-      JSON.stringify({ reply, model_used: 'gemini-3-flash' }),
+      JSON.stringify({ reply: response.text, model_used: 'gemini-2.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 

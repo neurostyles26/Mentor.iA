@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GoogleGenerativeAI } from "googlegenai"
+import { GoogleGenAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
       )
     }
 
-    const genAI = new GoogleGenerativeAI(API_KEY)
+    const ai = new GoogleGenAI({ apiKey: API_KEY })
 
     let systemPrompt = ''
     if (type === 'lesson') {
@@ -61,21 +61,13 @@ Crea un EXAMEN que incluya:
 Usa Markdown elegante.`
     }
 
-    // Usar Gemini 3 Flash (2026) como modelo principal
-    const model = genAI.getGenerativeModel({
-      model: "gemini-3-flash",
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 4096,
-        topP: 0.95,
-      }
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: `${systemPrompt}\n\nTema a desarrollar: ${prompt}`,
     })
 
-    const result = await model.generateContent(`${systemPrompt}\n\nTema a desarrollar: ${prompt}`)
-    const responseText = result.response.text()
-
     return new Response(
-      JSON.stringify({ text: responseText, model_used: 'gemini-3-flash' }),
+      JSON.stringify({ text: response.text, model_used: 'gemini-2.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
 

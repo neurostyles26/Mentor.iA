@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GoogleGenerativeAI } from "googlegenai"
+import { GoogleGenAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,9 +30,9 @@ Deno.serve(async (req) => {
       )
     }
 
-    const genAI = new GoogleGenerativeAI(API_KEY)
+    const ai = new GoogleGenAI({ apiKey: API_KEY })
 
-    const finalPrompt = `Actúa como un Mentor Pedagógico experto en educación colombiana.
+    const prompt = `Actúa como un Mentor Pedagógico experto en educación colombiana.
 Contexto: ${contexto}
 Pregunta: ${pregunta}
 
@@ -43,20 +43,13 @@ Instrucciones:
 4. Mantén un tono empático y constructivo.
 5. Usa Markdown para formatear tu respuesta (negritas, listas, tablas si aplica).`
 
-    // Usar Gemini 3 Flash (2026) como modelo principal
-    const model = genAI.getGenerativeModel({
-      model: "gemini-3-flash",
-      generationConfig: {
-        temperature: 0.75,
-        maxOutputTokens: 2048,
-      }
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
     })
 
-    const result = await model.generateContent(finalPrompt)
-    const responseText = result.response.text()
-
     return new Response(
-      JSON.stringify({ text: responseText, model_used: 'gemini-3-flash' }),
+      JSON.stringify({ text: response.text, model_used: 'gemini-2.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
 
