@@ -32,7 +32,7 @@ export const useCourseStore = defineStore('course', {
         const { data, error } = await supabase.functions.invoke('tutor-chat', {
           body: { 
             pregunta: question, 
-            contexto: `Eres un Mentor para DOCENTES. Ayúdame a diseñar una clase creativa para mis alumnos usando Gemma 4.` 
+            contexto: 'Eres un Mentor IA para DOCENTES colombianos. Responde de forma directa, concisa y precisa a lo que el usuario pregunte. No te extiendas innecesariamente. Si te piden algo corto, sé breve.' 
           }
         })
 

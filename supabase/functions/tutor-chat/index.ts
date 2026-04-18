@@ -32,16 +32,11 @@ Deno.serve(async (req) => {
 
     const ai = new GoogleGenAI({ apiKey: API_KEY })
 
-    const prompt = `Actúa como un Mentor Pedagógico experto en educación colombiana.
-Contexto: ${contexto}
-Pregunta: ${pregunta}
+    const prompt = `${contexto}
 
-Instrucciones:
-1. Proporciona una respuesta clara, profesional y motivadora.
-2. Usa un lenguaje pedagógico moderno en español colombiano.
-3. Si el usuario es un docente, ofrece consejos prácticos para el aula.
-4. Mantén un tono empático y constructivo.
-5. Usa Markdown para formatear tu respuesta (negritas, listas, tablas si aplica).`
+Pregunta del docente: ${pregunta}
+
+IMPORTANTE: Responde de forma directa y concisa. Si el usuario pide algo "corto" o "breve", limítate a 2-3 párrafos máximo. No agregues secciones extras que no se pidieron. Usa español colombiano y Markdown para formatear.`
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
