@@ -18,7 +18,8 @@ export const useCourseStore = defineStore('course', {
       file: null
     },
     lastDiagnosis: null,
-    teacherChatHistory: []
+    teacherChatHistory: [],
+    schedules: []
   }),
   actions: {
     async askMentorTeacher(question) {
@@ -262,6 +263,48 @@ export const useCourseStore = defineStore('course', {
     },
     selectCourse(course) {
       this.currentCourse = course
+    },
+    async fetchSchedules() {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.user) return
+
+      const { data, error } = await supabase
+        .from('schedules')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('event_date', { ascending: true })
+      
+      if (error) {
+        console.error('Error fetching schedules:', error)
+        return
+      }
+      this.schedules = data
+    },
+    async addSchedule(event) {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.user) throw new Error('No authenticated user')
+
+      const { data, error } = await supabase
+        .from('schedules')
+        .insert({
+          ...event,
+          user_id: session.user.id
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+      this.schedules.push(data)
+      return data
+    },
+    async deleteSchedule(id) {
+      const { error } = await supabase
+        .from('schedules')
+        .delete()
+        .eq('id', id)
+      
+      if (error) throw error
+      this.schedules = this.schedules.filter(s => s.id !== id)
     }
   }
 })

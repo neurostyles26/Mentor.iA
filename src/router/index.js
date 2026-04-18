@@ -37,6 +37,11 @@ const routes = [
         path: 'editor/:id?',
         name: 'ClassEditor',
         component: () => import('../views/ClassEditor.vue')
+      },
+      {
+        path: 'agenda',
+        name: 'Agenda',
+        component: () => import('../views/Agenda.vue')
       }
     ]
   },

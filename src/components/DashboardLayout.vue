@@ -16,7 +16,8 @@ import {
   Menu,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  Calendar
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
 
@@ -31,6 +32,7 @@ const isChatOpen = ref(false)
 const navItems = [
   { name: 'Mis Cursos', icon: LayoutDashboard, path: '/dashboard' },
   { name: 'Nueva Clase IA', icon: Sparkles, path: '/dashboard/create' },
+  { name: 'Agenda', icon: Calendar, path: '/dashboard/agenda' },
   { name: 'Analíticas', icon: BarChart3, path: '/dashboard/analytics' },
   { name: 'Configuraciones', icon: Settings, path: '/dashboard/settings' },
 ]
