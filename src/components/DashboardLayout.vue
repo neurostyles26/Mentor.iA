@@ -208,6 +208,8 @@ const toggleChat = () => {
 </template>
 
 <style scoped>
+@reference "../style.css";
+
 .sidebar-transition {
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
