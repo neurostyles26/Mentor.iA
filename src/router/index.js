@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { supabase } from '../lib/supabase'
+import { useAuthStore } from '../store/auth'
 
 const routes = [
   {
@@ -46,23 +46,17 @@ const routes = [
     component: () => import('../views/MainApp.vue'),
     meta: { requiresAuth: true }
   },
-  // Catch all redirect to landing or dashboard
   {
     path: '/:pathMatch(.*)*',
-    redirect: (to) => {
-      return '/dashboard'
-    }
+    redirect: '/dashboard'
   }
 ]
-
-import { useAuthStore } from '../store/auth'
-
-// ... (routes definition)
 
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
 
 // Navigation Guard
 router.beforeEach(async (to, from, next) => {
