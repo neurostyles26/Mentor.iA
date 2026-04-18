@@ -47,14 +47,23 @@ export const useCourseStore = defineStore('course', {
         console.error('Teacher Chat Error:', error)
         let message = 'Lo siento, Gemma 4 tuvo un problema. ¿Podrías intentar de nuevo?'
         
-        // Check for specific error details from Supabase Function
+        // Handle Gateway errors (401/403/500)
+        if (error.message?.includes('401') || error.message?.includes('403')) {
+          message = '🚨 Error de Autenticación (401): Tu sesión o la Anon Key en Vercel no son válidas. Por favor, verifica tu configuración de Supabase en Vercel.'
+        } else if (error.message?.includes('FetchError') || error.message?.includes('Failed to fetch')) {
+          message = '🚨 Error de Conexión: No se pudo contactar con Supabase. Revisa tu conexión a internet o la URL del proyecto.'
+        }
+
+        // Check for specific error details from Supabase Function response
         if (error.context) {
           try {
             const errData = await error.context.json()
             if (errData.type === 'AUTH_ERROR' || errData.type === 'INVALID_API_KEY') {
-              message = '⚠️ Error de Autenticación: La API Key de Gemma 4 no es válida o falta en el servidor.'
+              message = '⚠️ Error de API Key: La llave de Gemma 4 no es válida o falta en Supabase Secrets.'
             } else if (errData.type === 'MODEL_NOT_FOUND') {
-              message = '⚠️ Error de Modelo: El modelo Gemma 4 no está disponible en esta región actualmente.'
+              message = '⚠️ Error de Modelo: Gemma 4 no está disponible. Intentando reconexión...'
+            } else if (errData.error) {
+              message = `⚠️ Error de Servidor: ${errData.error}`
             }
           } catch (e) { /* ignore parse error */ }
         }

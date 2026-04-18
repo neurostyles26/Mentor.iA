@@ -1,7 +1,4 @@
-// @ts-ignore
 import { GoogleGenerativeAI } from "googlegenai"
-// @ts-ignore
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,14 +10,16 @@ interface Message {
   content: string;
 }
 
-serve(async (req: Request) => {
+// @ts-ignore
+Deno.serve(async (req: Request) => {
   // Handle CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const { message, chatHistory } = await req.json()
+    const body = await req.json().catch(() => ({}))
+    const { message, chatHistory } = body
 
     if (!message) {
       return new Response(JSON.stringify({ error: 'Message is required' }), {
