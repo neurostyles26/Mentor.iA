@@ -1,7 +1,7 @@
 <script setup>
 import { BrainCircuit, Chrome, Loader2, Sparkles, ShieldCheck } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '../store'
+import { useAuthStore } from '../store/auth'
 import { ref } from 'vue'
 
 const router = useRouter()
@@ -10,8 +10,12 @@ const email = ref('')
 const password = ref('')
 
 const handleLogin = async () => {
-  await authStore.login(email.value, password.value)
-  router.push('/dashboard')
+  try {
+    await authStore.login(email.value, password.value)
+    router.push('/dashboard')
+  } catch (error) {
+    console.error('Login error:', error)
+  }
 }
 
 const handleGoogleLogin = async () => {

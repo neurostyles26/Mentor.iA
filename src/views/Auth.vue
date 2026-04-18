@@ -23,7 +23,7 @@ const handleAuth = async () => {
       alert('Cuenta creada. Revisa tu correo para verificar.')
     } else {
       await authStore.login(email.value, password.value)
-      router.push('/app')
+      router.push('/dashboard')
     }
   } catch (e) {
     errorMsg.value = e.message

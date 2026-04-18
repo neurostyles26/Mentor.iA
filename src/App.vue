@@ -7,7 +7,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 onMounted(async () => {
-  await authStore.checkUser()
+  await authStore.initAuth()
 })
 </script>
 

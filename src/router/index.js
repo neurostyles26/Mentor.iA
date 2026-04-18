@@ -8,15 +8,50 @@ const routes = [
     component: () => import('../views/Landing.vue')
   },
   {
-    path: '/auth',
-    name: 'Auth',
-    component: () => import('../views/Auth.vue')
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue'),
+    alias: '/auth'
+  },
+  {
+    path: '/dashboard',
+    component: () => import('../components/DashboardLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('../views/Dashboard.vue')
+      },
+      {
+        path: 'create',
+        name: 'AIGenerator',
+        component: () => import('../views/AIGenerator.vue')
+      },
+      {
+        path: 'new-course',
+        name: 'CreateCourse',
+        component: () => import('../views/CreateCourse.vue')
+      },
+      {
+        path: 'editor/:id?',
+        name: 'ClassEditor',
+        component: () => import('../views/ClassEditor.vue')
+      }
+    ]
   },
   {
     path: '/app',
     name: 'MainApp',
     component: () => import('../views/MainApp.vue'),
     meta: { requiresAuth: true }
+  },
+  // Catch all redirect to landing or dashboard
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: (to) => {
+      return '/dashboard'
+    }
   }
 ]
 
@@ -31,9 +66,9 @@ router.beforeEach(async (to, from, next) => {
   const isAuthenticated = !!session
 
   if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/auth')
-  } else if (to.path === '/auth' && isAuthenticated) {
-    next('/app')
+    next('/login')
+  } else if ((to.path === '/login' || to.path === '/auth') && isAuthenticated) {
+    next('/dashboard')
   } else {
     next()
   }

@@ -257,50 +257,7 @@ export const useCourseStore = defineStore('course', {
   }
 })
 
-export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    user: null,
-    isLoading: false,
-    isAuthReady: false
-  }),
-  actions: {
-    async initAuth() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession()
-        this.user = session?.user || null
-      } catch (e) {
-        console.error("Auth init error:", e)
-      } finally {
-        this.isAuthReady = true
-      }
-      
-      supabase.auth.onAuthStateChange((_, session) => {
-        this.user = session?.user || null
-        this.isAuthReady = true
-      })
-    },
-    async login(email, password) {
-      this.isLoading = true
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
-      if (error) throw error
-      this.user = data.user
-      this.isLoading = false
-    },
-    async signInWithGoogle() {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`
-        }
-      })
-      if (error) throw error
-    },
-    async logout() {
-      await supabase.auth.signOut()
-      this.user = null
+      this.currentCourse = course
     }
   }
 })
