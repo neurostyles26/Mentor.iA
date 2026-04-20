@@ -55,7 +55,7 @@ const toggleChat = () => {
 </script>
 
 <template>
-  <div class="flex h-screen bg-bg-deep overflow-hidden font-sans">
+  <div class="flex h-screen bg-bg-deep overflow-x-hidden overflow-y-hidden font-sans relative w-full max-w-full">
     <!-- Mobile Overlay -->
     <div 
       v-if="isMobileMenuOpen" 
@@ -65,7 +65,7 @@ const toggleChat = () => {
 
     <!-- Sidebar -->
     <aside 
-      class="sidebar-transition bg-bg-card flex flex-col border-r border-white/5 z-[70] shadow-premium relative h-full"
+      class="sidebar-transition bg-bg-card flex flex-col border-r border-white/5 z-[70] shadow-premium h-full"
       :class="[
         isSidebarCollapsed ? 'w-24' : 'w-80',
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',

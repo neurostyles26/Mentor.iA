@@ -16,7 +16,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="min-h-screen bg-bg-deep selection:bg-primary/30 overflow-x-hidden font-sans">
+  <div class="min-h-screen bg-bg-deep selection:bg-primary/30 overflow-x-hidden w-full max-w-full font-sans relative">
     <!-- Animated background layers -->
     <div class="fixed inset-0 pointer-events-none z-0">
       <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
