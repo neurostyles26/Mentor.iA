@@ -406,6 +406,3 @@ input::placeholder {
   @apply opacity-20 italic;
 }
 </style>
-ackground-size: 1.25rem;
-}
-</style>
