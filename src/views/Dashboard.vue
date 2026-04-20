@@ -69,12 +69,12 @@ const premiumSponsors = [
 <template>
   <div class="space-y-12 animate-fade-in max-w-7xl mx-auto">
     <!-- Hero Greeting -->
-    <section class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-      <div class="space-y-3">
-        <h1 class="text-4xl lg:text-5xl font-black text-white tracking-tight leading-none">
+    <section class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 md:gap-8">
+      <div class="space-y-2 md:space-y-3">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-none">
           Hola, <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{{ authStore.displayName }}</span>
         </h1>
-        <p class="text-white/70 font-bold text-lg lg:text-xl max-w-xl">
+        <p class="text-white/70 font-bold text-base sm:text-lg lg:text-xl max-w-xl">
           ¿Qué vamos a transformar hoy en el ecosistema educativo?
         </p>
       </div>
@@ -90,7 +90,7 @@ const premiumSponsors = [
     </section>
 
     <!-- Content Grid -->
-    <div v-if="courses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+    <div v-if="courses.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
       <div 
         v-for="course in courses" 
         :key="course.id"

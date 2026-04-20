@@ -33,8 +33,8 @@ defineProps({
       <div :class="['w-14 h-14 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-6 shadow-glow group-hover:scale-110 transition-transform border border-white/5', color]">
         <component :is="icon" class="w-7 h-7 text-white" />
       </div>
-      <h3 class="text-xl font-black text-white tracking-tight mb-2 group-hover:text-primary transition-colors">{{ title }}</h3>
-      <p class="text-[11px] font-bold text-white/80 leading-relaxed">{{ description }}</p>
+      <h3 class="text-lg md:text-xl font-black text-white tracking-tight mb-2 group-hover:text-primary transition-colors leading-tight">{{ title }}</h3>
+      <p class="text-[10px] md:text-[11px] font-bold text-white/80 leading-relaxed">{{ description }}</p>
     </div>
 
     <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">

@@ -163,16 +163,16 @@ const toggleChat = () => {
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+    <main class="flex-1 flex flex-col min-w-0 h-full relative">
       <!-- Refined Header -->
-      <header class="h-20 bg-bg-deep/80 backdrop-blur-xl border-b border-white/5 px-6 lg:px-12 flex items-center justify-between sticky top-0 z-40">
+      <header class="h-16 md:h-20 bg-bg-deep/80 backdrop-blur-xl border-b border-white/5 px-4 md:px-6 lg:px-12 flex items-center justify-between sticky top-0 z-40">
         <!-- Mobile Menu Toggle -->
-        <button @click="isMobileMenuOpen = true" class="p-3 bg-white/5 rounded-xl lg:hidden text-white/60">
-          <Menu class="w-6 h-6" />
+        <button @click="isMobileMenuOpen = true" class="p-2.5 bg-white/5 rounded-xl lg:hidden text-white/60 hover:text-primary transition-colors">
+          <Menu class="w-5 h-5 md:w-6 md:h-6" />
         </button>
 
         <!-- Search Bar (Responsive) -->
-        <div class="hidden sm:flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl w-[300px] lg:w-[450px] border border-white/5 focus-within:border-primary/50 transition-all duration-500">
+        <div class="hidden lg:flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl w-[300px] lg:w-[450px] border border-white/5 focus-within:border-primary/50 transition-all duration-500">
           <Search class="w-5 h-5 text-white/50" />
           <input 
             type="text" 
@@ -189,22 +189,22 @@ const toggleChat = () => {
           
           <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
 
-          <div class="flex items-center gap-4 group p-1 pr-3 rounded-2xl hover:bg-white/5 transition-all duration-500">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary p-0.5 transform group-hover:rotate-6 transition-all duration-700">
+          <div class="flex items-center gap-3 md:gap-4 group p-1 pr-3 rounded-2xl hover:bg-white/5 transition-all duration-500 max-w-[150px] md:max-w-none">
+            <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-primary to-secondary p-0.5 transform group-hover:rotate-6 transition-all duration-700 shrink-0">
                <div class="w-full h-full rounded-[10px] bg-bg-card flex items-center justify-center">
-                  <User class="w-6 h-6 text-primary" />
+                  <User class="w-5 h-5 md:w-6 md:h-6 text-primary" />
                </div>
             </div>
-            <div class="text-right hidden md:block">
-              <p class="text-xs font-black text-white tracking-tight leading-none mb-1">{{ authStore.displayName }}</p>
-              <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] leading-none drop-shadow-sm">Miembro Elite</p>
+            <div class="text-right hidden sm:block overflow-hidden">
+              <p class="text-[10px] md:text-xs font-black text-white tracking-tight leading-none mb-1 truncate">{{ authStore.displayName }}</p>
+              <p class="text-[8px] md:text-[9px] font-black text-primary uppercase tracking-[0.2em] leading-none drop-shadow-sm">Miembro Elite</p>
             </div>
           </div>
         </div>
       </header>
 
       <!-- Dynamic Page Content -->
-      <div class="flex-1 overflow-y-auto p-6 lg:p-12 custom-scrollbar scroll-smooth">
+      <div class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-12 custom-scrollbar scroll-smooth">
         <router-view v-slot="{ Component }">
           <transition 
             name="page-premium" 

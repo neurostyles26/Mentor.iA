@@ -125,7 +125,7 @@ const toggleMode = () => {
     </section>
 
     <!-- FORM SECTION -->
-    <main class="flex-1 flex flex-col items-center justify-center p-8 lg:p-24 relative z-30">
+    <main class="flex-1 flex flex-col items-center justify-center p-5 sm:p-8 lg:p-24 relative z-30">
       <!-- Mobile Only Header -->
       <div class="lg:hidden flex flex-col items-center mb-12 animate-fade-in-down">
         <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20 mb-4 shadow-glow">
