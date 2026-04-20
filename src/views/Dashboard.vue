@@ -186,7 +186,7 @@ const premiumSponsors = [
       <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
         <div class="flex-1 space-y-4">
           <div class="flex items-center gap-4">
-            <Zap class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-glow">
+            <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-glow">
               <Zap class="w-6 h-6 text-white" />
             </div>
             <h2 class="text-3xl font-black italic tracking-tighter">Impacto Pedagógico</h2>
