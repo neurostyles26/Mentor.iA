@@ -26,7 +26,7 @@ defineProps({
   >
     <!-- Native Ad Badge -->
     <div class="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 bg-white/5 border border-white/10 rounded-full">
-       <span class="text-[7px] font-black uppercase tracking-[0.2em] text-white/40">Sponsor</span>
+       <span class="text-[7px] font-black uppercase tracking-[0.2em] text-white/60">Sponsor</span>
     </div>
 
     <div>
@@ -34,7 +34,7 @@ defineProps({
         <component :is="icon" class="w-7 h-7 text-white" />
       </div>
       <h3 class="text-xl font-black text-white tracking-tight mb-2 group-hover:text-primary transition-colors">{{ title }}</h3>
-      <p class="text-[11px] font-bold text-white/50 leading-relaxed">{{ description }}</p>
+      <p class="text-[11px] font-bold text-white/80 leading-relaxed">{{ description }}</p>
     </div>
 
     <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">

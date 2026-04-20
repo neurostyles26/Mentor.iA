@@ -113,7 +113,7 @@ const premiumSponsors = [
           <h3 class="text-2xl font-black text-white mb-2 group-hover:text-primary transition-colors tracking-tight line-clamp-1 italic">{{ course.name }}</h3>
           <div class="flex items-center gap-3 mb-8">
             <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-black text-primary uppercase tracking-widest">{{ course.grade }}</span>
-            <span class="text-[9px] font-black text-white/60 uppercase tracking-widest flex items-center gap-1">
+            <span class="text-[9px] font-black text-white/80 uppercase tracking-widest flex items-center gap-1">
               <Clock class="w-3 h-3" /> Hace 2 días
             </span>
           </div>
@@ -167,7 +167,7 @@ const premiumSponsors = [
         <BrainCircuit class="w-20 h-20 text-primary relative z-10" />
       </div>
       <h2 class="text-4xl font-black text-white mb-4 tracking-tighter">Tu Biblioteca está vacía</h2>
-      <p class="text-white/60 font-bold text-lg max-w-md mb-12">
+      <p class="text-white/90 font-bold text-lg max-w-md mb-12">
         Aún no has creado ningún curso. El **Mentor IA** te ayudará a preparar clases innovadoras en cuestión de segundos.
       </p>
       <button 
@@ -186,12 +186,12 @@ const premiumSponsors = [
       <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
         <div class="flex-1 space-y-4">
           <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-glow">
+            <Zap class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-glow">
               <Zap class="w-6 h-6 text-white" />
             </div>
             <h2 class="text-3xl font-black italic tracking-tighter">Impacto Pedagógico</h2>
           </div>
-          <p class="text-white/70 font-bold text-lg leading-relaxed max-w-xl">
+          <p class="text-white/90 font-bold text-lg leading-relaxed max-w-xl">
             Tu ecosistema ha procesado lecciones que impactan al <span class="text-primary">92%</span> de tus objetivos curriculares este periodo.
           </p>
         </div>

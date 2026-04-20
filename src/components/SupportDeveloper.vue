@@ -75,7 +75,7 @@ const donationLinks = [
 
         <!-- Body -->
         <div class="relative p-10 space-y-10">
-          <p class="text-white/60 font-bold text-lg leading-relaxed">
+          <p class="text-white/90 font-bold text-lg leading-relaxed">
             MentorIA es un proyecto independiente nacido para empoderar a los docentes. Tu apoyo directo permite que las neuronas digitales sigan evolucionando.
           </p>
 
@@ -95,7 +95,7 @@ const donationLinks = [
                 {{ link.name }}
                 <ChevronRight class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </h3>
-              <p class="text-[10px] font-black text-white/40 uppercase tracking-widest leading-relaxed">{{ link.desc }}</p>
+              <p class="text-[10px] font-black text-white/70 uppercase tracking-widest leading-relaxed">{{ link.desc }}</p>
             </a>
           </div>
 
@@ -108,7 +108,7 @@ const donationLinks = [
               <p class="text-xs text-white underline mb-1 font-black cursor-pointer hover:text-primary transition-colors flex items-center gap-2">
                 Ver Road Map 2026 <ExternalLink class="w-3 h-3" />
               </p>
-              <p class="text-[9px] font-black text-white/40 uppercase tracking-widest leading-relaxed">Cada donación acelera el despliegue de nuevos motores neuronales.</p>
+              <p class="text-[9px] font-black text-white/70 uppercase tracking-widest leading-relaxed">Cada donación acelera el despliegue de nuevos motores neuronales.</p>
             </div>
           </div>
         </div>

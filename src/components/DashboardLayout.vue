@@ -98,7 +98,7 @@ const toggleChat = () => {
             MentorIA
           </span>
         </div>
-        <p v-if="!isSidebarCollapsed" class="text-[9px] font-black text-white/30 uppercase tracking-[0.4em] mt-3 animate-fade-in">Intelligence Suite v2.5</p>
+        <p v-if="!isSidebarCollapsed" class="text-[9px] font-black text-primary/50 uppercase tracking-[0.4em] mt-3 animate-fade-in">Intelligence Suite v2.5</p>
       </div>
 
       <!-- Navigation -->
@@ -109,7 +109,7 @@ const toggleChat = () => {
           :to="item.path"
           class="flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 relative group overflow-hidden"
           :class="[
-            route.path === item.path ? 'bg-primary/10 text-primary shadow-sm border border-primary/10' : 'text-white/40 hover:bg-white/5 hover:text-white',
+            route.path === item.path ? 'bg-primary/10 text-primary shadow-sm border border-primary/10' : 'text-white/70 hover:bg-white/10 hover:text-white',
             isSidebarCollapsed ? 'justify-center px-0' : ''
           ]"
           @click="isMobileMenuOpen = false"
@@ -152,7 +152,7 @@ const toggleChat = () => {
 
            <button 
              @click="handleLogout"
-             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-widest text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all group border border-transparent"
+             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-widest text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all group border border-transparent"
              :class="isSidebarCollapsed ? 'justify-center' : ''"
            >
              <LogOut class="w-5 h-5 shrink-0 group-hover:-translate-x-1 transition-transform" />
@@ -173,16 +173,16 @@ const toggleChat = () => {
 
         <!-- Search Bar (Responsive) -->
         <div class="hidden sm:flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl w-[300px] lg:w-[450px] border border-white/5 focus-within:border-primary/50 transition-all duration-500">
-          <Search class="w-5 h-5 text-white/20" />
+          <Search class="w-5 h-5 text-white/50" />
           <input 
             type="text" 
             placeholder="Buscar en mi ecosistema..."
-            class="bg-transparent border-0 outline-none text-xs font-bold w-full text-white placeholder:text-white/20"
+            class="bg-transparent border-0 outline-none text-xs font-bold w-full text-white placeholder:text-white/40"
           />
         </div>
 
         <div class="flex items-center gap-4 lg:gap-8">
-          <button class="p-3 bg-white/5 border border-white/10 rounded-xl text-white/40 hover:text-primary relative transition-all active:scale-90">
+          <button class="p-3 bg-white/5 border border-white/10 rounded-xl text-white/60 hover:text-primary relative transition-all active:scale-90">
             <Bell class="w-5 h-5" />
             <span class="absolute top-3 right-3 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
           </button>
@@ -197,7 +197,7 @@ const toggleChat = () => {
             </div>
             <div class="text-right hidden md:block">
               <p class="text-xs font-black text-white tracking-tight leading-none mb-1">{{ authStore.displayName }}</p>
-              <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] leading-none">Miembro Premium</p>
+              <p class="text-[9px] font-black text-primary uppercase tracking-[0.2em] leading-none drop-shadow-sm">Miembro Elite</p>
             </div>
           </div>
         </div>
