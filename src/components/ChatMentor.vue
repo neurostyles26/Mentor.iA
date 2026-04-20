@@ -76,41 +76,41 @@ onMounted(() => {
 <template>
   <Transition name="premium-slide">
     <div v-if="isOpen" 
-      class="fixed bottom-6 right-6 w-[480px] h-[720px] glass-panel z-[100] flex flex-col overflow-hidden animate-premium-entry"
+      class="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 w-full sm:w-[480px] h-[100dvh] sm:h-[720px] glass-panel z-[100] flex flex-col overflow-hidden animate-premium-entry sm:rounded-[2.5rem] rounded-none border-0 sm:border border-white/5"
       role="dialog"
       aria-labelledby="chat-title"
     >
       <!-- Header Premium -->
-      <div class="p-8 bg-gradient-to-r from-primary/20 to-secondary/20 border-b border-white/5 relative overflow-hidden">
+      <div class="p-6 sm:p-8 bg-gradient-to-r from-primary/20 to-secondary/20 border-b border-white/5 relative overflow-hidden shrink-0">
         <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
         
         <div class="flex items-center justify-between relative z-10">
-          <div class="flex items-center gap-5">
-            <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
-              <BrainCircuit class="w-7 h-7 text-primary" />
+          <div class="flex items-center gap-4 sm:gap-5">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
+              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-7 h-7 object-contain" />
             </div>
             <div>
-              <h3 id="chat-title" class="text-2xl font-black tracking-tight text-white leading-tight">Mentor IA</h3>
+              <h3 id="chat-title" class="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">Mentor IA</h3>
               <div class="flex items-center gap-2">
                 <span class="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse"></span>
-                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">Motor Neuronal • Online</p>
+                <p class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">Motor Neuronal • Online</p>
               </div>
             </div>
           </div>
           
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3">
             <button @click="clearChat" 
-              class="p-3 hover:bg-white/10 rounded-2xl transition-all text-white/40 hover:text-white"
+              class="p-2 sm:p-3 hover:bg-white/10 rounded-2xl transition-all text-white/40 hover:text-white"
               title="Limpiar chat"
               aria-label="Limpiar historial de chat"
             >
-              <Trash2 class="w-5 h-5" />
+              <Trash2 class="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <button @click="$emit('close')" 
-              class="p-3 hover:bg-white/10 rounded-2xl transition-all text-white/40 hover:text-white"
+              class="p-2 sm:p-3 hover:bg-white/10 rounded-2xl transition-all text-white/40 hover:text-white"
               aria-label="Cerrar chat"
             >
-              <X class="w-6 h-6" />
+              <X class="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
         </div>
@@ -118,7 +118,7 @@ onMounted(() => {
 
       <!-- Chat Body -->
       <div ref="scrollContainer" 
-        class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar scroll-smooth"
+        class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-6 sm:space-y-8 custom-scrollbar scroll-smooth"
         aria-live="polite"
       >
         <div 
@@ -159,27 +159,27 @@ onMounted(() => {
       </div>
 
       <!-- Footer / Input Premium -->
-      <div class="p-8 bg-white/5 border-t border-white/5">
-        <div class="flex items-center gap-4 bg-white/5 p-2 pl-6 rounded-[2rem] border border-white/10 focus-within:border-primary/50 focus-within:bg-white/10 transition-all duration-300">
+      <div class="p-6 sm:p-8 bg-white/5 border-t border-white/5 shrink-0">
+        <div class="flex items-center gap-3 sm:gap-4 bg-white/5 p-2 pl-4 sm:pl-6 rounded-[2rem] border border-white/10 focus-within:border-primary/50 focus-within:bg-white/10 transition-all duration-300">
           <input 
             v-model="newMessage"
             @keyup.enter="handleSendMessage"
             type="text" 
-            placeholder="Escribe tu duda pedagógica..."
-            class="flex-1 bg-transparent border-none outline-none text-sm font-bold text-white placeholder:text-white/20"
+            placeholder="Escribe tu duda..."
+            class="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-bold text-white placeholder:text-white/20"
             :disabled="courseStore.isAskingTutor"
             aria-label="Mensaje para el mentor"
           />
           <button 
             @click="handleSendMessage"
-            class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-all active:scale-90 disabled:opacity-50 disabled:scale-100 shadow-glow"
+            class="w-12 h-12 sm:w-14 sm:h-14 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-all active:scale-90 disabled:opacity-50 disabled:scale-100 shadow-glow shrink-0"
             :disabled="!newMessage.trim() || courseStore.isAskingTutor"
             aria-label="Enviar mensaje"
           >
-            <Send class="w-6 h-6" />
+            <Send class="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
-        <p class="text-[9px] text-center mt-5 text-white/20 font-black uppercase tracking-[0.3em]">IA Avanzada para la Educación Colombiana</p>
+        <p class="text-[8px] sm:text-[9px] text-center mt-4 sm:mt-5 text-white/20 font-black uppercase tracking-[0.3em]">IA Avanzada para la Educación</p>
       </div>
     </div>
   </Transition>

@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { 
   Sparkles, 
@@ -9,10 +10,14 @@ import {
   Globe,
   Rocket,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  Menu as MenuIcon,
+  X as XIcon
 } from 'lucide-vue-next'
 
 const router = useRouter()
+const isMenuOpen = ref(false)
+const toggleMenu = () => isMenuOpen.value = !isMenuOpen.value
 </script>
 
 <template>
@@ -36,12 +41,46 @@ const router = useRouter()
         </div>
       </div>
       
-      <div class="flex items-center gap-3 sm:gap-8">
-        <button @click="router.push('/login')" class="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors hidden xs:block">Sincronizar Panel</button>
-        <button @click="router.push('/login?signup=true')" class="px-4 py-2.5 md:px-8 md:py-3 bg-white text-bg-deep rounded-xl font-black text-[9px] md:text-[10px] uppercase tracking-widest shadow-premium hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95 whitespace-nowrap">
+      <div class="hidden md:flex items-center gap-8">
+        <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors">Sincronizar Panel</button>
+        <button @click="router.push('/login?signup=true')" class="px-8 py-3 bg-white text-bg-deep rounded-xl font-black text-[10px] uppercase tracking-widest shadow-premium hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95 whitespace-nowrap">
           Crear Cuenta
         </button>
       </div>
+
+      <!-- Hamburger Button (Mobile) -->
+      <button @click="toggleMenu" class="md:hidden p-2.5 bg-white/5 border border-white/10 rounded-xl text-white hover:text-primary transition-all active:scale-90 relative z-[60]">
+        <MenuIcon v-if="!isMenuOpen" class="w-6 h-6" />
+        <XIcon v-else class="w-6 h-6" />
+      </button>
+
+      <!-- Mobile Menu Overlay -->
+      <Transition name="fade">
+        <div v-if="isMenuOpen" 
+          class="fixed inset-0 bg-bg-deep/95 backdrop-blur-xl z-[50] md:hidden flex flex-col items-center justify-center p-10 space-y-12"
+        >
+          <div class="flex flex-col items-center gap-6 text-center">
+            <div class="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center border border-primary/20 mb-4 shadow-glow">
+              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-12 h-12 object-contain" />
+            </div>
+            <h2 class="text-4xl font-black text-white tracking-tighter uppercase">MentorIA</h2>
+            <p class="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Intelligence Suite v2.5</p>
+          </div>
+
+          <div class="w-full space-y-4">
+             <button @click="router.push('/login'); isMenuOpen = false" class="w-full py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
+                Sincronizar Panel
+             </button>
+             <button @click="router.push('/login?signup=true'); isMenuOpen = false" class="w-full py-6 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-glow hover:bg-secondary transition-all">
+                Crear Cuenta
+             </button>
+          </div>
+
+          <button @click="isMenuOpen = false" class="text-white/40 uppercase font-black text-[9px] tracking-[0.3em] hover:text-white transition-colors">
+            Cerrar Menú
+          </button>
+        </div>
+      </Transition>
     </nav>
 
     <!-- Hero -->
