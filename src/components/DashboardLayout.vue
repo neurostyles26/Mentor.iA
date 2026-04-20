@@ -17,9 +17,11 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Calendar
+  Calendar,
+  Heart
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
+import SupportDeveloper from './SupportDeveloper.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -28,6 +30,7 @@ const authStore = useAuthStore()
 const isSidebarCollapsed = ref(false)
 const isMobileMenuOpen = ref(false)
 const isChatOpen = ref(false)
+const isSupportOpen = ref(false)
 
 const navItems = [
   { name: 'Mis Cursos', icon: LayoutDashboard, path: '/dashboard' },
@@ -139,6 +142,15 @@ const toggleChat = () => {
 
         <div class="flex items-center flex-col gap-2">
            <button 
+             @click="isSupportOpen = true"
+             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-widest text-primary bg-primary/5 hover:bg-primary/20 hover:shadow-glow transition-all group border border-primary/10 mb-2"
+             :class="isSidebarCollapsed ? 'justify-center mx-1 px-0' : ''"
+           >
+             <Heart class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform animate-pulse" />
+             <span v-if="!isSidebarCollapsed" class="whitespace-nowrap">Apoyar Proyecto</span>
+           </button>
+
+           <button 
              @click="handleLogout"
              class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-widest text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all group border border-transparent"
              :class="isSidebarCollapsed ? 'justify-center' : ''"
@@ -205,6 +217,9 @@ const toggleChat = () => {
 
       <!-- Floating Chat Component -->
       <ChatMentor :is-open="isChatOpen" @close="isChatOpen = false" />
+      
+      <!-- Support Developer Modal -->
+      <SupportDeveloper :is-open="isSupportOpen" @close="isSupportOpen = false" />
     </main>
   </div>
 </template>

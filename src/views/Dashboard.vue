@@ -8,12 +8,13 @@ import {
   MoreVertical, 
   BookOpen, 
   ArrowRight, 
-  BrainCircuit,
-  Sparkles,
-  Search,
-  Zap,
-  Clock
+  Clock,
+  Globe,
+  Wand2,
+  Image as ImageIcon,
+  Palette
 } from 'lucide-vue-next'
+import SponsorCard from '../components/SponsorCard.vue'
 
 const router = useRouter()
 const courseStore = useCourseStore()
@@ -38,6 +39,31 @@ const navigateToCreate = () => {
 const getInitials = (name) => {
   return (name || 'C').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
 }
+
+// Native Advertisements / Sponsors
+const premiumSponsors = [
+  {
+    title: 'Canva Education',
+    desc: 'Crea recursos visuales asombrosos para tus clases con IA.',
+    icon: Palette,
+    url: 'https://canva.com',
+    color: 'from-blue-400 to-emerald-400'
+  },
+  {
+    title: 'Digital Ocean',
+    desc: 'Despliegue escalable para tus proyectos de educación online.',
+    icon: Globe,
+    url: 'https://digitalocean.com',
+    color: 'from-blue-600 to-indigo-600'
+  },
+  {
+    title: 'Adobe Express',
+    desc: 'Diseño rápido impulsado por IA para contenidos educativos.',
+    icon: ImageIcon,
+    url: 'https://adobe.com/express',
+    color: 'from-red-500 to-orange-500'
+  }
+]
 </script>
 
 <template>
@@ -183,6 +209,28 @@ const getInitials = (name) => {
         </div>
       </div>
     </div>
+
+    <!-- Sponsor Spotlight (Professional Advertising) -->
+    <section class="space-y-8 pb-10">
+      <div class="flex items-center justify-between">
+        <h2 class="text-[10px] font-black text-white/40 uppercase tracking-[0.5em] flex items-center gap-3">
+          <Sparkles class="w-4 h-4 text-primary" /> Sponsor Spotlight
+        </h2>
+        <div class="h-px bg-white/5 flex-1 ml-6"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <SponsorCard 
+          v-for="sponsor in premiumSponsors" 
+          :key="sponsor.title"
+          :title="sponsor.title"
+          :description="sponsor.desc"
+          :icon="sponsor.icon"
+          :url="sponsor.url"
+          :color="sponsor.color"
+        />
+      </div>
+    </section>
   </div>
 </template>
 
