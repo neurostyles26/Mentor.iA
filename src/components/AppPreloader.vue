@@ -19,7 +19,7 @@ import { BrainCircuit, Sparkles } from 'lucide-vue-next'
         
         <div class="w-24 h-24 bg-bg-card border border-white/10 rounded-[2rem] flex items-center justify-center shadow-premium relative overflow-hidden">
           <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
-          <BrainCircuit class="w-12 h-12 text-primary animate-neural-pulse relative z-10" />
+          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-16 h-16 object-contain animate-neural-pulse relative z-10" />
         </div>
       </div>
 

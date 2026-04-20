@@ -164,7 +164,7 @@ const premiumSponsors = [
     <div v-else class="py-20 flex flex-col items-center text-center animate-slide-up bg-white/2 rounded-[3.5rem] border border-white/5 border-dashed">
       <div class="w-40 h-40 bg-primary/5 rounded-[3.5rem] flex items-center justify-center mb-10 relative">
         <div class="absolute inset-0 bg-primary/20 blur-[60px] rounded-full scale-150 animate-pulse"></div>
-        <BrainCircuit class="w-20 h-20 text-primary relative z-10" />
+        <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-24 h-24 object-contain relative z-10 animate-neural-pulse" />
       </div>
       <h2 class="text-4xl font-black text-white mb-4 tracking-tighter">Tu Biblioteca está vacía</h2>
       <p class="text-white/90 font-bold text-lg max-w-md mb-12">

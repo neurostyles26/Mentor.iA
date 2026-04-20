@@ -89,7 +89,7 @@ const toggleChat = () => {
           :class="isSidebarCollapsed ? 'flex-col' : ''"
         >
           <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-glow border border-primary/20 shrink-0">
-            <BrainCircuit class="w-7 h-7 text-primary" />
+            <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-8 h-8 object-contain" />
           </div>
           <span 
             v-if="!isSidebarCollapsed" 

@@ -75,7 +75,7 @@ const toggleMode = () => {
       <!-- Top Brand -->
       <div class="relative z-10 flex items-center gap-4 group cursor-pointer animate-fade-in-down" @click="router.push('/')">
         <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20 shadow-glow transform group-hover:rotate-12 transition-all duration-700">
-          <BrainCircuit class="w-8 h-8 text-primary" />
+          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-10 h-10 object-contain" />
         </div>
         <div>
           <h2 class="text-3xl font-black text-white tracking-tighter uppercase leading-none">MentorIA</h2>
@@ -129,7 +129,7 @@ const toggleMode = () => {
       <!-- Mobile Only Header -->
       <div class="lg:hidden flex flex-col items-center mb-12 animate-fade-in-down">
         <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20 mb-4 shadow-glow">
-          <BrainCircuit class="w-10 h-10 text-primary" />
+          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-12 h-12 object-contain" />
         </div>
         <h2 class="text-4xl font-black text-white tracking-tighter uppercase mb-1">MentorIA</h2>
         <span class="text-[9px] font-black text-primary uppercase tracking-[0.4em]">Intelligence Suite v2.5</span>
