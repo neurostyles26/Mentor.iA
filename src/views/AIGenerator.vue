@@ -40,6 +40,7 @@ const { speak, stop, isSpeaking } = useTextToSpeech()
 
 const router = useRouter()
 const courseStore = useCourseStore()
+const chatStore = useChatStore()
 
 // Wizard State
 const currentStep = ref(1) // 1: Context, 2: Brainstorm, 3: Generate
@@ -75,10 +76,10 @@ const types = [
 ]
 
 const sendToMentor = async () => {
-  if (!teacherMessage.value.trim() || courseStore.isAskingTutor) return
+  if (!teacherMessage.value.trim() || chatStore.isLoading) return
   const msg = teacherMessage.value
   teacherMessage.value = ''
-  await courseStore.askMentorTeacher(msg)
+  await chatStore.sendMessage(msg)
   scrollToBottom()
 }
 
@@ -224,7 +225,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 
           <!-- Messages -->
           <div ref="chatContainer" class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar scroll-smooth">
-            <div v-if="courseStore.teacherChatHistory.length === 0" class="text-center py-16">
+            <div v-if="chatStore.messages.length === 0" class="text-center py-16">
               <Sparkles class="w-12 h-12 text-primary/10 mx-auto mb-6" />
               <p class="text-white/50 font-black uppercase tracking-[0.4em] text-[10px] mb-8">Empieza a describir tu idea...</p>
               <div class="flex flex-wrap justify-center gap-3">
@@ -233,7 +234,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
               </div>
             </div>
 
-            <div v-for="(msg, i) in courseStore.teacherChatHistory" :key="i" 
+            <div v-for="(msg, i) in chatStore.messages" :key="i" 
               :class="['flex gap-4 max-w-[90%]', msg.role === 'user' ? 'ml-auto flex-row-reverse' : '']"
             >
               <div :class="['w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border border-white/10 transition-all', msg.role === 'user' ? 'bg-primary text-white shadow-glow rotate-3' : 'bg-white/5 text-primary']">
@@ -256,7 +257,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
               </div>
             </div>
             
-            <div v-if="courseStore.isAskingTutor" class="flex gap-4">
+            <div v-if="chatStore.isLoading" class="flex gap-4">
               <div class="w-9 h-9 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center">
                 <Loader2 class="w-4 h-4 text-primary animate-spin" />
               </div>
@@ -280,7 +281,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                 class="input-field w-full pr-28 py-4 md:py-5 relative z-10"
               />
               <div class="absolute right-16 top-1/2 -translate-y-1/2 z-20 flex gap-2">
-                <VoiceAssistant v-model="teacherMessage" :disabled="courseStore.isAskingTutor" />
+                <VoiceAssistant v-model="teacherMessage" :disabled="chatStore.isLoading" />
               </div>
               <button @click="sendToMentor" class="absolute right-2 top-2 p-3 bg-primary text-white rounded-xl hover:bg-secondary transition-all shadow-glow active:scale-90 z-20">
                 <Send class="w-5 h-5" />

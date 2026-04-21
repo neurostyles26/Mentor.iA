@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, nextTick, onMounted } from 'vue'
 import { useCourseStore } from '../store'
+import { useChatStore } from '../store/chat'
 import { 
   X, 
   Send, 
@@ -8,6 +9,7 @@ import {
   Sparkles,
   MessageCircle,
   Minimize2,
+  Trash2,
   User,
   Bot,
   Volume2,
@@ -24,6 +26,7 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const courseStore = useCourseStore()
+const chatStore = useChatStore()
 const newMessage = ref('')
 const scrollContainer = ref(null)
 
@@ -37,41 +40,49 @@ const scrollToBottom = async () => {
   }
 }
 
-watch(() => courseStore.teacherChatHistory.length, () => {
+watch(() => chatStore.messages.length, () => {
   scrollToBottom()
 })
 
 watch(() => props.isOpen, (val) => {
-  if (val) scrollToBottom()
+  if (val) {
+    chatStore.loadChats()
+    scrollToBottom()
+  }
 })
 
 const handleSendMessage = async () => {
-  if (!newMessage.value.trim() || courseStore.isAskingTutor) return
+  if (!newMessage.value.trim() || chatStore.isLoading) return
   
   const msg = newMessage.value
   newMessage.value = ''
-  await courseStore.askMentorTeacher(msg)
+  await chatStore.sendMessage(msg)
+  
+  // Auto-play voice if enabled (Global setting in courseStore)
+  if (courseStore.isVoiceOutputEnabled && chatStore.messages.length > 0) {
+    const lastMsg = chatStore.messages[chatStore.messages.length - 1]
+    if (lastMsg.role === 'assistant') {
+      try {
+        const { useTextToSpeech } = await import('../composables/useTextToSpeech')
+        const { speak } = useTextToSpeech()
+        speak(lastMsg.content)
+      } catch (e) { console.error(e) }
+    }
+  }
 }
 
 const renderMarkdown = (text) => {
   return DOMPurify.sanitize(marked.parse(text))
 }
 
-const clearChat = () => {
-  if (confirm('¿Estás seguro de que quieres limpiar el historial de chat?')) {
-    courseStore.clearTeacherChat()
+const clearChat = async () => {
+  if (chatStore.currentChatId && confirm('¿Estás seguro de que quieres eliminar esta conversación permanente?')) {
+    await chatStore.deleteChat(chatStore.currentChatId)
   }
 }
 
 onMounted(() => {
-  if (courseStore.teacherChatHistory.length === 0) {
-    // Welcome message
-    courseStore.teacherChatHistory.push({
-      role: 'assistant',
-      content: '¡Hola! Soy tu **Mentor IA**. Estoy aquí para ayudarte a diseñar clases innovadoras, resolver dudas pedagógicas o darte ideas creativas para tu aula. ¿En qué puedo apoyarte hoy?',
-      timestamp: new Date()
-    })
-  }
+  chatStore.loadChats()
 })
 </script>
 
@@ -134,8 +145,16 @@ onMounted(() => {
         class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-6 sm:space-y-8 custom-scrollbar scroll-smooth"
         aria-live="polite"
       >
+        <div v-if="chatStore.messages.length === 0" class="flex flex-col items-center justify-center h-full opacity-30 text-center p-8">
+           <BrainCircuit class="w-16 h-16 mb-6" />
+           <p class="text-[10px] uppercase font-black tracking-widest leading-relaxed">
+             Inicia una conversación permanente con tu Mentor IA.<br>
+             Tus ideas ahora se guardan para siempre.
+           </p>
+        </div>
+
         <div 
-          v-for="(msg, index) in courseStore.teacherChatHistory" 
+          v-for="(msg, index) in chatStore.messages" 
           :key="index"
           class="flex flex-col"
           :class="msg.role === 'user' ? 'items-end' : 'items-start'"
@@ -154,12 +173,12 @@ onMounted(() => {
           <span class="text-[9px] font-black uppercase tracking-widest text-white/20 mt-3 px-4 flex items-center gap-2">
             <User v-if="msg.role === 'user'" class="w-3 h-3" />
             <Bot v-else class="w-3 h-3" />
-            {{ msg.role === 'user' ? 'Tú' : 'Mentor IA' }} • {{ new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+            {{ msg.role === 'user' ? 'Tú' : 'Mentor IA' }} • {{ new Date(msg.created_at || msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
           </span>
         </div>
 
         <!-- Typing Indicator -->
-        <div v-if="courseStore.isAskingTutor" class="flex flex-col items-start animate-fade-in">
+        <div v-if="chatStore.isLoading" class="flex flex-col items-start animate-fade-in">
           <div class="bg-white/5 border border-white/10 p-6 rounded-[2.5rem] rounded-bl-none flex items-center gap-4">
             <div class="flex gap-1.5">
               <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0s"></span>
@@ -180,14 +199,14 @@ onMounted(() => {
             type="text" 
             placeholder="Escribe tu duda..."
             class="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-bold text-white placeholder:text-white/20"
-            :disabled="courseStore.isAskingTutor"
+            :disabled="chatStore.isLoading"
             aria-label="Mensaje para el mentor"
           />
-          <VoiceAssistant v-model="newMessage" :disabled="courseStore.isAskingTutor" />
+          <VoiceAssistant v-model="newMessage" :disabled="chatStore.isLoading" />
           <button 
             @click="handleSendMessage"
             class="w-12 h-12 sm:w-14 sm:h-14 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-all active:scale-90 disabled:opacity-50 disabled:scale-100 shadow-glow shrink-0"
-            :disabled="!newMessage.trim() || courseStore.isAskingTutor"
+            :disabled="!newMessage.trim() || chatStore.isLoading"
             aria-label="Enviar mensaje"
           >
             <Send class="w-5 h-5 sm:w-6 sm:h-6" />

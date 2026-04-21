@@ -42,6 +42,16 @@ const routes = [
         path: 'agenda',
         name: 'Agenda',
         component: () => import('../views/Agenda.vue')
+      },
+      {
+        path: 'history',
+        name: 'ChatHistory',
+        component: () => import('../views/History.vue')
+      },
+      {
+        path: 'clipboard',
+        name: 'Clipboard',
+        component: () => import('../views/Clipboard.vue')
       }
     ]
   },

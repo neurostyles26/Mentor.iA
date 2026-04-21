@@ -18,7 +18,9 @@ import {
   ChevronRight,
   X,
   Calendar,
-  Heart
+  Heart,
+  History,
+  ClipboardList
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
 import SupportDeveloper from './SupportDeveloper.vue'
@@ -35,8 +37,9 @@ const isSupportOpen = ref(false)
 const navItems = [
   { name: 'Mis Cursos', icon: LayoutDashboard, path: '/dashboard' },
   { name: 'Nueva Clase IA', icon: Sparkles, path: '/dashboard/create' },
+  { name: 'Historial de Chats', icon: History, path: '/dashboard/history' },
+  { name: 'Mis Recortes', icon: ClipboardList, path: '/dashboard/clipboard' },
   { name: 'Agenda', icon: Calendar, path: '/dashboard/agenda' },
-  { name: 'Analíticas', icon: BarChart3, path: '/dashboard/analytics' },
   { name: 'Configuraciones', icon: Settings, path: '/dashboard/settings' },
 ]
 
