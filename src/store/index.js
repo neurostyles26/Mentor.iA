@@ -75,6 +75,8 @@ export const useCourseStore = defineStore('course', {
               message = '⚠️ Error de API Key: La llave de la IA no es válida o falta en Supabase Secrets.'
             } else if (errData.type === 'MODEL_NOT_FOUND') {
               message = '⚠️ Error de Modelo: El modelo de IA no está disponible. Intentando reconexión...'
+            } else if (errData.error?.includes('RESOURCE_EXHAUSTED') || errData.message?.includes('quota')) {
+              message = '🚀 El Motor Neuronal está procesando muchas peticiones. Por favor, espera 60 segundos antes de intentar de nuevo para permitir que el sistema se estabilice.'
             } else if (errData.error) {
               message = `⚠️ Error de Servidor: ${errData.error}`
             }
@@ -190,6 +192,8 @@ export const useCourseStore = defineStore('course', {
               userMessage = '⚠️ Configuración Incómoda: La API Key de la IA no es válida o falta en Supabase.'
             } else if (errData.type === 'MODEL_NOT_FOUND') {
               userMessage = '⚠️ Desconexión de Modelo: El motor neuronal no respondió. Intentando reconexión...'
+            } else if (errData.error?.includes('RESOURCE_EXHAUSTED') || errData.message?.includes('quota')) {
+              userMessage = '🚀 ¡Sistema a Toda Máquina! Hemos alcanzado el límite de generación gratuita de Google por este minuto. Por favor, espera 60 segundos y vuelve a pulsar "Generar Artefacto".'
             } else if (errData.details) {
               userMessage = errData.error + ' - ' + errData.details
             }
