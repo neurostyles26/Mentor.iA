@@ -13,6 +13,7 @@ import { exportService } from '../lib/exportService'
 import ChatMessage from '../components/ChatMessage.vue'
 import ClipboardItem from '../components/ClipboardItem.vue'
 import PromptButtons from '../components/PromptButtons.vue'
+import VoiceAssistant from '../components/VoiceAssistant.vue'
 
 const authStore = useAuthStore()
 const chatStore = useChatStore()
@@ -193,14 +194,17 @@ const handleExport = (format) => {
                 placeholder="Pregunta algo o usa una plantilla..."
                 class="flex-1 bg-transparent border-none focus:ring-0 p-3 text-text-main placeholder:text-text-muted resize-none max-h-48"
               ></textarea>
-              <button 
-                @click="handleSend"
-                :disabled="chatStore.isLoading || !inputText.trim()"
-                class="btn-primary p-3 rounded-xl shrink-0"
-              >
-                <Loader2 v-if="chatStore.isLoading" class="animate-spin" :size="20" />
-                <Send v-else :size="20" />
-              </button>
+              <div class="flex items-center gap-2 px-2 py-2">
+                <VoiceAssistant v-model="inputText" :disabled="chatStore.isLoading" />
+                <button 
+                  @click="handleSend"
+                  :disabled="chatStore.isLoading || !inputText.trim()"
+                  class="btn-primary p-3 rounded-xl shrink-0"
+                >
+                  <Loader2 v-if="chatStore.isLoading" class="animate-spin" :size="20" />
+                  <Send v-else :size="20" />
+                </button>
+              </div>
             </div>
             <p class="text-[10px] text-center text-text-muted uppercase tracking-tighter">Potenciado por Gemma 4 para Docentes</p>
           </div>

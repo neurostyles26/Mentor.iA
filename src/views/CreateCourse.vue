@@ -18,6 +18,8 @@ import {
   Cpu
 } from 'lucide-vue-next'
 
+import VoiceAssistant from '../components/VoiceAssistant.vue'
+
 const router = useRouter()
 const courseStore = useCourseStore()
 const isUploading = ref(false)
@@ -178,11 +180,13 @@ const prevStep = () => {
                   </label>
                   <div class="relative">
                     <input 
-                      v-model="courseStore.newCourseDraft.name"
                       type="text" 
                       placeholder="Ej: Macroeconomía y Dinámicas AI..."
-                      class="input-field w-full text-3xl font-black py-8 placeholder:text-white/5 border-primary/10 italic"
+                      class="input-field w-full text-3xl font-black py-8 pr-32 placeholder:text-white/5 border-primary/10 italic"
                     />
+                    <div class="absolute right-20 top-1/2 -translate-y-1/2 z-10">
+                      <VoiceAssistant v-model="courseStore.newCourseDraft.name" />
+                    </div>
                     <Sparkles class="absolute right-8 top-1/2 -translate-y-1/2 w-8 h-8 text-primary opacity-20 animate-pulse pointer-events-none" />
                   </div>
                 </div>
@@ -202,6 +206,9 @@ const prevStep = () => {
               <div class="space-y-12 pt-8">
                 <div class="relative group">
                   <div class="absolute -inset-1 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-[3rem] blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-700"></div>
+                  <div class="absolute top-6 right-8 z-20">
+                    <VoiceAssistant v-model="courseStore.newCourseDraft.objectives" />
+                  </div>
                   <textarea 
                     v-model="courseStore.newCourseDraft.objectives"
                     rows="8"

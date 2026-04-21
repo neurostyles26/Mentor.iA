@@ -14,6 +14,7 @@ import {
 } from 'lucide-vue-next'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
+import VoiceAssistant from './VoiceAssistant.vue'
 
 const props = defineProps({
   isOpen: Boolean
@@ -170,6 +171,7 @@ onMounted(() => {
             :disabled="courseStore.isAskingTutor"
             aria-label="Mensaje para el mentor"
           />
+          <VoiceAssistant v-model="newMessage" :disabled="courseStore.isAskingTutor" />
           <button 
             @click="handleSendMessage"
             class="w-12 h-12 sm:w-14 sm:h-14 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-all active:scale-90 disabled:opacity-50 disabled:scale-100 shadow-glow shrink-0"

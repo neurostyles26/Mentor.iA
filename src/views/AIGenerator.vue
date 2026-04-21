@@ -29,8 +29,9 @@ import {
   Minimize2
 } from 'lucide-vue-next'
 
-import { exportService } from '../lib/exportService'
+import { exportService } from '../lib/service/exportService'
 import { useClipboardStore } from '../store/clipboard'
+import VoiceAssistant from '../components/VoiceAssistant.vue'
 
 const router = useRouter()
 const courseStore = useCourseStore()
@@ -271,8 +272,11 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                 @keyup.enter="sendToMentor"
                 type="text" 
                 placeholder="Prescribe tu visión pedagógica..." 
-                class="input-field w-full pr-16 py-4 md:py-5 relative z-10"
+                class="input-field w-full pr-28 py-4 md:py-5 relative z-10"
               />
+              <div class="absolute right-16 top-1/2 -translate-y-1/2 z-20 flex gap-2">
+                <VoiceAssistant v-model="teacherMessage" :disabled="courseStore.isAskingTutor" />
+              </div>
               <button @click="sendToMentor" class="absolute right-2 top-2 p-3 bg-primary text-white rounded-xl hover:bg-secondary transition-all shadow-glow active:scale-90 z-20">
                 <Send class="w-5 h-5" />
               </button>
@@ -338,8 +342,11 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
              </div>
              
              <div v-show="!isSidebarCollapsed" class="space-y-8 animate-fade-in">
-               <div class="space-y-3">
-                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Núcleo Temático</label>
+               <div class="space-y-3 relative">
+                <div class="flex items-center justify-between">
+                  <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Núcleo Temático</label>
+                  <VoiceAssistant v-model="topic" />
+                </div>
                 <textarea v-model="topic" class="input-field w-full h-40 resize-none text-[13px]"></textarea>
                </div>
 
