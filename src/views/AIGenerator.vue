@@ -29,7 +29,7 @@ import {
   Minimize2
 } from 'lucide-vue-next'
 
-import { exportService } from '../lib/service/exportService'
+import { exportService } from '../lib/exportService'
 import { useClipboardStore } from '../store/clipboard'
 import VoiceAssistant from '../components/VoiceAssistant.vue'
 
