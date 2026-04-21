@@ -5,6 +5,11 @@ export function useTextToSpeech() {
   const synth = window.speechSynthesis
   let utterance = null
 
+  // Refuerzo para cargar voces asíncronamente (especial para Chrome/Edge)
+  if (synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = () => synth.getVoices()
+  }
+
   const stop = () => {
     if (synth.speaking) {
       synth.cancel()
@@ -69,7 +74,15 @@ export function useTextToSpeech() {
 
     // Pequeño delay para asegurar que el motor esté listo
     setTimeout(() => {
-      synth.speak(utterance)
+      // Forzar liberación de pausa del navegador si quedó trabado
+      if (synth.paused) synth.resume()
+      
+      try {
+        synth.speak(utterance)
+      } catch (e) {
+        console.error('Error al iniciar síntesis:', e)
+        isSpeaking.value = false
+      }
     }, 50)
   }
 

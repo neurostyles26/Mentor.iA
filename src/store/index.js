@@ -48,6 +48,7 @@ export const useCourseStore = defineStore('course', {
         })
 
         // Auto-play voice if enabled (Safely)
+        // Auto-play voice if enabled (Safely)
         if (this.isVoiceOutputEnabled) {
           try {
             const { speak } = useTextToSpeech()
@@ -88,6 +89,14 @@ export const useCourseStore = defineStore('course', {
           content: message,
           timestamp: new Date()
         })
+
+        // Auto-play voice for errors too if enabled
+        if (this.isVoiceOutputEnabled) {
+          try {
+            const { speak } = useTextToSpeech()
+            speak(message.replace(/🚨|⚠️|🚀/g, '')) // Clean emojis for speech
+          } catch (vErr) { /* ignore */ }
+        }
       } finally {
         this.isAskingTutor = false
       }
