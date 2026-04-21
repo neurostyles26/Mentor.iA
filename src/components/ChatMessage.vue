@@ -55,7 +55,13 @@ const copyToClipboard = () => {
           <Copy v-else :size="14" />
           {{ copied ? 'Copiado' : 'Copiar' }}
         </button>
-        
+        <button 
+          v-if="isAssistant"
+          @click="emit('saveToClipboard', content)"
+          class="flex items-center gap-1.5 text-xs text-text-muted hover:text-white transition-colors"
+          title="Guardar en Portapapeles"
+        >
+          <ClipboardPlus :size="14" />
           Guardar en Portapapeles
         </button>
 
