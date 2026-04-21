@@ -21,14 +21,25 @@ import {
   Wand2,
   ChevronLeft,
   Cpu,
-  Zap
+  Zap,
+  ChevronDown,
+  FileDown,
+  ClipboardPlus,
+  Maximize2,
+  Minimize2
 } from 'lucide-vue-next'
+
+import { exportService } from '../lib/exportService'
+import { useClipboardStore } from '../store/clipboard'
 
 const router = useRouter()
 const courseStore = useCourseStore()
 
 // Wizard State
 const currentStep = ref(1) // 1: Context, 2: Brainstorm, 3: Generate
+const isSidebarCollapsed = ref(false)
+const showExportMenu = ref(false)
+const clipboardStore = useClipboardStore()
 
 // Form Data
 const subject = ref('')
@@ -97,6 +108,28 @@ const copyToClipboard = () => {
   navigator.clipboard.writeText(courseStore.generatedContent)
   copySuccess.value = true
   setTimeout(() => copySuccess.value = false, 2000)
+}
+
+const saveToClipboard = async () => {
+  if (!courseStore.generatedContent) return
+  await clipboardStore.addItem(courseStore.generatedContent, `Resultado: ${topic.value.substring(0, 30)}...`, type.value)
+  alert('Guardado en el portapapeles con éxito.')
+}
+
+const handleExportResult = (format) => {
+  if (!courseStore.generatedContent) return
+  const item = {
+    content: courseStore.generatedContent,
+    tag: type.value,
+    created_at: new Date()
+  }
+  const filename = `MentorIA_${type.value}_${new Date().toISOString().slice(0,10)}`
+  
+  if (format === 'pdf') exportService.exportToPDF([item], `${filename}.pdf`)
+  else if (format === 'excel') exportService.exportToExcel([item], `${filename}.xlsx`)
+  else if (format === 'slides') exportService.exportToSlides([item], `${filename}.pptx`)
+  
+  showExportMenu.value = false
 }
 
 const isContextValid = computed(() => subject.value.trim() && grade.value.trim())
@@ -282,52 +315,118 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
         </div>
       </section>
 
-      <!-- STEP 3: GENERATE & RESULT -->
-      <section v-if="currentStep === 3" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-slide-up">
-        <!-- Configuration Column -->
-        <aside class="lg:col-span-4 space-y-6">
-          <div class="glass-panel p-8 space-y-8">
+      <section v-if="currentStep === 3" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-slide-up relative">
+        <!-- Configuration Column (Sidebar) -->
+        <aside 
+          :class="['transition-all duration-500 ease-in-out overflow-hidden h-fit', 
+            isSidebarCollapsed ? 'lg:col-span-1 w-16' : 'lg:col-span-4 w-full']"
+        >
+          <div :class="['glass-panel space-y-8 p-8 relative', isSidebarCollapsed ? 'px-2' : 'p-8']">
              <div class="flex items-center justify-between mb-2">
-                <h3 class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Síntesis Final</h3>
-                <button @click="currentStep = 2" class="text-[9px] font-black text-primary uppercase underline tracking-widest">Ajustar</button>
+                <h3 v-if="!isSidebarCollapsed" class="text-[10px] font-black text-white uppercase tracking-[0.3em] animate-fade-in">Síntesis Final</h3>
+                <div class="flex items-center gap-2">
+                  <button v-if="!isSidebarCollapsed" @click="currentStep = 2" class="text-[9px] font-black text-primary uppercase underline tracking-widest mr-2">Ajustar</button>
+                  <button 
+                    @click="isSidebarCollapsed = !isSidebarCollapsed"
+                    class="p-2 hover:bg-white/5 rounded-lg text-white/40 hover:text-white transition-all shadow-inner border border-white/5"
+                    :title="isSidebarCollapsed ? 'Expandir' : 'Colapsar'"
+                  >
+                    <Maximize2 v-if="isSidebarCollapsed" :size="14" />
+                    <Minimize2 v-else :size="14" />
+                  </button>
+                </div>
              </div>
+             
+             <div v-show="!isSidebarCollapsed" class="space-y-8 animate-fade-in">
+               <div class="space-y-3">
+                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Núcleo Temático</label>
+                <textarea v-model="topic" class="input-field w-full h-40 resize-none text-[13px]"></textarea>
+               </div>
 
-             <div class="space-y-3">
-              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Núcleo Temático</label>
-              <textarea v-model="topic" class="input-field w-full h-40 resize-none text-[13px]"></textarea>
-             </div>
+               <div class="space-y-4">
+                <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Estructura Deseada</label>
+                <div class="grid grid-cols-1 gap-2">
+                  <button v-for="t in types" :key="t.id" @click="type = t.id"
+                    :class="['flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-300', 
+                    type === t.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-white/5 hover:bg-white/5']"
+                  >
+                    <component :is="t.icon" :class="['w-5 h-5', type === t.id ? 'text-primary' : 'text-white/50']" />
+                    <p :class="['font-black text-[10px] uppercase tracking-widest', type === t.id ? 'text-white' : 'text-white/60']">{{ t.name }}</p>
+                  </button>
+                </div>
+               </div>
 
-             <div class="space-y-4">
-              <label class="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 ml-1">Estructura Deseada</label>
-              <div class="grid grid-cols-1 gap-2">
-                <button v-for="t in types" :key="t.id" @click="type = t.id"
-                  :class="['flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-300', 
-                  type === t.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-white/5 hover:bg-white/5']"
+                <button @click="handleGenerate" :disabled="courseStore.isGenerating"
+                  class="btn-primary w-full py-4 md:py-5 text-[10px] md:text-xs uppercase tracking-widest disabled:opacity-20"
                 >
-                  <component :is="t.icon" :class="['w-5 h-5', type === t.id ? 'text-primary' : 'text-white/50']" />
-                  <p :class="['font-black text-[10px] uppercase tracking-widest', type === t.id ? 'text-white' : 'text-white/60']">{{ t.name }}</p>
+                  <Loader2 v-if="courseStore.isGenerating" class="w-5 h-5 animate-spin mr-2" />
+                  <Sparkles v-else class="w-5 h-5 mr-2" />
+                  {{ courseStore.isGenerating ? 'Trascendiendo...' : 'Generar Artefacto' }}
                 </button>
-              </div>
              </div>
-
-              <button @click="handleGenerate" :disabled="courseStore.isGenerating"
-                class="btn-primary w-full py-4 md:py-5 text-[10px] md:text-xs uppercase tracking-widest disabled:opacity-20"
-              >
-                <Loader2 v-if="courseStore.isGenerating" class="w-5 h-5 animate-spin mr-2" />
-                <Sparkles v-else class="w-5 h-5 mr-2" />
-                {{ courseStore.isGenerating ? 'Trascendiendo...' : 'Generar Artefacto' }}
-              </button>
+             
+             <!-- Collapsed Vertical Title -->
+             <div v-if="isSidebarCollapsed" class="flex flex-col items-center gap-8 py-4 animate-fade-in">
+                <Zap class="text-primary animate-pulse w-6 h-6" />
+                <div class="[writing-mode:vertical-lr] rotate-180 text-[10px] font-black text-white/20 uppercase tracking-[0.5em]">SÍNTESIS</div>
+             </div>
           </div>
         </aside>
 
         <!-- Result Column -->
-        <main class="lg:col-span-8 flex flex-col h-full">
+        <main 
+          :class="['transition-all duration-500 ease-in-out flex flex-col', 
+            isSidebarCollapsed ? 'lg:col-span-11' : 'lg:col-span-8']"
+        >
           <div v-if="courseStore.generatedContent" class="glass-panel min-h-[600px] flex flex-col overflow-hidden animate-slide-up border-primary/10">
              <div class="p-6 bg-white/2 border-b border-white/5 flex items-center justify-between">
-                <h3 class="text-sm font-black text-white uppercase tracking-widest italic outline-primary">Resultado Pedagógico</h3>
-                <button @click="copyToClipboard" class="text-[9px] font-black uppercase text-white/70 hover:text-primary flex items-center gap-2 transition-all p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10">
-                   <Copy class="w-4 h-4" /> {{ copySuccess ? 'Copiado' : 'Copiar' }}
-                </button>
+                <div class="flex items-center gap-4">
+                  <h3 class="text-sm font-black text-white uppercase tracking-widest italic outline-primary">Resultado Pedagógico</h3>
+                  <div class="h-4 w-px bg-white/10 hidden sm:block"></div>
+                  <span class="hidden sm:inline text-[10px] font-black text-primary uppercase tracking-widest">{{ type }}</span>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                  <!-- Guardar en Portapapeles -->
+                  <button 
+                    @click="saveToClipboard"
+                    class="text-[9px] font-black uppercase text-white/50 hover:text-white flex items-center gap-2 transition-all p-2 rounded-lg hover:bg-white/5 border border-white/5"
+                    title="Guardar en Portapapeles"
+                  >
+                    <ClipboardPlus class="w-4 h-4" /> <span class="hidden lg:inline">Guardar</span>
+                  </button>
+
+                  <!-- Copiar -->
+                  <button @click="copyToClipboard" class="text-[9px] font-black uppercase text-white/50 hover:text-white flex items-center gap-2 transition-all p-2 rounded-lg hover:bg-white/5 border border-white/5">
+                     <Copy class="w-4 h-4" /> <span class="hidden lg:inline">{{ copySuccess ? 'Copiado' : 'Copiar' }}</span>
+                  </button>
+
+                  <!-- Export Menu -->
+                  <div class="relative">
+                    <button 
+                      @click="showExportMenu = !showExportMenu"
+                      class="bg-primary text-white text-[9px] font-black uppercase tracking-widest px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-secondary transition-all shadow-glow"
+                    >
+                      <FileDown class="w-4 h-4" /> Exportar
+                      <ChevronDown class="w-3 h-3 transition-transform" :class="showExportMenu ? 'rotate-180' : ''" />
+                    </button>
+                    
+                    <div v-if="showExportMenu" class="absolute right-0 mt-3 w-56 glass-panel border border-white/10 shadow-2xl z-50 overflow-hidden py-1 animate-in fade-in slide-in-from-top-2">
+                      <button @click="handleExportResult('pdf')" class="w-full text-left px-4 py-3 text-[10px] font-black text-white/70 hover:bg-white/5 transition-colors flex items-center gap-3 group uppercase tracking-widest">
+                        <div class="w-2 h-2 bg-red-500 rounded-full group-hover:scale-125 transition-transform"></div>
+                        PDF Profesional
+                      </button>
+                      <button @click="handleExportResult('excel')" class="w-full text-left px-4 py-3 text-[10px] font-black text-white/70 hover:bg-white/5 transition-colors flex items-center gap-3 group uppercase tracking-widest">
+                        <div class="w-2 h-2 bg-emerald-500 rounded-full group-hover:scale-125 transition-transform"></div>
+                        Hoja Excel (XLSX)
+                      </button>
+                      <button @click="handleExportResult('slides')" class="w-full text-left px-4 py-3 text-[10px] font-black text-white/70 hover:bg-white/5 transition-colors flex items-center gap-3 group uppercase tracking-widest">
+                        <div class="w-2 h-2 bg-amber-500 rounded-full group-hover:scale-125 transition-transform"></div>
+                        Diapositivas (PPTX)
+                      </button>
+                    </div>
+                  </div>
+                </div>
              </div>
              <div class="flex-1 p-8 lg:p-12 overflow-y-auto preview-markdown custom-scrollbar">
                 <div v-html="renderedContent" class="prose prose-invert prose-emerald max-w-none font-medium text-white/80 transition-all duration-700"></div>

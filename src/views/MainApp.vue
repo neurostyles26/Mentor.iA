@@ -241,26 +241,17 @@ const handleExport = (format) => {
 
             <!-- Export Dropdown -->
             <div v-if="showExportMenu" class="absolute right-0 mt-3 w-56 glass-panel border border-white/10 shadow-2xl z-50 overflow-hidden py-1 animate-in fade-in slide-in-from-top-2">
-              <button @click="handleExport('pdf')" class="w-full text-left px-4 py-3 text-xs hover:bg-white/5 transition-colors flex items-center gap-3 group">
+              <button @click="handleExport('pdf')" class="w-full text-left px-4 py-3 text-[10px] font-black text-white/70 hover:bg-white/5 transition-colors flex items-center gap-3 group uppercase tracking-widest">
                 <div class="w-2 h-2 bg-red-500 rounded-full group-hover:scale-125 transition-transform"></div>
-                <div class="flex flex-col">
-                  <span class="font-bold text-white">Documento PDF</span>
-                  <span class="text-[10px] text-text-muted">Formato profesional</span>
-                </div>
+                PDF Profesional
               </button>
-              <button @click="handleExport('excel')" class="w-full text-left px-4 py-3 text-xs hover:bg-white/5 transition-colors flex items-center gap-3 group">
+              <button @click="handleExport('excel')" class="w-full text-left px-4 py-3 text-[10px] font-black text-white/70 hover:bg-white/5 transition-colors flex items-center gap-3 group uppercase tracking-widest">
                 <div class="w-2 h-2 bg-emerald-500 rounded-full group-hover:scale-125 transition-transform"></div>
-                <div class="flex flex-col">
-                  <span class="font-bold text-white">Hoja de Cálculo</span>
-                  <span class="text-[10px] text-text-muted">Excel (XLSX)</span>
-                </div>
+                Hoja de Cálculo
               </button>
-              <button @click="handleExport('slides')" class="w-full text-left px-4 py-3 text-xs hover:bg-white/5 transition-colors flex items-center gap-3 group">
+              <button @click="handleExport('slides')" class="w-full text-left px-4 py-3 text-[10px] font-black text-white/70 hover:bg-white/5 transition-colors flex items-center gap-3 group uppercase tracking-widest">
                 <div class="w-2 h-2 bg-amber-500 rounded-full group-hover:scale-125 transition-transform"></div>
-                <div class="flex flex-col">
-                  <span class="font-bold text-white">Diapositivas</span>
-                  <span class="text-[10px] text-text-muted">PowerPoint (PPTX)</span>
-                </div>
+                Diapositivas PPTX
               </button>
             </div>
           </div>
