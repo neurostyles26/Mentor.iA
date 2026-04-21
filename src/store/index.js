@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { supabase } from '../lib/supabase'
+import { useTextToSpeech } from '../composables/useTextToSpeech'
 
 export const useCourseStore = defineStore('course', {
   state: () => ({
@@ -46,10 +47,14 @@ export const useCourseStore = defineStore('course', {
           timestamp: new Date()
         })
 
-        // Auto-play voice if enabled
+        // Auto-play voice if enabled (Safely)
         if (this.isVoiceOutputEnabled) {
-          const { speak } = await import('../composables/useTextToSpeech').then(m => m.useTextToSpeech())
-          speak(data.text)
+          try {
+            const { speak } = useTextToSpeech()
+            speak(data.text)
+          } catch (vErr) {
+            console.error('Voice auto-play error:', vErr)
+          }
         }
       } catch (error) {
         console.error('Teacher Chat Error:', error)
