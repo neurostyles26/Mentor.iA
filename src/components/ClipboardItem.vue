@@ -3,10 +3,11 @@ import { ref } from 'vue'
 import { Copy, Trash2, Edit2, Check, Tag } from 'lucide-vue-next'
 
 const props = defineProps({
-  item: Object
+  item: Object,
+  isSelected: Boolean
 })
 
-const emit = defineEmits(['delete', 'update'])
+const emit = defineEmits(['delete', 'update', 'toggle-select'])
 
 const isEditing = ref(false)
 const editedContent = ref(props.item.content)
@@ -31,8 +32,24 @@ const updateTag = (tag) => {
 </script>
 
 <template>
-  <div class="glass-panel p-4 mb-4 group hover:border-primary/20 transition-all flex flex-col gap-3">
-    <div class="flex justify-between items-start">
+  <div 
+    class="glass-panel p-4 mb-4 group hover:border-primary/20 transition-all flex flex-col gap-3 relative overflow-hidden"
+    :class="isSelected ? 'ring-2 ring-primary/50 bg-primary/5 border-primary/30' : ''"
+  >
+    <!-- Selection Overlay for better click area -->
+    <div 
+      class="absolute top-4 left-4 z-10 cursor-pointer"
+      @click="emit('toggle-select', item.id)"
+    >
+      <div 
+        class="w-5 h-5 rounded-md border flex items-center justify-center transition-all"
+        :class="isSelected ? 'bg-primary border-primary text-white scale-110' : 'bg-white/5 border-white/20 text-transparent'"
+      >
+        <Check :size="12" stroke-width="4" />
+      </div>
+    </div>
+
+    <div class="flex justify-between items-start pl-8">
       <!-- Tag Select -->
       <div class="flex flex-wrap gap-2">
         <button 
