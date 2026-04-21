@@ -19,7 +19,8 @@ export const useCourseStore = defineStore('course', {
     },
     lastDiagnosis: null,
     teacherChatHistory: [],
-    schedules: []
+    schedules: [],
+    isVoiceOutputEnabled: false
   }),
   actions: {
     async askMentorTeacher(question) {
@@ -44,6 +45,12 @@ export const useCourseStore = defineStore('course', {
           content: data.text,
           timestamp: new Date()
         })
+
+        // Auto-play voice if enabled
+        if (this.isVoiceOutputEnabled) {
+          const { speak } = await import('../composables/useTextToSpeech').then(m => m.useTextToSpeech())
+          speak(data.text)
+        }
       } catch (error) {
         console.error('Teacher Chat Error:', error)
         let message = 'Lo siento, la IA tuvo un problema. ¿Podrías intentar de nuevo?'

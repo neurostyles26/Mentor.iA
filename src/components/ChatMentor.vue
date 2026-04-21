@@ -8,9 +8,10 @@ import {
   Sparkles,
   MessageCircle,
   Minimize2,
-  Trash2,
   User,
-  Bot
+  Bot,
+  Volume2,
+  VolumeX
 } from 'lucide-vue-next'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
@@ -100,6 +101,17 @@ onMounted(() => {
           </div>
           
           <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Voice Toggle -->
+            <button 
+              @click="courseStore.isVoiceOutputEnabled = !courseStore.isVoiceOutputEnabled"
+              class="p-2 sm:p-3 hover:bg-white/10 rounded-2xl transition-all flex items-center justify-center border border-transparent"
+              :class="courseStore.isVoiceOutputEnabled ? 'text-primary bg-primary/10 border-primary/20' : 'text-white/40 hover:text-white'"
+              :title="courseStore.isVoiceOutputEnabled ? 'Voz activada' : 'Voz desactivada'"
+            >
+              <Volume2 v-if="courseStore.isVoiceOutputEnabled" class="w-4 h-4 sm:w-5 sm:h-5 shadow-glow" />
+              <VolumeX v-else class="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+
             <button @click="clearChat" 
               class="p-2 sm:p-3 hover:bg-white/10 rounded-2xl transition-all text-white/40 hover:text-white"
               title="Limpiar chat"

@@ -26,12 +26,17 @@ import {
   FileDown,
   ClipboardPlus,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Volume2,
+  Square
 } from 'lucide-vue-next'
 
 import { exportService } from '../lib/exportService'
 import { useClipboardStore } from '../store/clipboard'
 import VoiceAssistant from '../components/VoiceAssistant.vue'
+import { useTextToSpeech } from '../composables/useTextToSpeech'
+
+const { speak, stop, isSpeaking } = useTextToSpeech()
 
 const router = useRouter()
 const courseStore = useCourseStore()
@@ -394,6 +399,18 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                 </div>
                 
                 <div class="flex items-center gap-2">
+                  <!-- Escuchar Resultado -->
+                  <button 
+                    @click="isSpeaking ? stop() : speak(renderedContent.replace(/<[^>]*>/g, ''))"
+                    class="text-[9px] font-black uppercase flex items-center gap-2 transition-all p-2 rounded-lg hover:bg-white/5 border border-white/5"
+                    :class="isSpeaking ? 'text-primary' : 'text-white/50 hover:text-white'"
+                    title="Escuchar Resultado"
+                  >
+                    <Volume2 v-if="!isSpeaking" class="w-4 h-4" />
+                    <Square v-else :size="12" class="fill-current" />
+                    <span class="hidden lg:inline">{{ isSpeaking ? 'Detener' : 'Escuchar' }}</span>
+                  </button>
+
                   <!-- Guardar en Portapapeles -->
                   <button 
                     @click="saveToClipboard"

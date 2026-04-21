@@ -1,7 +1,10 @@
 <script setup>
 import { computed } from 'vue'
-import { BrainCircuit, User, Copy, ClipboardPlus, Check } from 'lucide-vue-next'
+import { BrainCircuit, User, Copy, ClipboardPlus, Check, Volume2, Square } from 'lucide-vue-next'
 import { ref } from 'vue'
+import { useTextToSpeech } from '../composables/useTextToSpeech'
+
+const { speak, stop, isSpeaking } = useTextToSpeech()
 
 const props = defineProps({
   role: String,
@@ -53,14 +56,20 @@ const copyToClipboard = () => {
           {{ copied ? 'Copiado' : 'Copiar' }}
         </button>
         
+          Guardar en Portapapeles
+        </button>
+
+        <!-- Speaker Button -->
         <button 
           v-if="isAssistant"
-          @click="emit('saveToClipboard', content)"
-          class="flex items-center gap-1.5 text-xs text-text-muted hover:text-white transition-colors"
-          title="Guardar en Portapapeles"
+          @click="isSpeaking ? stop() : speak(content)"
+          class="flex items-center gap-1.5 text-xs transition-colors"
+          :class="isSpeaking ? 'text-primary' : 'text-text-muted hover:text-white'"
+          title="Escuchar mensaje"
         >
-          <ClipboardPlus :size="14" />
-          Guardar en Portapapeles
+          <Volume2 v-if="!isSpeaking" :size="14" />
+          <Square v-else :size="12" class="fill-current" />
+          {{ isSpeaking ? 'Detener' : 'Escuchar' }}
         </button>
       </div>
     </div>
