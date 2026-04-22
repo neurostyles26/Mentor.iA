@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../store/auth'
+import { useNotificationStore } from '../store/notifications'
 import { 
   BarChart3, 
   Settings, 
@@ -22,7 +23,11 @@ import {
   History,
   ClipboardList,
   LifeBuoy,
-  ShieldCheck
+  ShieldCheck,
+  Check,
+  Trash2,
+  AlertCircle,
+  Info
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
 import SupportDeveloper from './SupportDeveloper.vue'
@@ -30,11 +35,13 @@ import SupportDeveloper from './SupportDeveloper.vue'
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
+const notificationStore = useNotificationStore()
 
 const isSidebarCollapsed = ref(false)
 const isMobileMenuOpen = ref(false)
 const isChatOpen = ref(false)
 const isSupportOpen = ref(false)
+const isNotificationOpen = ref(false)
 
 const navItems = [
   { name: 'Mis Cursos', icon: LayoutDashboard, path: '/dashboard' },
@@ -45,6 +52,15 @@ const navItems = [
   { name: 'Centro de Ayuda', icon: LifeBuoy, path: '/dashboard/help' },
   { name: 'Configuraciones', icon: Settings, path: '/dashboard/settings' },
 ]
+
+onMounted(async () => {
+  await notificationStore.fetchNotifications()
+  notificationStore.initializeRealtime()
+})
+
+onUnmounted(() => {
+  notificationStore.stopRealtime()
+})
 
 const handleLogout = async () => {
   await authStore.logout()
@@ -57,6 +73,14 @@ const toggleSidebar = () => {
 
 const toggleChat = () => {
   isChatOpen.value = !isChatOpen.value
+}
+
+const toggleNotifications = () => {
+  isNotificationOpen.value = !isNotificationOpen.value
+}
+
+const markRead = (id) => {
+  notificationStore.markAsRead(id)
 }
 </script>
 
@@ -178,11 +202,80 @@ const toggleChat = () => {
         </div>
 
         <div class="flex items-center gap-6 lg:gap-10">
-          <div class="flex items-center gap-4">
-             <button class="p-3.5 bg-white/5 border border-white/10 rounded-2xl text-white/30 hover:text-primary relative transition-all active:scale-90 group">
+          <div class="flex items-center gap-4 relative">
+             <button 
+               @click="toggleNotifications"
+               class="p-3.5 bg-white/5 border border-white/10 rounded-2xl text-white/30 hover:text-primary relative transition-all active:scale-90 group"
+             >
               <Bell class="w-5 h-5 group-hover:rotate-12 transition-transform" />
-              <span class="absolute top-3.5 right-3.5 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
+              <span v-if="notificationStore.unreadCount > 0" class="absolute top-3.5 right-3.5 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
             </button>
+
+            <!-- Elite Notification Dropdown -->
+            <Transition name="premium-pop">
+              <div v-if="isNotificationOpen" class="absolute right-0 mt-2 top-full w-80 lg:w-96 bg-bg-card border border-white/10 rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
+                <header class="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+                   <h3 class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Notificaciones</h3>
+                   <button 
+                     v-if="notificationStore.unreadCount > 0" 
+                     @click="notificationStore.markAllAsRead"
+                     class="text-[8px] font-black text-primary uppercase tracking-widest hover:text-secondary transition-colors"
+                   >
+                     Marcar todo
+                   </button>
+                </header>
+
+                <div class="max-h-[400px] overflow-y-auto custom-scrollbar py-2">
+                   <div v-if="notificationStore.notifications.length === 0" class="p-12 text-center flex flex-col items-center gap-4 opacity-20">
+                      <Bell class="w-10 h-10" />
+                      <p class="text-[10px] font-black uppercase tracking-widest">Silencio Neuronal</p>
+                   </div>
+
+                   <div 
+                     v-for="notif in notificationStore.sortedNotifications" 
+                     :key="notif.id"
+                     class="px-6 py-5 border-b border-white/[0.02] last:border-0 hover:bg-white/[0.02] transition-all group flex items-start gap-4 relative"
+                     :class="!notif.is_read ? 'bg-primary/[0.02]' : ''"
+                   >
+                      <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" 
+                           :class="notif.is_read ? 'bg-white/5 text-white/20' : 'bg-primary/10 text-primary shadow-glow'">
+                         <Sparkles v-if="notif.type === 'ai'" class="w-5 h-5" />
+                         <AlertCircle v-else-if="notif.type === 'warning'" class="w-5 h-5" />
+                         <Info v-else class="w-5 h-5" />
+                      </div>
+
+                      <div class="flex-1 min-w-0 pr-6">
+                         <h4 class="text-[11px] font-black text-white/80 leading-tight uppercase tracking-tight mb-1" :class="!notif.is_read ? 'text-white' : ''">
+                           {{ notif.title }}
+                         </h4>
+                         <p class="text-[10px] text-white/40 leading-relaxed font-bold italic truncate">
+                           {{ notif.content }}
+                         </p>
+                         <span class="text-[8px] text-white/10 font-black uppercase tracking-widest mt-2 block">
+                           {{ new Date(notif.created_at).toLocaleTimeString() }}
+                         </span>
+                      </div>
+
+                      <div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <button v-if="!notif.is_read" @click="markRead(notif.id)" class="p-1.5 hover:text-primary transition-colors">
+                           <Check class="w-3.5 h-3.5" />
+                         </button>
+                         <button @click="notificationStore.deleteNotification(notif.id)" class="p-1.5 hover:text-red-400 transition-colors">
+                           <Trash2 class="w-3.5 h-3.5" />
+                         </button>
+                      </div>
+
+                      <!-- Unread Indicator -->
+                      <div v-if="!notif.is_read" class="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-primary rounded-full"></div>
+                   </div>
+                </div>
+
+                <footer class="p-4 bg-white/[0.01] border-t border-white/5 text-center">
+                   <p class="text-[8px] font-black text-white/20 uppercase tracking-[0.4em]">Fin del Historial</p>
+                </footer>
+              </div>
+            </Transition>
+
             <div class="h-8 w-px bg-white/5 hidden sm:block"></div>
           </div>
           
@@ -226,6 +319,7 @@ const toggleChat = () => {
 </template>
 
 <style scoped>
+@reference "../style.css";
 .sidebar-transition {
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }

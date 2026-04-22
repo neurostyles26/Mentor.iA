@@ -216,6 +216,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@reference "../style.css";
 .premium-chat-enter-active,
 .premium-chat-leave-active {
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);

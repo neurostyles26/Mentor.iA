@@ -387,6 +387,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@reference "../style.css";
+
 .animate-page-in {
   animation: pageIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -455,31 +457,6 @@ onMounted(() => {
 
 .shadow-glow-primary {
   box-shadow: 0 10px 40px -10px rgba(var(--color-primary-rgb), 0.5);
-}
-</style>
-
-<style scoped>
-@reference "../style.css";
-
-.modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.4s ease; }
-.modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
-
-.animate-scale-up {
-  animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.9) translateY(20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.animate-slide-right {
-  animation: slideRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes slideRight {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator,

@@ -560,6 +560,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 </template>
 
 <style scoped>
+@reference "../style.css";
 .animate-page-in {
   animation: pageIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
