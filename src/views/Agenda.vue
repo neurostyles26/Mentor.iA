@@ -11,7 +11,10 @@ import {
   X, 
   Trash2,
   CalendarDays,
-  Sparkles
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  Check
 } from 'lucide-vue-next'
 
 const courseStore = useCourseStore()
@@ -148,56 +151,61 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto pb-20 space-y-10 animate-fade-in">
-    <!-- Header -->
-    <header class="flex flex-col md:flex-row items-center justify-between gap-8 py-6">
-      <div class="flex items-center gap-6">
-        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20 shadow-glow transform rotate-3">
-          <CalendarDays class="w-8 h-8 text-primary" />
+  <div class="max-w-7xl mx-auto pb-24 space-y-16 animate-page-in">
+    <!-- Sophisticated Header -->
+    <header class="flex flex-col md:flex-row items-center justify-between gap-12 py-10 relative overflow-hidden">
+      <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-[100px] animate-pulse"></div>
+      
+      <div class="flex items-center gap-8 relative z-10">
+        <div class="w-16 h-16 bg-primary/10 rounded-[2rem] flex items-center justify-center border border-primary/20 shadow-glow transform rotate-6 hover:rotate-0 transition-transform duration-700">
+          <CalendarDays class="w-9 h-9 text-primary" />
         </div>
         <div>
-          <h1 class="text-4xl font-black text-white tracking-tighter uppercase leading-none mb-2">Agenda Digital</h1>
+          <h1 class="text-5xl font-black text-white italic tracking-tighter uppercase leading-none mb-3">Agenda Digital</h1>
           <div class="flex items-center gap-3">
-             <div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-             <p class="text-[9px] font-black text-white/40 uppercase tracking-[0.4em]">Arquitectura de Tiempos v2.5</p>
+             <ShieldCheck class="w-4 h-4 text-primary" />
+             <p class="text-[9px] font-black text-white/30 uppercase tracking-[0.5em]">Arquitectura de Tiempos v4.0</p>
           </div>
         </div>
       </div>
 
       <button 
         @click="showAddModal = true"
-        class="flex items-center gap-4 px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-2xl font-black text-[10px] md:text-[11px] uppercase tracking-widest shadow-premium hover:bg-secondary transition-all transform hover:-translate-y-1 active:scale-95 group w-full md:w-auto justify-center"
+        class="group relative flex items-center gap-4 px-12 py-6 bg-primary text-white rounded-[2rem] font-black uppercase tracking-[0.3em] text-xs shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 overflow-hidden w-full md:w-auto justify-center"
       >
-        <Plus class="w-4 h-4 group-hover:rotate-90 transition-transform" />
-        Agendar Clase
+        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
+        <Plus class="w-5 h-5 group-hover:rotate-180 transition-transform duration-700 relative z-10" />
+        <span class="relative z-10">Agendar Sesión</span>
       </button>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-      <!-- Calendar Grid -->
-      <div class="lg:col-span-8 space-y-6">
-        <div class="glass-panel p-6 md:p-8">
-          <!-- Calendar Controls -->
-          <div class="flex items-center justify-between mb-10">
-             <h2 class="text-2xl font-black text-white uppercase italic tracking-tight">
-               {{ currentMonthName }} <span class="text-primary not-italic tracking-tighter ml-2">{{ currentYear }}</span>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+      <!-- Calendar Grid Area -->
+      <div class="lg:col-span-8 space-y-8">
+        <div class="bg-bg-card border border-white/10 rounded-[4rem] p-10 lg:p-14 shadow-2xl relative overflow-hidden group">
+          <div class="absolute -top-24 -right-24 w-80 h-80 bg-primary/5 rounded-full blur-[100px] group-hover:scale-125 transition-transform duration-1000"></div>
+          
+          <!-- Calendar Header -->
+          <div class="flex flex-wrap items-center justify-between mb-12 relative z-10 gap-6">
+             <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter">
+               {{ currentMonthName }} <span class="text-primary not-italic tracking-tighter ml-3 font-bold">{{ currentYear }}</span>
              </h2>
-             <div class="flex items-center gap-3">
-               <button @click="prevMonth" class="p-3 bg-white/5 rounded-xl border border-white/5 hover:bg-primary hover:text-white transition-all">
-                 <ChevronLeft class="w-5 h-5" />
+             <div class="flex items-center gap-4 bg-white/5 p-2 rounded-[1.5rem] border border-white/5 shadow-inner">
+               <button @click="prevMonth" class="w-12 h-12 flex items-center justify-center bg-transparent rounded-xl text-white/30 hover:bg-primary hover:text-white transition-all shadow-inner">
+                 <ChevronLeft class="w-6 h-6" />
                </button>
-               <button @click="nextMonth" class="p-3 bg-white/5 rounded-xl border border-white/5 hover:bg-primary hover:text-white transition-all">
-                 <ChevronRight class="w-5 h-5" />
+               <button @click="nextMonth" class="w-12 h-12 flex items-center justify-center bg-transparent rounded-xl text-white/30 hover:bg-primary hover:text-white transition-all shadow-inner">
+                 <ChevronRight class="w-6 h-6" />
                </button>
              </div>
           </div>
 
-          <!-- Calendar Days Grid -->
-          <div class="grid grid-cols-7 gap-2">
+          <!-- Calendar Days Layout -->
+          <div class="grid grid-cols-7 gap-3 relative z-10">
             <div 
               v-for="day in daysOfWeek" 
               :key="day" 
-              class="text-center text-[9px] font-black text-white/20 uppercase tracking-[0.3em] mb-4"
+              class="text-center text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-6"
             >
               {{ day }}
             </div>
@@ -206,151 +214,170 @@ onMounted(() => {
               v-for="(dayObj, idx) in calendarDays" 
               :key="idx"
               @click="selectDay(dayObj)"
-              class="aspect-square rounded-2xl p-3 border border-transparent transition-all cursor-pointer relative group overflow-hidden"
+              class="aspect-square rounded-[1.5rem] p-4 border border-transparent transition-all duration-500 cursor-pointer relative group overflow-hidden flex flex-col justify-between"
               :class="[
-                dayObj.currentMonth ? 'bg-white/2 hover:bg-white/5' : 'bg-transparent opacity-10 cursor-default',
-                dayObj.isToday ? 'border-primary shadow-glow bg-primary/5' : 'border-white/5'
+                dayObj.currentMonth ? 'bg-white/[0.03] hover:bg-white/[0.08] hover:scale-105' : 'bg-transparent opacity-10 cursor-default',
+                dayObj.isToday ? 'border-primary bg-primary/10 shadow-glow-primary scale-110' : 'border-white/5'
               ]"
             >
               <span 
-                class="text-sm font-black transition-colors"
-                :class="dayObj.currentMonth ? 'text-white' : 'text-white/20'"
+                class="text-base font-black transition-colors"
+                :class="dayObj.currentMonth ? (dayObj.isToday ? 'text-primary' : 'text-white/60 group-hover:text-white') : 'text-white/10'"
               >
                 {{ dayObj.day }}
               </span>
               
-              <!-- Event Dots -->
-              <div class="absolute bottom-3 left-3 flex gap-1">
+              <!-- Indicator Dots -->
+              <div class="flex flex-wrap gap-1 mt-auto">
                 <div 
                   v-for="ev in getEventsForDay(dayObj).slice(0, 3)" 
                   :key="ev.id"
-                  class="w-1.5 h-1.5 rounded-full bg-primary"
+                  class="w-1.5 h-1.5 rounded-full bg-primary shadow-glow animate-neural-pulse"
                 ></div>
               </div>
 
-              <!-- Selection Highlight -->
-              <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-10 transition-opacity"></div>
+              <!-- Selection Shine -->
+              <div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Agenda Side Details -->
-      <div class="lg:col-span-4 space-y-8">
-        <div class="glass-panel p-6 md:p-8 relative overflow-hidden group border-primary/20">
-          <div class="absolute top-0 right-0 p-8 opacity-5">
-            <CalendarIcon :size="120" />
+      <!-- Detail Area -->
+      <div class="lg:col-span-4 space-y-10">
+        <div class="bg-bg-card border border-primary/20 rounded-[4rem] p-10 lg:p-12 relative overflow-hidden shadow-2xl min-h-[500px]">
+          <div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+            <CalendarIcon :size="160" class="text-primary" />
           </div>
 
-          <h3 class="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-8">Itinerario del Día</h3>
-          <p class="text-white text-xl font-black mb-10 tracking-tight">{{ selectedDateLabel }}</p>
+          <header class="mb-12 relative z-10">
+             <h4 class="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4 italic">Itinerario de Sesión</h4>
+             <p class="text-white text-3xl font-black tracking-tighter leading-none italic">{{ selectedDateLabel }}</p>
+          </header>
 
-          <div v-if="selectedDayEvents.length === 0" class="flex flex-col items-center justify-center py-20 text-center space-y-6 opacity-30">
-            <Sparkles class="w-12 h-12 text-primary/50" />
-            <p class="text-[10px] font-black uppercase tracking-widest leading-relaxed">Sin compromisos<br/>agendados</p>
+          <div v-if="selectedDayEvents.length === 0" class="flex flex-col items-center justify-center py-20 text-center space-y-8 opacity-20 relative z-10">
+            <div class="w-20 h-20 bg-white/5 rounded-[2.5rem] flex items-center justify-center border border-white/5 animate-float shadow-inner">
+               <Sparkles class="w-10 h-10 text-primary" />
+            </div>
+            <p class="text-[11px] font-black uppercase tracking-[0.5em] leading-relaxed">Sin Compromisos<br/>Neuronal</p>
           </div>
 
-          <div v-else class="space-y-4">
+          <div v-else class="space-y-6 relative z-10">
             <div 
               v-for="event in selectedDayEvents" 
               :key="event.id"
-              class="p-5 bg-white/2 rounded-2xl border border-white/5 group relative hover:border-primary/30 transition-all animate-slide-right"
+              class="p-8 bg-white/[0.03] rounded-[2.5rem] border border-white/5 group relative hover:border-primary/40 hover:bg-white/[0.05] transition-all duration-700 animate-slide-right shadow-inner"
             >
-               <div class="flex justify-between items-start mb-4">
-                 <h4 class="font-black text-white text-sm uppercase tracking-tight">{{ event.title }}</h4>
-                 <button @click.stop="deleteEvent(event.id)" class="text-white/10 hover:text-red-400 transition-colors">
+               <div class="flex justify-between items-start mb-6">
+                 <h4 class="font-black text-white text-base uppercase tracking-tight italic group-hover:text-primary transition-colors">{{ event.title }}</h4>
+                 <button @click.stop="deleteEvent(event.id)" class="w-10 h-10 bg-white/5 rounded-xl text-white/10 hover:text-red-400 hover:bg-red-500/10 transition-all flex items-center justify-center border border-white/5 hover:border-red-500/20 shadow-inner">
                    <Trash2 class="w-4 h-4" />
                  </button>
                </div>
                
-               <div class="flex items-center gap-6 text-[10px] font-black text-white/40 uppercase tracking-widest">
-                 <div class="flex items-center gap-2">
-                   <Clock class="w-3.5 h-3.5 text-primary" />
+               <div class="flex flex-wrap items-center gap-8 text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">
+                 <div class="flex items-center gap-3">
+                   <Clock class="w-4 h-4 text-primary animate-pulse" />
                    {{ event.start_time || '--:--' }}
                  </div>
-                 <div v-if="event.description" class="flex items-center gap-2">
-                   <MapPin class="w-3.5 h-3.5 text-secondary" />
-                   Aula Virtual
+                 <div class="flex items-center gap-3">
+                   <MapPin class="w-4 h-4 text-secondary" />
+                   Aula MentorIA
                  </div>
                </div>
 
-               <p v-if="event.description" class="mt-4 text-xs text-white/50 leading-relaxed italic border-l-2 border-primary/20 pl-4">
-                 {{ event.description }}
-               </p>
+               <div v-if="event.description" class="mt-8 p-6 bg-primary/5 rounded-2xl border-l-4 border-primary/40 text-xs text-white/50 leading-relaxed font-bold italic transition-all group-hover:text-white/70">
+                 "{{ event.description }}"
+               </div>
             </div>
           </div>
         </div>
 
-        <!-- Productivity Note -->
-        <div class="p-6 md:p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 border-dashed">
-          <p class="text-[9px] font-black text-primary uppercase tracking-[0.5em] mb-4">Consejo Pedagógico</p>
-          <p class="text-xs text-white/40 font-bold leading-relaxed italic">
-            "Sincronizar tus momentos de ideación con tu agenda reduce la carga cognitiva. Tu cerebro IA se encarga de los recordatorios."
+        <!-- AI Productivity Note -->
+        <div class="p-10 bg-primary/5 rounded-[3.5rem] border border-primary/20 border-dashed relative group overflow-hidden shadow-inner">
+          <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+          <p class="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-6 italic">
+             <Zap class="w-5 h-5 inline-block mr-2" /> Telemetría de Productividad
+          </p>
+          <p class="text-sm text-white/30 font-black leading-relaxed italic group-hover:text-white/60 transition-colors">
+            "Sincronizar tus momentos de ideación con tu agenda reduce la entropía cognitiva. Deja que MentorIA gestione los hitos."
           </p>
         </div>
       </div>
     </div>
 
-    <!-- ADD EVENT MODAL -->
+    <!-- ELITE ADD EVENT MODAL -->
     <Transition name="modal-fade">
       <div v-if="showAddModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-xl" @click="showAddModal = false"></div>
+        <div class="absolute inset-0 bg-bg-deep/90 backdrop-blur-3xl" @click="showAddModal = false"></div>
         
-        <div class="glass-panel w-full max-w-xl p-8 lg:p-10 relative z-10 border-primary/20 shadow-2xl animate-scale-up">
-          <header class="flex items-center justify-between mb-10">
+        <div class="bg-bg-card w-full max-w-2xl p-12 lg:p-16 relative z-10 border border-primary/20 rounded-[4rem] shadow-[0_50px_150px_-30px_rgba(0,0,0,0.8)] animate-scale-up overflow-hidden group">
+          <div class="absolute -top-24 -right-24 w-80 h-80 bg-primary/5 rounded-full blur-[100px]"></div>
+          
+          <header class="flex items-center justify-between mb-16 relative z-10">
             <div>
-              <h2 class="text-3xl font-black text-white uppercase tracking-tighter italic">Nueva Sesión</h2>
-              <p class="text-[9px] font-black text-primary uppercase tracking-[0.4em] mt-2">Arquitectura de Agendamiento</p>
+              <h2 class="text-4xl font-black text-white italic tracking-tighter uppercase leading-none">Nueva Sesión</h2>
+              <div class="flex items-center gap-3 mt-4">
+                 <div class="w-1.5 h-1.5 rounded-full bg-primary animate-neural-pulse"></div>
+                 <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Arquitectura de Agendamiento</p>
+              </div>
             </div>
-            <button @click="showAddModal = false" class="p-3 bg-white/5 rounded-xl hover:bg-white/10 text-white/40 hover:text-white transition-all">
-              <X class="w-6 h-6" />
+            <button @click="showAddModal = false" class="w-14 h-14 bg-white/5 rounded-2xl hover:bg-white/10 text-white/20 hover:text-white transition-all flex items-center justify-center border border-white/5 shadow-inner">
+              <X class="w-7 h-7" />
             </button>
           </header>
 
-          <form @submit.prevent="handleAddEvent" class="space-y-8">
-            <div class="space-y-6">
-              <div class="space-y-3">
-                <label class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em] ml-1">Título del Compromiso</label>
-                <input v-model="newEvent.title" type="text" placeholder="Ej: Clase de Filosofía Moderna" class="input-field w-full py-5" required />
+          <form @submit.prevent="handleAddEvent" class="space-y-10 relative z-10">
+            <div class="space-y-8">
+              <div class="space-y-4">
+                <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] ml-2">Título de la Sesión</label>
+                <input v-model="newEvent.title" type="text" placeholder="Ej: Clase de Filosofía Moderna" class="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-white font-bold text-lg focus:border-primary/50 focus:bg-white/10 outline-none transition-all duration-500 shadow-inner" required />
               </div>
 
-              <div class="grid grid-cols-2 gap-6">
-                 <div class="space-y-3">
-                    <label class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em] ml-1">Fecha de Evento</label>
-                    <input v-model="newEvent.event_date" type="date" class="input-field w-full py-5" required />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div class="space-y-4">
+                    <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] ml-2">Fecha Cronológica</label>
+                    <input v-model="newEvent.event_date" type="date" class="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-white font-bold text-base focus:border-primary/50 outline-none transition-all duration-500 shadow-inner invert-calendar" required />
                  </div>
-                 <div class="space-y-3">
-                    <label class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em] ml-1">Color del Marcador</label>
-                    <select v-model="newEvent.color" class="input-field w-full py-5 appearance-none">
-                      <option value="primary">Cian Neuronal</option>
-                      <option value="secondary">Violeta Cuántico</option>
-                      <option value="accent">Oro Pedagógico</option>
-                    </select>
-                 </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-6">
-                 <div class="space-y-3">
-                    <label class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em] ml-1">Hora de Inicio</label>
-                    <input v-model="newEvent.start_time" type="time" class="input-field w-full py-5 text-sm" />
-                 </div>
-                 <div class="space-y-3">
-                    <label class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em] ml-1">Hora de Fin</label>
-                    <input v-model="newEvent.end_time" type="time" class="input-field w-full py-5 text-sm" />
+                 <div class="space-y-4">
+                    <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] ml-2">Identificador Visual</label>
+                    <div class="relative">
+                       <select v-model="newEvent.color" class="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-white font-black text-[11px] uppercase tracking-widest focus:border-primary/50 outline-none appearance-none cursor-pointer shadow-inner">
+                        <option value="primary">Cian Neuronal</option>
+                        <option value="secondary">Violeta Cuántico</option>
+                        <option value="accent">Oro Pedagógico</option>
+                      </select>
+                      <ChevronDown class="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 pointer-events-none" />
+                    </div>
                  </div>
               </div>
 
-              <div class="space-y-3">
-                <label class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em] ml-1">Descripción Breve</label>
-                <textarea v-model="newEvent.description" placeholder="Objetivos o recursos necesarios..." class="input-field w-full h-24 py-5 resize-none text-xs"></textarea>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div class="space-y-4">
+                    <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] ml-2">Inicio</label>
+                    <input v-model="newEvent.start_time" type="time" class="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-white font-black text-base focus:border-primary/50 outline-none transition-all duration-500 shadow-inner invert-calendar" />
+                 </div>
+                 <div class="space-y-4">
+                    <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] ml-2">Finalización</label>
+                    <input v-model="newEvent.end_time" type="time" class="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-white font-black text-base focus:border-primary/50 outline-none transition-all duration-500 shadow-inner invert-calendar" />
+                 </div>
+              </div>
+
+              <div class="space-y-4">
+                <label class="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] ml-2">Metadatos / Notas</label>
+                <textarea v-model="newEvent.description" placeholder="Objetivos o recursos de la sesión..." class="w-full h-32 bg-white/5 border border-white/10 rounded-2xl px-8 py-6 text-white font-bold text-sm focus:border-primary/50 outline-none resize-none transition-all duration-500 shadow-inner custom-scrollbar"></textarea>
               </div>
             </div>
 
             <button 
               type="submit" 
-              class="w-full py-5 md:py-6 bg-primary text-white rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-1.5 transition-all active:scale-95"
+              class="relative group w-full py-7 bg-primary text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 overflow-hidden"
             >
-              Confirmar en la Agenda
+               <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
+               <div class="flex items-center justify-center gap-4 relative z-10">
+                  <Check class="w-6 h-6" />
+                  <span>Sincronizar en Agenda</span>
+               </div>
             </button>
           </form>
         </div>
@@ -358,6 +385,78 @@ onMounted(() => {
     </Transition>
   </div>
 </template>
+
+<style scoped>
+.animate-page-in {
+  animation: pageIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(40px); filter: blur(15px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-neural-pulse {
+  animation: neuralPulse 3s ease-in-out infinite;
+}
+
+@keyframes neuralPulse {
+  0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+  50% { opacity: 0.7; transform: scale(1.1); filter: brightness(1.5); }
+}
+
+.animate-slide-right {
+  animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-30px); filter: blur(10px); }
+  to { opacity: 1; transform: translateX(0); filter: blur(0); }
+}
+
+.modal-fade-enter-active, .modal-fade-leave-active { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
+
+.animate-scale-up {
+  animation: scaleUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.9) translateY(40px); filter: blur(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+.invert-calendar::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(2);
+  cursor: pointer;
+  @apply hover:scale-110 transition-transform;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-white/5 rounded-full;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 30px -10px var(--color-primary-glow);
+}
+
+.shadow-glow-primary {
+  box-shadow: 0 10px 40px -10px rgba(var(--color-primary-rgb), 0.5);
+}
+</style>
 
 <style scoped>
 @reference "../style.css";

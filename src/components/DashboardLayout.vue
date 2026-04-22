@@ -21,7 +21,8 @@ import {
   Heart,
   History,
   ClipboardList,
-  LifeBuoy
+  LifeBuoy,
+  ShieldCheck
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
 import SupportDeveloper from './SupportDeveloper.vue'
@@ -60,61 +61,60 @@ const toggleChat = () => {
 </script>
 
 <template>
-  <div class="flex h-screen bg-bg-deep overflow-x-hidden overflow-y-hidden font-sans relative w-full max-w-full">
+  <div class="flex h-screen bg-bg-deep overflow-hidden font-sans relative w-full max-w-full selection:bg-primary/30">
     <!-- Mobile Overlay -->
     <div 
       v-if="isMobileMenuOpen" 
-      class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+      class="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] lg:hidden animate-fade-in"
       @click="isMobileMenuOpen = false"
     ></div>
 
-    <!-- Sidebar -->
+    <!-- Premium Sidebar -->
     <aside 
-      class="sidebar-transition bg-bg-card flex flex-col border-r border-white/5 z-[70] shadow-premium h-full"
+      class="sidebar-transition bg-bg-card flex flex-col border-r border-white/5 z-[70] shadow-[10px_0_50px_-20px_rgba(0,0,0,0.5)] h-full"
       :class="[
         isSidebarCollapsed ? 'w-24' : 'w-80',
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         'fixed lg:relative'
       ]"
     >
-      <!-- Toggle Button (Desktop) -->
+      <!-- Sidebar Toggle (Desktop) -->
       <button 
         @click="toggleSidebar"
-        class="absolute -right-4 top-12 w-8 h-8 bg-primary rounded-full hidden lg:flex items-center justify-center text-white shadow-glow hover:scale-110 transition-transform z-50 border border-white/10"
+        class="absolute -right-4 top-12 w-8 h-8 bg-primary rounded-full hidden lg:flex items-center justify-center text-white shadow-glow hover:scale-110 transition-transform z-[80] border border-white/10"
       >
         <ChevronLeft v-if="!isSidebarCollapsed" class="w-5 h-5" />
         <ChevronRight v-else class="w-5 h-5" />
       </button>
 
       <!-- Logo Section -->
-      <div class="px-6 py-10 flex flex-col items-center relative z-10 transition-all duration-500 overflow-hidden">
+      <div class="p-10 flex flex-col items-center relative z-10 transition-all duration-500 overflow-hidden">
         <div 
           class="flex items-center gap-4 group cursor-pointer" 
           @click="router.push('/dashboard')"
           :class="isSidebarCollapsed ? 'flex-col' : ''"
         >
-          <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-glow border border-primary/20 shrink-0">
-            <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-8 h-8 object-contain" />
+          <div class="w-14 h-14 bg-gradient-to-br from-primary to-secondary p-0.5 rounded-2xl transform group-hover:rotate-12 transition-all duration-700 shadow-glow shrink-0">
+            <div class="w-full h-full rounded-[14px] bg-bg-card flex items-center justify-center">
+              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-9 h-9 object-contain" />
+            </div>
           </div>
-          <span 
-            v-if="!isSidebarCollapsed" 
-            class="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap animate-fade-in"
-          >
-            MentorIA
-          </span>
+          <div v-if="!isSidebarCollapsed" class="flex flex-col animate-fade-in">
+            <span class="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap">MentorIA</span>
+            <span class="text-[8px] font-black text-primary uppercase tracking-[0.4em] leading-none">Intelligence Suite</span>
+          </div>
         </div>
-        <p v-if="!isSidebarCollapsed" class="text-[9px] font-black text-primary/50 uppercase tracking-[0.4em] mt-3 animate-fade-in">Intelligence Suite v2.5</p>
       </div>
 
       <!-- Navigation -->
-      <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto custom-scrollbar relative z-10">
+      <nav class="flex-1 px-4 space-y-1.5 mt-4 overflow-y-auto custom-scrollbar relative z-10">
         <router-link 
           v-for="item in navItems" 
           :key="item.name"
           :to="item.path"
-          class="flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 relative group overflow-hidden"
+          class="flex items-center gap-4 px-6 py-4 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 relative group overflow-hidden border border-transparent"
           :class="[
-            route.path === item.path ? 'bg-primary/10 text-primary shadow-sm border border-primary/10' : 'text-white/70 hover:bg-white/10 hover:text-white',
+            route.path === item.path ? 'bg-primary/10 text-primary border-primary/20 shadow-inner' : 'text-white/40 hover:bg-white/5 hover:text-white/80',
             isSidebarCollapsed ? 'justify-center px-0' : ''
           ]"
           @click="isMobileMenuOpen = false"
@@ -122,46 +122,35 @@ const toggleChat = () => {
           <component :is="item.icon" class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110" />
           <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in">{{ item.name }}</span>
           
+          <!-- Indicator for active -->
+          <div v-if="route.path === item.path && !isSidebarCollapsed" class="absolute left-0 w-1 h-6 bg-primary rounded-r-full"></div>
+          
           <!-- Tooltip for collapsed mode -->
-          <div v-if="isSidebarCollapsed" class="absolute left-full ml-4 px-4 py-2 bg-primary text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-glow">
+          <div v-if="isSidebarCollapsed" class="absolute left-full ml-4 px-4 py-2 bg-primary text-white text-[9px] rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap z-50 shadow-glow">
             {{ item.name }}
           </div>
         </router-link>
       </nav>
 
-      <!-- Bottom Profile / Logout -->
-      <div class="p-4 space-y-4 relative z-10 border-t border-white/5 bg-white/2">
-        <!-- AI Assistant Mini Banner -->
-        <div 
-          v-if="!isSidebarCollapsed"
-          class="p-5 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl border border-white/5 mb-2 relative overflow-hidden group cursor-pointer"
-          @click="toggleChat"
-        >
-           <div class="flex items-center gap-3">
-             <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-glow">
-               <Sparkles class="w-4 h-4" />
-             </div>
-             <p class="text-[9px] font-black text-white uppercase tracking-widest">Mentor Online</p>
-           </div>
-        </div>
-
-        <div class="flex items-center flex-col gap-2">
+      <!-- Bottom Profile / Support -->
+      <div class="p-6 space-y-4 relative z-10 border-t border-white/5 bg-white/[0.02] backdrop-blur-sm">
+        <div class="flex flex-col gap-3">
            <button 
              @click="isSupportOpen = true"
-             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-widest text-primary bg-primary/5 hover:bg-primary/20 hover:shadow-glow transition-all group border border-primary/10 mb-2"
-             :class="isSidebarCollapsed ? 'justify-center mx-1 px-0' : ''"
+             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] text-primary bg-primary/5 hover:bg-primary/20 hover:shadow-glow transition-all group border border-primary/10"
+             :class="isSidebarCollapsed ? 'justify-center px-0' : ''"
            >
              <Heart class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform animate-pulse" />
-             <span v-if="!isSidebarCollapsed" class="whitespace-nowrap">Apoyar Proyecto</span>
+             <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in">Apoyar Proyecto</span>
            </button>
 
            <button 
              @click="handleLogout"
-             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-widest text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all group border border-transparent"
-             :class="isSidebarCollapsed ? 'justify-center' : ''"
+             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all group border border-transparent"
+             :class="isSidebarCollapsed ? 'justify-center px-0' : ''"
            >
              <LogOut class="w-5 h-5 shrink-0 group-hover:-translate-x-1 transition-transform" />
-             <span v-if="!isSidebarCollapsed" class="whitespace-nowrap">Cerrar Sesión</span>
+             <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in">Desconectar</span>
            </button>
         </div>
       </div>
@@ -169,47 +158,54 @@ const toggleChat = () => {
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col min-w-0 h-full relative">
-      <!-- Refined Header -->
-      <header class="h-16 md:h-20 bg-bg-deep/80 backdrop-blur-xl border-b border-white/5 px-4 md:px-6 lg:px-12 flex items-center justify-between sticky top-0 z-40">
-        <!-- Mobile Menu Toggle -->
-        <button @click="isMobileMenuOpen = true" class="p-2.5 bg-white/5 rounded-xl lg:hidden text-white/60 hover:text-primary transition-colors">
-          <Menu class="w-5 h-5 md:w-6 md:h-6" />
-        </button>
+      <!-- Elite Header -->
+      <header class="h-20 bg-bg-deep/80 backdrop-blur-2xl border-b border-white/5 px-6 md:px-12 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-6">
+          <!-- Mobile Toggle -->
+          <button @click="isMobileMenuOpen = true" class="p-3 bg-white/5 rounded-2xl lg:hidden text-white/40 hover:text-primary transition-colors">
+            <Menu class="w-6 h-6" />
+          </button>
 
-        <!-- Search Bar (Responsive) -->
-        <div class="hidden lg:flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl w-[300px] lg:w-[450px] border border-white/5 focus-within:border-primary/50 transition-all duration-500">
-          <Search class="w-5 h-5 text-white/50" />
-          <input 
-            type="text" 
-            placeholder="Buscar en mi ecosistema..."
-            class="bg-transparent border-0 outline-none text-xs font-bold w-full text-white placeholder:text-white/40"
-          />
+          <!-- Elite Search -->
+          <div class="hidden md:flex items-center gap-4 bg-white/[0.03] px-6 py-3.5 rounded-2xl w-[350px] lg:w-[500px] border border-white/5 focus-within:border-primary/50 focus-within:bg-white/[0.05] transition-all duration-500 group shadow-inner">
+            <Search class="w-5 h-5 text-white/20 group-focus-within:text-primary transition-colors" />
+            <input 
+              type="text" 
+              placeholder="Buscar en el ecosistema..."
+              class="bg-transparent border-0 outline-none text-xs font-bold w-full text-white placeholder:text-white/20"
+            />
+          </div>
         </div>
 
-        <div class="flex items-center gap-4 lg:gap-8">
-          <button class="p-3 bg-white/5 border border-white/10 rounded-xl text-white/60 hover:text-primary relative transition-all active:scale-90">
-            <Bell class="w-5 h-5" />
-            <span class="absolute top-3 right-3 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
-          </button>
+        <div class="flex items-center gap-6 lg:gap-10">
+          <div class="flex items-center gap-4">
+             <button class="p-3.5 bg-white/5 border border-white/10 rounded-2xl text-white/30 hover:text-primary relative transition-all active:scale-90 group">
+              <Bell class="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              <span class="absolute top-3.5 right-3.5 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
+            </button>
+            <div class="h-8 w-px bg-white/5 hidden sm:block"></div>
+          </div>
           
-          <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
-
-          <div class="flex items-center gap-3 md:gap-4 group p-1 pr-3 rounded-2xl hover:bg-white/5 transition-all duration-500 max-w-[150px] md:max-w-none">
-            <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-primary to-secondary p-0.5 transform group-hover:rotate-6 transition-all duration-700 shrink-0">
+          <!-- Premium Profile Widget -->
+          <div class="flex items-center gap-4 group p-1 pr-4 rounded-[1.5rem] bg-white/[0.02] border border-white/5 hover:border-primary/30 hover:bg-white/5 transition-all duration-700 cursor-pointer">
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary p-0.5 transform group-hover:scale-105 transition-all duration-500 shadow-glow shrink-0">
                <div class="w-full h-full rounded-[10px] bg-bg-card flex items-center justify-center">
-                  <User class="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                  <User class="w-6 h-6 text-primary" />
                </div>
             </div>
-            <div class="text-right hidden sm:block overflow-hidden">
-              <p class="text-[10px] md:text-xs font-black text-white tracking-tight leading-none mb-1 truncate">{{ authStore.displayName }}</p>
-              <p class="text-[8px] md:text-[9px] font-black text-primary uppercase tracking-[0.2em] leading-none drop-shadow-sm">Miembro Elite</p>
+            <div class="text-right hidden sm:block overflow-hidden max-w-[120px]">
+              <p class="text-xs font-black text-white tracking-tight leading-none mb-1 truncate">{{ authStore.displayName }}</p>
+              <div class="flex items-center justify-end gap-1.5">
+                <ShieldCheck class="w-2.5 h-2.5 text-primary" />
+                <p class="text-[8px] font-black text-primary uppercase tracking-[0.2em] leading-none">Elite Member</p>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
       <!-- Dynamic Page Content -->
-      <div class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-12 custom-scrollbar scroll-smooth">
+      <div class="flex-1 overflow-x-hidden overflow-y-auto p-6 md:p-12 custom-scrollbar scroll-smooth">
         <router-view v-slot="{ Component }">
           <transition 
             name="page-premium" 
@@ -220,24 +216,22 @@ const toggleChat = () => {
         </router-view>
       </div>
 
-      <!-- Floating Chat Component -->
+      <!-- AI Assistant Float -->
       <ChatMentor :is-open="isChatOpen" @close="isChatOpen = false" />
       
-      <!-- Support Developer Modal -->
+      <!-- Support Modal -->
       <SupportDeveloper :is-open="isSupportOpen" @close="isSupportOpen = false" />
     </main>
   </div>
 </template>
 
 <style scoped>
-@reference "../style.css";
-
 .sidebar-transition {
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-out;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes fadeIn {
@@ -247,26 +241,31 @@ const toggleChat = () => {
 
 .page-premium-enter-active,
 .page-premium-leave-active {
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-premium-enter-from {
   opacity: 0;
   transform: translateY(20px);
-  filter: blur(5px);
+  filter: blur(10px);
 }
 
 .page-premium-leave-to {
   opacity: 0;
   transform: translateY(-20px);
-  filter: blur(5px);
+  filter: blur(10px);
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-white/5 rounded-full;
+  @apply bg-white/5 rounded-full hover:bg-primary/20 transition-colors;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 30px -10px var(--color-primary-glow);
 }
 </style>
+
