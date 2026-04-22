@@ -20,7 +20,8 @@ import {
   Calendar,
   Heart,
   History,
-  ClipboardList
+  ClipboardList,
+  LifeBuoy
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
 import SupportDeveloper from './SupportDeveloper.vue'
@@ -40,6 +41,7 @@ const navItems = [
   { name: 'Historial de Chats', icon: History, path: '/dashboard/history' },
   { name: 'Mis Recortes', icon: ClipboardList, path: '/dashboard/clipboard' },
   { name: 'Agenda', icon: Calendar, path: '/dashboard/agenda' },
+  { name: 'Centro de Ayuda', icon: LifeBuoy, path: '/dashboard/help' },
   { name: 'Configuraciones', icon: Settings, path: '/dashboard/settings' },
 ]
 

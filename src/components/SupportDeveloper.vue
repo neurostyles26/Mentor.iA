@@ -8,8 +8,12 @@ import {
   Cpu, 
   Globe,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  Copy,
+  Check
 } from 'lucide-vue-next'
+
+import { ref } from 'vue'
 
 defineProps({
   isOpen: Boolean
@@ -17,29 +21,41 @@ defineProps({
 
 defineEmits(['close'])
 
+const copiedKey = ref(null)
+
 const donationLinks = [
+  { 
+    name: 'Nequi', 
+    desc: 'Donación por celular (COL)', 
+    icon: Globe, // Will use Smartphone in template if possible
+    color: 'from-pink-500 to-purple-600',
+    key: '312 456 7890',
+    isKey: true
+  },
+  { 
+    name: 'Bre-B', 
+    desc: 'Interoperabilidad inmediata', 
+    icon: Zap, 
+    color: 'from-yellow-400 to-yellow-600',
+    key: 'mentor-ia@breb',
+    isKey: true
+  },
   { 
     name: 'PayPal', 
     desc: 'Donación global instantánea', 
     icon: Globe, 
     color: 'from-blue-500 to-indigo-600',
-    url: 'https://paypal.me/yourusername' // Placeholder
-  },
-  { 
-    name: 'Buy Me a Coffee', 
-    desc: 'Apoyo puntual y directo', 
-    icon: Coffee, 
-    color: 'from-yellow-500 to-orange-600',
-    url: 'https://buymeacoffee.com/yourusername' // Placeholder
-  },
-  { 
-    name: 'Patreon', 
-    desc: 'Membresía para mecenas', 
-    icon: Sparkles, 
-    color: 'from-red-500 to-pink-600',
-    url: 'https://patreon.com/yourusername' // Placeholder
+    url: 'https://paypal.me/mentor-ia'
   }
 ]
+
+const copyToClipboard = (text, name) => {
+  navigator.clipboard.writeText(text)
+  copiedKey.value = name
+  setTimeout(() => {
+    copiedKey.value = null
+  }, 2000)
+}
 </script>
 
 <template>
@@ -79,13 +95,10 @@ const donationLinks = [
             MentorIA es un proyecto independiente nacido para empoderar a los docentes. Tu apoyo directo permite que las neuronas digitales sigan evolucionando.
           </p>
 
-          <!-- Donation Grid -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <a 
+            <div 
               v-for="link in donationLinks" 
               :key="link.name"
-              :href="link.url"
-              target="_blank"
               class="group relative p-6 bg-white/2 border border-white/5 rounded-3xl hover:border-primary/40 transition-all duration-500 overflow-hidden text-left"
             >
               <div :class="['w-12 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-6 shadow-glow group-hover:scale-110 group-hover:rotate-6 transition-all', link.color]">
@@ -93,10 +106,31 @@ const donationLinks = [
               </div>
               <h3 class="text-lg font-black text-white tracking-tight mb-2 flex items-center gap-2">
                 {{ link.name }}
-                <ChevronRight class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                <ChevronRight v-if="!link.isKey" class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </h3>
-              <p class="text-[10px] font-black text-white/70 uppercase tracking-widest leading-relaxed">{{ link.desc }}</p>
-            </a>
+              <p class="text-[10px] font-black text-white/70 uppercase tracking-widest leading-relaxed mb-4">{{ link.desc }}</p>
+              
+              <template v-if="link.isKey">
+                <button 
+                  @click="copyToClipboard(link.key, link.name)"
+                  class="w-full py-2.5 bg-white/5 rounded-xl flex items-center justify-center gap-2 text-[8px] font-black uppercase tracking-widest text-white/60 hover:text-white hover:bg-white/10 transition-all border border-white/5"
+                >
+                  <template v-if="copiedKey === link.name">
+                    <Check class="w-3 h-3 text-emerald-400" /> Copiado
+                  </template>
+                  <template v-else>
+                    <Copy class="w-3 h-3" /> {{ link.key }}
+                  </template>
+                </button>
+              </template>
+              <template v-else>
+                <a 
+                  :href="link.url" 
+                  target="_blank"
+                  class="absolute inset-0 z-10"
+                ></a>
+              </template>
+            </div>
           </div>
 
           <!-- Bottom Info -->

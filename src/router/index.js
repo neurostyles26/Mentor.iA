@@ -52,6 +52,11 @@ const routes = [
         path: 'clipboard',
         name: 'Clipboard',
         component: () => import('../views/Clipboard.vue')
+      },
+      {
+        path: 'help',
+        name: 'HelpCenter',
+        component: () => import('../views/HelpCenter.vue')
       }
     ]
   },
