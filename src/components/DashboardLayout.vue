@@ -355,7 +355,13 @@ const markRead = (id) => {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-white/5 rounded-full hover:bg-primary/20 transition-colors;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-glow);
 }
 
 .shadow-glow {

@@ -250,7 +250,8 @@ onMounted(() => {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-white/5 rounded-full;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
 }
 
 .animate-float {

@@ -189,7 +189,16 @@ const toggleMenu = () => isMenuOpen.value = !isMenuOpen.value
 }
 
 .feature-card {
-  @apply glass-panel p-10 bg-white/2 border-white/5 hover:border-primary/40 transition-all duration-700;
+  background-color: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  padding: 2.5rem;
+  transition: all 0.7s ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
 .shadow-glow {

@@ -599,45 +599,121 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 
 /* Premium Markdown Styling */
 .preview-markdown :deep(h1) { 
-  @apply text-5xl font-black mb-12 text-white tracking-tighter italic border-b-8 border-primary/10 pb-6 inline-block; 
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 900;
+  margin-bottom: 3rem;
+  color: white;
+  letter-spacing: -0.05em;
+  font-style: italic;
+  border-bottom: 8px solid rgba(99, 102, 241, 0.1);
+  padding-bottom: 1.5rem;
+  display: inline-block;
 }
 .preview-markdown :deep(h2) { 
-  @apply text-3xl font-black mt-16 mb-8 text-primary tracking-tighter uppercase flex items-center gap-4; 
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 900;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  color: var(--color-primary);
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 .preview-markdown :deep(h2::before) { 
   content: ""; 
-  @apply block w-2.5 h-10 bg-primary rounded-full shadow-glow; 
+  display: block;
+  width: 0.625rem;
+  height: 2.5rem;
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+  box-shadow: 0 0 30px -10px var(--color-primary-glow);
 }
 .preview-markdown :deep(h3) { 
-  @apply text-2xl font-black mt-10 mb-6 text-white/90 border-l-8 border-white/5 pl-6 italic; 
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 900;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  border-left: 8px solid rgba(255, 255, 255, 0.05);
+  padding-left: 1.5rem;
+  font-style: italic;
 }
 .preview-markdown :deep(p) { 
-  @apply mb-10 leading-relaxed text-[17px] text-white/60 font-medium; 
+  margin-bottom: 2.5rem;
+  line-height: 1.625;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
 }
 .preview-markdown :deep(ul) { 
-  @apply mb-10 space-y-5; 
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 .preview-markdown :deep(li) { 
-  @apply flex items-start gap-5 text-[16px] text-white/70; 
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
 }
 .preview-markdown :deep(li::before) { 
   content: "→"; 
-  @apply text-primary font-black text-2xl leading-none mt-0.5; 
+  color: var(--color-primary);
+  font-weight: 900;
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-top: 0.125rem;
 }
 .preview-markdown :deep(strong) { 
-  @apply text-primary font-black filter brightness-125; 
+  color: var(--color-primary);
+  font-weight: 900;
+  filter: brightness(1.25);
 }
 .preview-markdown :deep(table) { 
-  @apply w-full mb-12 border-separate border-spacing-0 bg-white/[0.02] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl; 
+  width: 100%;
+  margin-bottom: 3rem;
+  border-separate: true;
+  border-spacing: 0;
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: 2.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 .preview-markdown :deep(th) { 
-  @apply bg-white/5 p-6 text-left text-[10px] font-black uppercase tracking-[0.4em] text-primary border-b border-white/10; 
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--color-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 .preview-markdown :deep(td) { 
-  @apply p-6 border-b border-white/5 text-[14px] text-white/50 font-medium; 
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
 }
 .preview-markdown :deep(blockquote) { 
-  @apply border-l-8 border-primary/30 bg-primary/5 px-10 py-8 rounded-r-[2.5rem] mb-10 italic text-white/80 font-bold; 
+  border-left: 8px solid rgba(99, 102, 241, 0.3);
+  background-color: rgba(99, 102, 241, 0.05);
+  padding: 2rem 2.5rem;
+  border-radius: 0 2.5rem 2.5rem 0;
+  margin-bottom: 2.5rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -645,7 +721,13 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-white/5 rounded-full hover:bg-primary/20 transition-colors;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-glow);
 }
 
 .shadow-glow {

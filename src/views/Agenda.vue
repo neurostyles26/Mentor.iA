@@ -448,7 +448,8 @@ onMounted(() => {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-white/5 rounded-full;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
 }
 
 .shadow-glow {
@@ -461,6 +462,14 @@ onMounted(() => {
 
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
-  @apply opacity-20 hover:opacity-100 transition-opacity cursor-pointer invert;
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  filter: invert(1);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 </style>
