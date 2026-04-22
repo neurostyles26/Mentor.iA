@@ -46,6 +46,7 @@ const isNotificationOpen = ref(false)
 const navItems = [
   { name: 'Mis Cursos', icon: LayoutDashboard, path: '/dashboard' },
   { name: 'Nueva Clase IA', icon: Sparkles, path: '/dashboard/create' },
+  { name: 'Laboratorio Docente', icon: BrainCircuit, path: '/dashboard/analyzer' },
   { name: 'Historial de Chats', icon: History, path: '/dashboard/history' },
   { name: 'Mis Recortes', icon: ClipboardList, path: '/dashboard/clipboard' },
   { name: 'Agenda', icon: Calendar, path: '/dashboard/agenda' },

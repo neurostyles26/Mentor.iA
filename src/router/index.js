@@ -57,6 +57,11 @@ const routes = [
         path: 'help',
         name: 'HelpCenter',
         component: () => import('../views/HelpCenter.vue')
+      },
+      {
+        path: 'analyzer',
+        name: 'DocAnalyzer',
+        component: () => import('../views/DocAnalyzer.vue')
       }
     ]
   },
