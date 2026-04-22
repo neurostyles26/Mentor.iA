@@ -7,7 +7,8 @@ import {
   ExternalLink,
   Copy,
   Check,
-  ShieldCheck
+  ShieldCheck,
+  MessageCircle
 } from 'lucide-vue-next'
 
 import { ref } from 'vue'
@@ -114,6 +115,14 @@ const copyToClipboard = () => {
                  "Cada aporte es una neurona más para nuestra IA. Gracias por ser parte de este ecosistema."
                </p>
             </div>
+
+            <a 
+              href="https://wa.me/573124567890?text=Hola,%20tengo%20una%20sugerencia%20de%20mejora%20para%20MentorIA:"
+              target="_blank"
+              class="w-full flex items-center justify-center gap-4 py-4 border border-white/5 bg-white/[0.02] hover:bg-white/5 rounded-2xl text-[9px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-white transition-all"
+            >
+              <MessageCircle class="w-4 h-4" /> Sugerir Mejoras
+            </a>
           </div>
 
           <button 

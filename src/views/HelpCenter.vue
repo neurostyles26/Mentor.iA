@@ -182,24 +182,48 @@ const copyToClipboard = () => {
         </div>
       </div>
 
-      <!-- Tech Support Card -->
+      <!-- Tech Support & Feedback Card -->
       <div class="bg-bg-card border border-white/10 rounded-[3.5rem] p-12 flex flex-col justify-between group relative overflow-hidden shadow-2xl">
         <div class="relative z-10">
           <div class="w-16 h-16 bg-white/5 rounded-[1.5rem] flex items-center justify-center text-primary mb-10 border border-white/10 transition-transform group-hover:rotate-12 group-hover:scale-110">
             <MessageCircle class="w-8 h-8" />
           </div>
-          <h2 class="text-3xl font-black text-white tracking-tight italic mb-6">Soporte <br /> Personalizado</h2>
-          <p class="text-sm font-medium text-white/40 leading-relaxed mb-10">
-            ¿Tienes alguna implementación especial o necesitas asistencia técnica avanzada? Estamos aquí para ayudarte.
+          <h2 class="text-3xl font-black text-white tracking-tight italic mb-6">Propuestas <br /> de Mejora</h2>
+          <p class="text-sm font-medium text-white/40 leading-relaxed mb-8">
+            ¿Tienes una idea para potenciar MentorIA? Escríbenos directamente para implementar tus sugerencias en el ecosistema.
           </p>
+          
+          <div class="space-y-4 mb-10">
+            <div class="flex items-center gap-3 text-white/60">
+              <div class="w-2 h-2 bg-primary rounded-full"></div>
+              <span class="text-[10px] font-black uppercase tracking-widest">iamentorsoft@gmail.com</span>
+            </div>
+            <div class="flex items-center gap-3 text-white/60">
+              <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+              <span class="text-[10px] font-black uppercase tracking-widest">Soporte WhatsApp Activo</span>
+            </div>
+          </div>
         </div>
         
-        <button class="relative z-10 w-full py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-white transition-all group-hover:border-primary/40 active:scale-95">
-          Contactar <ArrowRight class="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-        </button>
+        <div class="space-y-4 relative z-10">
+          <a 
+            href="https://wa.me/573124567890?text=Hola%20equipo%20de%20MentorIA,%20tengo%20una%20propuesta%20de%20mejora%20para%20el%20software:" 
+            target="_blank"
+            class="w-full py-5 bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-primary transition-all active:scale-95"
+          >
+            WhatsApp Support <ChevronRight class="w-4 h-4" />
+          </a>
+          
+          <a 
+            href="mailto:iamentorsoft@gmail.com?subject=Propuesta de Mejora - MentorIA"
+            class="w-full py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-white transition-all active:scale-95"
+          >
+            Enviar Correo <ArrowRight class="w-4 h-4" />
+          </a>
+        </div>
 
         <!-- Decorative background text -->
-        <div class="absolute -bottom-10 -right-10 text-9xl font-black text-white/[0.02] pointer-events-none select-none tracking-tighter italic">TECH</div>
+        <div class="absolute -bottom-10 -right-10 text-9xl font-black text-white/[0.02] pointer-events-none select-none tracking-tighter italic">SUGGEST</div>
       </div>
     </div>
   </div>
