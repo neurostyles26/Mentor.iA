@@ -21,40 +21,14 @@ defineProps({
 
 defineEmits(['close'])
 
-const copiedKey = ref(null)
+const qrImage = '/Mnetoria-qrnequi.jpeg'
+const paymentKey = '312 456 7890' // Optional key if they still want to copy it
+const isCopied = ref(false)
 
-const donationLinks = [
-  { 
-    name: 'Nequi', 
-    desc: 'Donación por celular (COL)', 
-    icon: Globe, // Will use Smartphone in template if possible
-    color: 'from-pink-500 to-purple-600',
-    key: '312 456 7890',
-    isKey: true
-  },
-  { 
-    name: 'Bre-B', 
-    desc: 'Interoperabilidad inmediata', 
-    icon: Zap, 
-    color: 'from-yellow-400 to-yellow-600',
-    key: 'mentor-ia@breb',
-    isKey: true
-  },
-  { 
-    name: 'PayPal', 
-    desc: 'Donación global instantánea', 
-    icon: Globe, 
-    color: 'from-blue-500 to-indigo-600',
-    url: 'https://paypal.me/mentor-ia'
-  }
-]
-
-const copyToClipboard = (text, name) => {
-  navigator.clipboard.writeText(text)
-  copiedKey.value = name
-  setTimeout(() => {
-    copiedKey.value = null
-  }, 2000)
+const copyToClipboard = () => {
+  navigator.clipboard.writeText(paymentKey)
+  isCopied.value = true
+  setTimeout(() => isCopied.value = false, 2000)
 }
 </script>
 
@@ -95,41 +69,33 @@ const copyToClipboard = (text, name) => {
             MentorIA es un proyecto independiente nacido para empoderar a los docentes. Tu apoyo directo permite que las neuronas digitales sigan evolucionando.
           </p>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div 
-              v-for="link in donationLinks" 
-              :key="link.name"
-              class="group relative p-6 bg-white/2 border border-white/5 rounded-3xl hover:border-primary/40 transition-all duration-500 overflow-hidden text-left"
-            >
-              <div :class="['w-12 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-6 shadow-glow group-hover:scale-110 group-hover:rotate-6 transition-all', link.color]">
-                <component :is="link.icon" class="w-6 h-6 text-white" />
-              </div>
-              <h3 class="text-lg font-black text-white tracking-tight mb-2 flex items-center gap-2">
-                {{ link.name }}
-                <ChevronRight v-if="!link.isKey" class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-              </h3>
-              <p class="text-[10px] font-black text-white/70 uppercase tracking-widest leading-relaxed mb-4">{{ link.desc }}</p>
+          <div class="flex flex-col items-center gap-8">
+            <div class="relative p-4 bg-white rounded-[2rem] shadow-2xl group">
+              <img 
+                :src="qrImage" 
+                alt="QR Pago Nequi/Bre-B" 
+                class="w-64 h-64 md:w-80 md:h-80 object-contain rounded-2xl transition-transform duration-700 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 border-2 border-primary/20 rounded-[2rem] pointer-events-none group-hover:border-primary/50 transition-colors"></div>
+            </div>
+
+            <div class="text-center space-y-4">
+              <h3 class="text-2xl font-black text-white tracking-tight italic">Escanea para apoyar</h3>
+              <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] max-w-[280px]">
+                Usa Nequi o cualquier App con Bre-B para escanear el código y ayudarnos a mantener MentorIA.
+              </p>
               
-              <template v-if="link.isKey">
-                <button 
-                  @click="copyToClipboard(link.key, link.name)"
-                  class="w-full py-2.5 bg-white/5 rounded-xl flex items-center justify-center gap-2 text-[8px] font-black uppercase tracking-widest text-white/60 hover:text-white hover:bg-white/10 transition-all border border-white/5"
-                >
-                  <template v-if="copiedKey === link.name">
-                    <Check class="w-3 h-3 text-emerald-400" /> Copiado
-                  </template>
-                  <template v-else>
-                    <Copy class="w-3 h-3" /> {{ link.key }}
-                  </template>
-                </button>
-              </template>
-              <template v-else>
-                <a 
-                  :href="link.url" 
-                  target="_blank"
-                  class="absolute inset-0 z-10"
-                ></a>
-              </template>
+              <button 
+                @click="copyToClipboard"
+                class="inline-flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+              >
+                <template v-if="isCopied">
+                  <Check class="w-4 h-4 text-emerald-400" /> ¡Copiado!
+                </template>
+                <template v-else>
+                  <Copy class="w-4 h-4" /> Copiar Número: {{ paymentKey }}
+                </template>
+              </button>
             </div>
           </div>
 

@@ -17,7 +17,9 @@ import {
 import { ref } from 'vue'
 
 const searchQuery = ref('')
-const copiedKey = ref(null)
+const isCopied = ref(false)
+const paymentKey = '312 456 7890'
+const qrImage = '/Mnetoria-qrnequi.jpeg'
 
 const helpCategories = [
   {
@@ -46,38 +48,10 @@ const helpCategories = [
   }
 ]
 
-const donationMethods = [
-  { 
-    name: 'Nequi', 
-    desc: 'Donación por celular (Colombia)', 
-    icon: Smartphone, 
-    color: 'from-pink-500 to-purple-600',
-    key: '312 456 7890', // Placeholder
-    isKey: true
-  },
-  { 
-    name: 'Bre-B', 
-    desc: 'Interoperabilidad inmediata', 
-    icon: Zap, 
-    color: 'from-yellow-400 to-yellow-600',
-    key: 'mentor-ia@breb', // Placeholder
-    isKey: true
-  },
-  { 
-    name: 'PayPal', 
-    desc: 'Donación global instantánea', 
-    icon: Globe, 
-    color: 'from-blue-500 to-indigo-600',
-    url: 'https://paypal.me/mentor-ia' // Placeholder
-  }
-]
-
-const copyToClipboard = (text, name) => {
-  navigator.clipboard.writeText(text)
-  copiedKey.value = name
-  setTimeout(() => {
-    copiedKey.value = null
-  }, 2000)
+const copyToClipboard = () => {
+  navigator.clipboard.writeText(paymentKey)
+  isCopied.value = true
+  setTimeout(() => isCopied.value = false, 2000)
 }
 </script>
 
@@ -151,40 +125,35 @@ const copyToClipboard = (text, name) => {
             MentorIA es un proyecto independiente. Tu apoyo nos permite mantener los servidores activos y seguir desarrollando herramientas gratuitas para docentes.
           </p>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div 
-              v-for="method in donationMethods" 
-              :key="method.name"
-              class="group relative p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-primary/30 transition-all overflow-hidden"
-            >
-              <div :class="['w-12 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110', method.color]">
-                <component :is="method.icon" class="w-6 h-6 text-white" />
-              </div>
-              <h3 class="text-lg font-black text-white tracking-tight mb-1">{{ method.name }}</h3>
-              <p class="text-[9px] font-black text-white/40 uppercase tracking-widest mb-6">{{ method.desc }}</p>
+          <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="relative p-6 bg-white rounded-[2.5rem] shadow-2xl group shrink-0">
+              <img 
+                :src="qrImage" 
+                alt="QR Pago Nequi/Bre-B" 
+                class="w-64 h-64 md:w-72 md:h-72 object-contain rounded-2xl transition-transform duration-700 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 border-2 border-primary/20 rounded-[2.5rem] pointer-events-none"></div>
+            </div>
+
+            <div class="space-y-6 text-center md:text-left">
+              <h3 class="text-3xl font-black text-white tracking-tight italic">Escanéa y Apoya</h3>
+              <p class="text-white/60 font-bold text-lg leading-relaxed max-w-md">
+                Usa tu aplicación de Nequi o cualquier entidad bancaria con Bre-B para escanear este código. Tu aporte directo permite que MentorIA siga siendo libre para todos los docentes.
+              </p>
               
-              <template v-if="method.isKey">
+              <div class="flex flex-wrap items-center gap-4 justify-center md:justify-start">
                 <button 
-                  @click="copyToClipboard(method.key, method.name)"
-                  class="w-full py-3 bg-white/5 rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/60 hover:text-white hover:bg-white/10 transition-all"
+                  @click="copyToClipboard"
+                  class="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/10 transition-all active:scale-95"
                 >
-                  <template v-if="copiedKey === method.name">
-                    <Check class="w-3 h-3 text-emerald-400" /> Copiado
+                  <template v-if="isCopied">
+                    <Check class="w-4 h-4 text-emerald-400 inline mr-2" /> ¡Copiado!
                   </template>
                   <template v-else>
-                    <Copy class="w-3 h-3" /> {{ method.key }}
+                    <Copy class="w-4 h-4 inline mr-2" /> Número: {{ paymentKey }}
                   </template>
                 </button>
-              </template>
-              <template v-else>
-                <a 
-                  :href="method.url" 
-                  target="_blank"
-                  class="w-full py-3 bg-primary/20 text-primary rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
-                >
-                  Donar <ChevronRight class="w-3 h-3" />
-                </a>
-              </template>
+              </div>
             </div>
           </div>
         </div>
