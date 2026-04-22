@@ -204,12 +204,20 @@ const markRead = (id) => {
 
         <div class="flex items-center gap-6 lg:gap-10">
           <div class="flex items-center gap-4 relative">
-             <button 
-               @click="toggleNotifications"
-               class="p-3.5 bg-white/5 border border-white/10 rounded-2xl text-white/30 hover:text-primary relative transition-all active:scale-90 group"
-             >
+            <button 
+              @click="toggleNotifications"
+              class="p-3.5 bg-white/5 border border-white/10 rounded-2xl text-white/30 hover:text-primary relative transition-all active:scale-90 group"
+            >
               <Bell class="w-5 h-5 group-hover:rotate-12 transition-transform" />
               <span v-if="notificationStore.unreadCount > 0" class="absolute top-3.5 right-3.5 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
+            </button>
+
+            <!-- Chat Toggle Button -->
+            <button 
+              @click="isChatOpen = true"
+              class="p-3.5 bg-primary/10 border border-primary/20 rounded-2xl text-primary hover:bg-primary hover:text-white transition-all active:scale-90 group shadow-glow"
+            >
+              <MessageCircle class="w-5 h-5 group-hover:scale-110 transition-transform" />
             </button>
 
             <!-- Elite Notification Dropdown -->

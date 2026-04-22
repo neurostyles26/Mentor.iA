@@ -86,12 +86,17 @@ const processWithAI = async () => {
   analysisResult.value = null
 
   try {
-    const prompt = `Modo: ${selectedMode.value.title}. Contenido del documento:\n\n${extractedText.value.substring(0, 5000)}\n\nInstrucción: ${selectedMode.value.prompt}`
+    // Truncate to avoid token limits (approx 15000 chars is safe for most models)
+    const truncatedText = extractedText.value.length > 15000 
+      ? extractedText.value.substring(0, 15000) + '... [Texto truncado por longitud]'
+      : extractedText.value
+
+    const prompt = `Modo: ${selectedMode.value.title}\nInstrucción específica: ${selectedMode.value.prompt}\n\nContenido del documento:\n"""\n${truncatedText}\n"""`
 
     const { data, error } = await supabase.functions.invoke('tutor-chat', {
       body: { 
         pregunta: prompt, 
-        contexto: 'Eres un analista de documentos pedagógicos para MentorIA. Responde con un formato elegante y profesional.' 
+        contexto: 'Eres un analista de documentos pedagógicos experto en MentorIA. Tu objetivo es ayudar al docente con el contenido proporcionado. Responde con un tono profesional, elegante y estructurado.' 
       }
     })
 

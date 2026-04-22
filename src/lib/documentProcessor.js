@@ -2,29 +2,41 @@ import * as pdfjsLib from 'pdfjs-dist'
 import mammoth from 'mammoth'
 import * as XLSX from 'xlsx'
 
-// Set worker for PDF.js
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+// Use a very stable version for the worker from unpkg
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs'
 
 export const documentProcessor = {
   async extractText(file) {
     const fileType = file.name.split('.').pop().toLowerCase()
+    console.log(`Procesando archivo tipo: ${fileType}`)
     
-    switch (fileType) {
-      case 'pdf':
-        return await this.processPDF(file)
-      case 'docx':
-        return await this.processDOCX(file)
-      case 'xlsx':
-      case 'xls':
-        return await this.processXLSX(file)
-      default:
-        throw new Error('Formato de archivo no soportado')
+    try {
+      switch (fileType) {
+        case 'pdf':
+          return await this.processPDF(file)
+        case 'docx':
+          return await this.processDOCX(file)
+        case 'xlsx':
+        case 'xls':
+          return await this.processXLSX(file)
+        default:
+          throw new Error('Formato de archivo no soportado')
+      }
+    } catch (err) {
+      console.error('Error en documentProcessor:', err)
+      throw new Error(`Error al leer el archivo: ${err.message}`)
     }
   },
 
   async processPDF(file) {
     const arrayBuffer = await file.arrayBuffer()
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
+    const loadingTask = pdfjsLib.getDocument({ 
+      data: arrayBuffer,
+      useSystemFonts: true,
+      isEvalSupported: false 
+    })
+    
+    const pdf = await loadingTask.promise
     let fullText = ''
     
     for (let i = 1; i <= pdf.numPages; i++) {
@@ -32,8 +44,10 @@ export const documentProcessor = {
       const content = await page.getTextContent()
       const strings = content.items.map(item => item.str)
       fullText += strings.join(' ') + '\n'
+      console.log(`Página ${i} procesada`)
     }
     
+    if (!fullText.trim()) throw new Error('El PDF parece estar vacío o ser una imagen (OCR no soportado)')
     return fullText
   },
 
