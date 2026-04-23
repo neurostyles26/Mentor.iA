@@ -10,13 +10,22 @@ import {
   ChevronRight,
   Heart,
   ShieldCheck,
+  Copy,
+  Check,
   Zap as ZapIcon
 } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 const searchQuery = ref('')
 const qrImage = '/Mnetoria-qrnequi.jpeg'
+const paymentKey = '0092004175'
 const isCopied = ref(false)
+
+const copyToClipboard = () => {
+  navigator.clipboard.writeText(paymentKey)
+  isCopied.value = true
+  setTimeout(() => isCopied.value = false, 2000)
+}
 
 const helpCategories = [
   {
@@ -151,6 +160,24 @@ const helpCategories = [
                 <span class="text-xs font-black text-white/70 uppercase tracking-widest">Escaneo Seguro Nequi / Bre-B</span>
               </div>
               <h3 class="text-3xl font-black text-white tracking-tight italic">Usa tu Wallet Preferida</h3>
+              
+              <!-- New Copy Button for the number -->
+              <div class="flex justify-center mt-4">
+                <button 
+                  @click="copyToClipboard"
+                  class="group flex items-center gap-4 px-8 py-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-primary/40 transition-all active:scale-95"
+                >
+                  <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center text-primary transition-transform group-hover:scale-110">
+                    <component :is="isCopied ? Check : Copy" class="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p class="text-[8px] font-black text-white/40 uppercase tracking-widest text-left">Copiar Número</p>
+                    <p class="text-lg font-black text-white tracking-widest">{{ paymentKey }}</p>
+                  </div>
+                  <div v-if="isCopied" class="ml-4 text-[9px] font-black text-emerald-400 uppercase tracking-widest animate-fade-in">¡Listo!</div>
+                </button>
+              </div>
+
               <p class="text-white/40 font-medium text-lg max-w-md mx-auto italic">
                 Tu aporte directo permite que nuestras neuronas digitales sigan evolucionando para ti de forma independiente.
               </p>
