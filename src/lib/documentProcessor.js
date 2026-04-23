@@ -3,7 +3,7 @@ import mammoth from 'mammoth'
 import * as XLSX from 'xlsx'
 
 // Use a very stable version for the worker from unpkg
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs'
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@5.6.205/build/pdf.worker.min.mjs'
 
 export const documentProcessor = {
   async extractText(file) {
