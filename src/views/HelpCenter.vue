@@ -233,7 +233,6 @@ const helpCategories = [
         <div class="absolute -bottom-10 -right-10 text-8xl font-black text-white/[0.02] pointer-events-none select-none tracking-tighter italic uppercase">Suggest</div>
       </div>
     </div>
-    </div>
   </div>
 </template>
 
