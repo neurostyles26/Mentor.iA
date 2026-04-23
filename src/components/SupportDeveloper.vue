@@ -20,14 +20,6 @@ defineProps({
 defineEmits(['close'])
 
 const qrImage = '/Mnetoria-qrnequi.jpeg'
-const paymentKey = '312 456 7890'
-const isCopied = ref(false)
-
-const copyToClipboard = () => {
-  navigator.clipboard.writeText(paymentKey)
-  isCopied.value = true
-  setTimeout(() => isCopied.value = false, 2000)
-}
 </script>
 
 <template>
@@ -92,22 +84,15 @@ const copyToClipboard = () => {
           </p>
 
           <div class="space-y-4">
-             <button 
-              @click="copyToClipboard"
-              class="w-full group relative flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-2xl transition-all hover:bg-white/10 hover:border-primary/40 active:scale-[0.98]"
-            >
-              <div class="flex items-center gap-4 text-left">
-                <div class="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                  <component :is="isCopied ? Check : Copy" class="w-5 h-5" />
-                </div>
-                <div>
-                  <p class="text-[8px] font-black text-white/40 uppercase tracking-widest mb-0.5">Copiar número Nequi</p>
-                  <p class="text-sm font-black text-white tracking-tight">{{ paymentKey }}</p>
-                </div>
-              </div>
-              <div v-if="isCopied" class="text-[10px] font-black text-emerald-400 uppercase tracking-widest animate-fade-in">¡Copiado!</div>
-              <ChevronRight v-else class="w-4 h-4 text-white/20 group-hover:translate-x-1 transition-transform" />
-            </button>
+            <div class="p-8 bg-primary/10 border border-primary/20 rounded-[2rem] flex flex-col items-center gap-4 text-center">
+               <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary mb-2">
+                 <ShieldCheck class="w-6 h-6" />
+               </div>
+               <p class="text-xs font-black text-white uppercase tracking-widest">Escaneo Seguro</p>
+               <p class="text-[10px] font-medium text-white/50 leading-relaxed italic">
+                 Usa Nequi o Bre-B para apoyar directamente el desarrollo de MentorIA.
+               </p>
+            </div>
 
             <div class="p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-start gap-4">
                <Zap class="w-6 h-6 text-primary shrink-0 mt-1" />

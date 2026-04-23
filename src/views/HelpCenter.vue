@@ -7,11 +7,16 @@ import {
   BookOpen, 
   ArrowRight,
   Zap,
-  ChevronRight
+  ChevronRight,
+  Heart,
+  ShieldCheck,
+  Zap as ZapIcon
 } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 const searchQuery = ref('')
+const qrImage = '/Mnetoria-qrnequi.jpeg'
+const isCopied = ref(false)
 
 const helpCategories = [
   {
@@ -109,52 +114,98 @@ const helpCategories = [
       </div>
     </div>
 
-    <!-- Refined Support Section -->
-    <div class="max-w-4xl mx-auto">
-      <!-- Tech Support & Feedback Card -->
-      <div class="bg-bg-card border border-white/10 rounded-[3.5rem] p-12 lg:p-20 flex flex-col lg:flex-row items-center justify-between group relative overflow-hidden shadow-2xl">
-        <div class="relative z-10 lg:max-w-xl">
-          <div class="w-16 h-16 bg-white/5 rounded-[1.5rem] flex items-center justify-center text-primary mb-10 border border-white/10 transition-transform group-hover:rotate-12 group-hover:scale-110">
-            <MessageCircle class="w-8 h-8" />
-          </div>
-          <h2 class="text-4xl lg:text-5xl font-black text-white tracking-tight italic mb-6">Propuestas <br /> de Mejora</h2>
-          <p class="text-lg font-medium text-white/40 leading-relaxed mb-8">
-            ¿Tienes una idea para potenciar MentorIA? Escríbenos directamente para implementar tus sugerencias en el ecosistema. Nuestro compromiso es evolucionar junto a tu labor pedagógica.
-          </p>
-          
-          <div class="space-y-4 mb-10">
-            <div class="flex items-center gap-3 text-white/60">
-              <div class="w-2 h-2 bg-primary rounded-full"></div>
-              <span class="text-xs font-black uppercase tracking-widest">iamentorsoft@gmail.com</span>
+    <!-- Premium Support & Feedback Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-stretch">
+      <!-- QR Donation Card (Larger) -->
+      <div class="lg:col-span-3 relative overflow-hidden rounded-[3.5rem] bg-gradient-to-br from-primary/20 to-transparent border border-white/10 p-10 lg:p-16 flex flex-col items-center justify-center text-center group">
+        <div class="relative z-10 w-full">
+          <div class="flex flex-col items-center gap-6 mb-12">
+            <div class="w-20 h-20 bg-primary rounded-[2rem] flex items-center justify-center text-white shadow-glow animate-pulse-slow">
+              <Heart class="w-10 h-10" />
             </div>
-            <div class="flex items-center gap-3 text-white/60">
-              <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
-              <span class="text-xs font-black uppercase tracking-widest">Soporte WhatsApp Activo</span>
+            <div>
+              <h2 class="text-5xl font-black text-white tracking-tighter italic">Apoya el Ecosistema</h2>
+              <p class="text-xs font-black text-primary uppercase tracking-[0.5em] mt-2">Impulsando la Educación con IA</p>
+            </div>
+          </div>
+          
+          <div class="flex flex-col items-center gap-10">
+            <div class="relative group/qr">
+              <div class="relative p-8 bg-white rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(255,255,255,0.15)] transition-all duration-700 group-hover/qr:scale-110">
+                <img 
+                  :src="qrImage" 
+                  alt="QR Pago" 
+                  class="w-72 h-72 md:w-96 md:h-96 object-contain rounded-3xl"
+                />
+                <!-- Scanning effect -->
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-primary to-transparent animate-scan shadow-glow"></div>
+              </div>
+              <!-- Decorative elements around QR -->
+              <div class="absolute -inset-8 border border-white/5 rounded-[4rem] pointer-events-none animate-pulse-slow"></div>
+              <div class="absolute -inset-16 border border-white/5 rounded-[5rem] pointer-events-none animate-pulse-slow" style="animation-delay: 1s"></div>
+            </div>
+
+            <div class="space-y-6">
+              <div class="inline-flex items-center gap-4 px-6 py-2 bg-white/5 border border-white/10 rounded-full">
+                <ShieldCheck class="w-5 h-5 text-primary" />
+                <span class="text-xs font-black text-white/70 uppercase tracking-widest">Escaneo Seguro Nequi / Bre-B</span>
+              </div>
+              <h3 class="text-3xl font-black text-white tracking-tight italic">Usa tu Wallet Preferida</h3>
+              <p class="text-white/40 font-medium text-lg max-w-md mx-auto italic">
+                Tu aporte directo permite que nuestras neuronas digitales sigan evolucionando para ti de forma independiente.
+              </p>
             </div>
           </div>
         </div>
         
-        <div class="space-y-6 w-full lg:w-72 relative z-10">
+        <!-- Background decorative text -->
+        <div class="absolute top-10 right-10 text-9xl font-black text-white/[0.03] pointer-events-none select-none tracking-tighter italic">DONATE</div>
+      </div>
+
+      <!-- Feedback Card -->
+      <div class="lg:col-span-2 bg-bg-card border border-white/10 rounded-[3.5rem] p-12 flex flex-col justify-between group relative overflow-hidden shadow-2xl">
+        <div class="relative z-10">
+          <div class="w-16 h-16 bg-white/5 rounded-[1.5rem] flex items-center justify-center text-primary mb-10 border border-white/10 transition-transform group-hover:rotate-12 group-hover:scale-110">
+            <MessageCircle class="w-8 h-8" />
+          </div>
+          <h2 class="text-4xl font-black text-white tracking-tight italic mb-6">Propuestas <br /> de Mejora</h2>
+          <p class="text-sm font-medium text-white/40 leading-relaxed mb-8">
+            ¿Tienes una idea para potenciar MentorIA? Escríbenos directamente para implementar tus sugerencias en el ecosistema.
+          </p>
+          
+          <div class="space-y-6 mb-10">
+            <div class="flex items-center gap-3 text-white/60">
+              <div class="w-2.5 h-2.5 bg-primary rounded-full shadow-glow"></div>
+              <span class="text-[10px] font-black uppercase tracking-[0.2em]">iamentorsoft@gmail.com</span>
+            </div>
+            <div class="flex items-center gap-3 text-white/60">
+              <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-glow"></div>
+              <span class="text-[10px] font-black uppercase tracking-[0.2em]">Soporte WhatsApp Activo</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4 relative z-10">
           <a 
             href="https://wa.me/573124567890?text=Hola%20equipo%20de%20MentorIA,%20tengo%20una%20propuesta%20de%20mejora%20para%20el%20software:" 
             target="_blank"
-            class="w-full py-6 bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-2xl flex items-center justify-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-primary transition-all active:scale-95 shadow-glow-sm"
+            class="w-full py-5 bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-primary transition-all active:scale-95"
           >
             WhatsApp Support <ChevronRight class="w-4 h-4" />
           </a>
           
           <a 
             href="mailto:iamentorsoft@gmail.com?subject=Propuesta de Mejora - MentorIA"
-            class="w-full py-6 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-white transition-all active:scale-95"
+            class="w-full py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-white transition-all active:scale-95"
           >
             Enviar Correo <ArrowRight class="w-4 h-4" />
           </a>
         </div>
 
         <!-- Decorative background text -->
-        <div class="absolute -bottom-10 -right-10 text-[12rem] font-black text-white/[0.02] pointer-events-none select-none tracking-tighter italic">SUGGEST</div>
+        <div class="absolute -bottom-10 -right-10 text-8xl font-black text-white/[0.02] pointer-events-none select-none tracking-tighter italic uppercase">Suggest</div>
       </div>
-      </div>
+    </div>
     </div>
   </div>
 </template>
