@@ -108,7 +108,7 @@ const toggleMenu = () => isMenuOpen.value = !isMenuOpen.value
             Empezar <span class="hidden xs:inline">Experiencia</span> IA <ArrowRight class="w-5 h-5 group-hover:translate-x-2 transition-transform" />
           </span>
         </button>
-        <button class="px-6 py-4 sm:px-8 sm:py-5 md:px-12 md:py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all hover:-translate-y-2 active:scale-95">
+        <button @click="router.push('/demo')" class="px-6 py-4 sm:px-8 sm:py-5 md:px-12 md:py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all hover:-translate-y-2 active:scale-95">
           Ver Demo
         </button>
       </div>

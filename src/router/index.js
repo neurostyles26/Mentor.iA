@@ -14,6 +14,11 @@ const routes = [
     alias: '/auth'
   },
   {
+    path: '/demo',
+    name: 'Demo',
+    component: () => import('../views/Demo.vue')
+  },
+  {
     path: '/dashboard',
     component: () => import('../components/DashboardLayout.vue'),
     meta: { requiresAuth: true },
