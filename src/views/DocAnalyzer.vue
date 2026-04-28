@@ -114,6 +114,51 @@ const processWithAI = async () => {
   }
 }
 
+const copyToClipboard = async () => {
+  if (!analysisResult.value) return
+  try {
+    await navigator.clipboard.writeText(analysisResult.value)
+    alert('¡Copiado al portapapeles!')
+  } catch (err) {
+    console.error('Error al copiar:', err)
+  }
+}
+
+const downloadAsWord = () => {
+  if (!analysisResult.value) return
+  
+  const content = analysisResult.value
+  const filename = `MentorIA_${currentFile.value?.name.split('.')[0] || 'Analisis'}.doc`
+  
+  const header = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+          xmlns:w='urn:schemas-microsoft-com:office:word' 
+          xmlns='http://www.w3.org/TR/REC-html40'>
+    <head><meta charset='utf-8'><title>MentorIA Export</title>
+    <style>
+      @page { size: 8.5in 11in; margin: 2.5cm; }
+      body { font-family: 'Arial', sans-serif; font-size: 12pt; line-height: 1.5; text-align: justify; }
+      h1, h2, h3 { color: #1e293b; }
+      pre { white-space: pre-wrap; font-family: 'Arial', sans-serif; }
+    </style>
+    </head><body>
+  `
+  const footer = "</body></html>"
+  
+  const sourceHTML = header + content.replace(/\n/g, '<br>') + footer
+  
+  const blob = new Blob(['\ufeff', sourceHTML], {
+    type: 'application/msword'
+  })
+  
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  URL.revokeObjectURL(url)
+}
+
 const reset = () => {
   currentFile.value = null
   extractedText.value = ''
@@ -242,17 +287,32 @@ const toggleSpeech = () => {
                       <p class="text-lg sm:text-xl font-black text-white italic tracking-tight">{{ selectedMode?.title }}</p>
                    </div>
                 </div>
-                <div class="flex gap-2">
+                 <div class="flex gap-2">
                    <button 
                      @click="toggleSpeech"
+                     title="Escuchar análisis"
                      class="p-2.5 sm:p-3 rounded-lg sm:rounded-xl transition-all border"
                      :class="isSpeaking ? 'bg-primary/20 text-primary border-primary/40 shadow-glow' : 'bg-white/5 text-white/40 border-white/10 hover:text-white'"
                    >
                      <Volume2 v-if="!isSpeaking" class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                      <VolumeX v-else class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                    </button>
-                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all border border-white/10"><Download class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
-                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all border border-white/10"><ClipboardCheck class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
+                   
+                   <button 
+                     @click="downloadAsWord"
+                     title="Descargar Word"
+                     class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all border border-white/10"
+                   >
+                     <Download class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                   </button>
+                   
+                   <button 
+                     @click="copyToClipboard"
+                     title="Copiar texto"
+                     class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all border border-white/10"
+                   >
+                     <ClipboardCheck class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                   </button>
                 </div>
              </header>
 
