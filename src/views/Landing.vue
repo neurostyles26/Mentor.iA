@@ -42,6 +42,7 @@ const toggleMenu = () => isMenuOpen.value = !isMenuOpen.value
       </div>
       
       <div class="hidden md:flex items-center gap-8">
+        <button @click="router.push('/demo')" class="text-[10px] font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors">Ver Demo</button>
         <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors">Sincronizar Panel</button>
         <button @click="router.push('/login?signup=true')" class="px-8 py-3 bg-white text-bg-deep rounded-xl font-black text-[10px] uppercase tracking-widest shadow-premium hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95 whitespace-nowrap">
           Crear Cuenta
@@ -68,6 +69,9 @@ const toggleMenu = () => isMenuOpen.value = !isMenuOpen.value
           </div>
 
           <div class="w-full space-y-4">
+             <button @click="router.push('/demo'); isMenuOpen = false" class="w-full py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
+                Ver Demo Interactiva
+             </button>
              <button @click="router.push('/login'); isMenuOpen = false" class="w-full py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
                 Sincronizar Panel
              </button>
