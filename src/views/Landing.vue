@@ -86,17 +86,28 @@ onMounted(() => {
     </header>
 
     <!-- Main Hero -->
-    <main class="relative z-10 pt-64 pb-32">
-      <section class="container mx-auto px-6 text-center">
-        <!-- Badge -->
-        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 mb-16 animate-fade-in">
-          <Sparkles class="w-3.5 h-3.5 text-primary animate-pulse" />
-          <span class="text-[9px] font-black uppercase tracking-[0.5em]">El Futuro de la Educación</span>
+    <main class="relative z-10 h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 mb-8 animate-fade-in relative z-20">
+        <Sparkles class="w-3.5 h-3.5 text-primary animate-pulse" />
+        <span class="text-[9px] font-black uppercase tracking-[0.5em]">Red Neuronal v2.0 Online</span>
+      </div>
+
+      <!-- Content Container (Centered) -->
+      <div class="relative w-full max-w-7xl flex flex-col items-center">
+        <!-- 3D Centerpiece (Background of text) -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+           <div class="absolute w-[80%] h-[80%] bg-primary/10 blur-[120px] rounded-full animate-pulse"></div>
+           <img 
+             src="/neural-brain.png" 
+             alt="Neural Core" 
+             class="w-full max-w-2xl h-auto animate-float-slow mix-blend-screen"
+           />
         </div>
 
         <!-- Headline -->
-        <div class="max-w-7xl mx-auto mb-20">
-          <h1 class="text-6xl md:text-8xl lg:text-[11rem] font-black tracking-[-0.06em] leading-[0.85] animate-fade-in-up">
+        <div class="text-center mb-8 relative z-10">
+          <h1 class="text-5xl md:text-7xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.85] animate-fade-in-up">
             LA IA QUE <br />
             <span class="bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent italic px-4">ENTIENDE</span> <br />
             TU MISION
@@ -104,92 +115,54 @@ onMounted(() => {
         </div>
 
         <!-- Subheadline -->
-        <p class="text-xl md:text-3xl text-white/30 max-w-3xl mx-auto font-medium mb-24 animate-fade-in-up animation-delay-300 italic leading-snug">
+        <p class="text-lg md:text-xl text-white/30 max-w-2xl text-center font-medium mb-10 animate-fade-in-up animation-delay-300 italic leading-snug relative z-10">
           Fusionamos el instinto pedagógico con redes neuronales para potenciar cada aula del mundo.
         </p>
 
         <!-- CTAs -->
-        <div class="flex flex-col sm:flex-row justify-center gap-8 mb-40 animate-fade-in-up animation-delay-600">
-          <button @click="router.push('/login')" class="px-14 py-8 bg-white text-black rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] hover:bg-primary hover:text-white hover:scale-110 hover:-rotate-1 transition-all active:scale-95 shadow-2xl">
+        <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16 animate-fade-in-up animation-delay-600 relative z-10">
+          <button @click="router.push('/login')" class="px-12 py-6 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-primary hover:text-white hover:scale-110 transition-all active:scale-95 shadow-2xl">
             Entrar al Panel
           </button>
-          <button @click="router.push('/demo')" class="px-14 py-8 bg-white/5 border border-white/10 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] hover:bg-white/10 backdrop-blur-xl transition-all hover:scale-105 active:scale-95">
+          <button @click="router.push('/demo')" class="px-12 py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-white/10 backdrop-blur-xl transition-all hover:scale-105 active:scale-95">
             Ver Demo
           </button>
         </div>
 
-        <!-- 3D Centerpiece -->
-        <div class="relative w-full max-w-5xl mx-auto mb-40">
-           <div class="absolute inset-0 bg-primary/20 blur-[150px] rounded-full scale-75 animate-pulse"></div>
-           <img 
-             src="/neural-brain.png" 
-             alt="Neural Core" 
-             class="w-full h-auto relative z-10 animate-float-slow drop-shadow-[0_0_100px_rgba(99,102,241,0.3)]"
-           />
-        </div>
-
-        <!-- Value Proposition Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <!-- Value Proposition Grid (Compact) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-5xl animate-fade-in-up animation-delay-900 relative z-10">
           <div v-for="(card, i) in [
-            { t: 'GENERACIÓN ÉLITE', d: 'Clases y talleres creados por IA con precisión pedagógica.', i: Cpu },
-            { t: 'SEGURIDAD TOTAL', d: 'Tus datos y archivos protegidos por encriptación neuronal.', i: ShieldCheck },
-            { t: 'ANÁLISIS VISIÓN', d: 'Procesa documentos físicos y digitales con ojos de IA.', i: BrainCircuit }
+            { t: 'GENERACIÓN ÉLITE', d: 'Clases y talleres con precisión pedagógica.', i: Cpu },
+            { t: 'SEGURIDAD TOTAL', d: 'Datos protegidos por encriptación neuronal.', i: ShieldCheck },
+            { t: 'ANÁLISIS VISIÓN', d: 'Procesa documentos físicos con ojos de IA.', i: BrainCircuit }
           ]" :key="i" 
-          class="bg-white/[0.02] border border-white/5 p-12 rounded-[3.5rem] hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-700 group text-left">
-            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:scale-110 transition-transform">
-              <component :is="card.i" class="w-7 h-7" />
+          class="bg-white/[0.02] border border-white/5 p-6 rounded-3xl hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-700 group flex items-center gap-5">
+            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform shrink-0">
+              <component :is="card.i" class="w-5 h-5" />
             </div>
-            <h3 class="text-2xl font-black text-white mb-4 tracking-tighter uppercase italic">{{ card.t }}</h3>
-            <p class="text-base text-white/30 font-bold leading-relaxed">{{ card.d }}</p>
+            <div class="text-left">
+              <h3 class="text-[11px] font-black text-white uppercase tracking-wider italic mb-0.5">{{ card.t }}</h3>
+              <p class="text-[9px] text-white/30 font-bold leading-tight">{{ card.d }}</p>
+            </div>
           </div>
         </div>
-      </section>
-
-      <!-- Trust Section -->
-      <section class="mt-60 border-y border-white/5 py-24 bg-white/[0.01]">
-         <div class="container mx-auto px-6">
-            <p class="text-center text-[9px] font-black text-white/20 uppercase tracking-[0.8em] mb-16">Impulsando Instituciones de Vanguardia</p>
-            <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-30 grayscale hover:grayscale-0 transition-all duration-1000">
-               <div class="flex items-center gap-3">
-                  <Globe class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">GLOBAL ED</span>
-               </div>
-               <div class="flex items-center gap-3">
-                  <Cpu class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">TECH ACADEMY</span>
-               </div>
-               <div class="flex items-center gap-3">
-                  <ShieldCheck class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">SECURE LEARN</span>
-               </div>
-               <div class="flex items-center gap-3">
-                  <Users class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">UNION DOCENTE</span>
-               </div>
-            </div>
-         </div>
-      </section>
+      </div>
     </main>
 
-    <!-- Final CTA -->
-    <section class="py-40 relative overflow-hidden">
-       <div class="absolute inset-0 bg-primary/5 blur-[200px] rounded-full translate-y-1/2"></div>
-       <div class="container mx-auto px-6 text-center relative z-10">
-          <h2 class="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase mb-12 italic">¿Listo para elevar <br /> tu aula?</h2>
-          <button @click="router.push('/login')" class="px-20 py-10 bg-primary text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.5em] shadow-glow hover:scale-110 transition-all">
-             Crear Cuenta Gratis
-          </button>
+    <!-- Footer (Simplified and compact) -->
+    <footer class="fixed bottom-0 left-0 w-full py-6 px-10 border-t border-white/5 bg-black/40 backdrop-blur-xl z-20 flex justify-between items-center">
+       <div class="flex items-center gap-4">
+          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-6 h-6 opacity-40" />
+          <span class="text-[8px] font-black text-white/20 uppercase tracking-[0.4em]">MentorIA 2026 | Neural Suite</span>
        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-20 border-t border-white/5 bg-black/50 backdrop-blur-xl">
-       <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
-          <div class="flex items-center gap-4">
-             <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-8 h-8 opacity-50" />
-             <span class="text-[10px] font-black text-white/20 uppercase tracking-[0.5em]">MentorIA 2026 | Neural Suite</span>
-          </div>
-          <div class="flex gap-8">
-             <button class="text-[9px] font-black text-white/20 uppercase tracking-widest hover:text-white transition-colors">Privacidad</button>
-             <button class="text-[9px] font-black text-white/20 uppercase tracking-widest hover:text-white transition-colors">Términos</button>
-             <button class="text-[9px] font-black text-white/20 uppercase tracking-widest hover:text-white transition-colors">Contacto</button>
-          </div>
+       <div class="flex items-center gap-12 grayscale opacity-20 pointer-events-none hidden lg:flex">
+          <Globe class="w-4 h-4" />
+          <Users class="w-4 h-4" />
+          <Activity class="w-4 h-4" />
+       </div>
+       <div class="flex gap-6">
+          <button class="text-[8px] font-black text-white/10 uppercase tracking-widest hover:text-white transition-colors">Portal</button>
+          <button class="text-[8px] font-black text-white/10 uppercase tracking-widest hover:text-white transition-colors">Legal</button>
        </div>
     </footer>
   </div>
