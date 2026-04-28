@@ -27,10 +27,12 @@ import {
   Check,
   Trash2,
   AlertCircle,
-  Info
+  Info,
+  DownloadCloud
 } from 'lucide-vue-next'
 import ChatMentor from './ChatMentor.vue'
 import SupportDeveloper from './SupportDeveloper.vue'
+import { usePWA } from '../composables/usePWA'
 
 const router = useRouter()
 const route = useRoute()
@@ -54,9 +56,19 @@ const navItems = [
   { name: 'Configuraciones', icon: Settings, path: '/dashboard/settings' },
 ]
 
+const { isInstallable, installApp } = usePWA()
+const showInstallNotification = ref(false)
+
 onMounted(async () => {
   await notificationStore.fetchNotifications()
   notificationStore.initializeRealtime()
+  
+  // Mostrar notificación de instalación tras un breve delay si es instalable
+  setTimeout(() => {
+    if (isInstallable.value) {
+      showInstallNotification.value = true
+    }
+  }, 3000)
 })
 
 onUnmounted(() => {
@@ -155,6 +167,18 @@ const markRead = (id) => {
             {{ item.name }}
           </div>
         </router-link>
+
+        <!-- Install App Button (Conditional) -->
+        <button 
+          v-if="isInstallable"
+          @click="installApp"
+          class="flex items-center gap-4 px-6 py-4 w-full rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all group mt-4 overflow-hidden relative"
+          :class="isSidebarCollapsed ? 'justify-center px-0' : ''"
+        >
+          <div class="absolute inset-0 bg-emerald-400/10 blur-xl animate-pulse"></div>
+          <DownloadCloud class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform relative z-10" />
+          <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in relative z-10">Instalar App</span>
+        </button>
       </nav>
 
       <!-- Bottom Profile / Support -->
@@ -324,6 +348,43 @@ const markRead = (id) => {
       
       <!-- Support Modal -->
       <SupportDeveloper :is-open="isSupportOpen" @close="isSupportOpen = false" />
+
+      <!-- PWA Install Notification (Toast) -->
+      <Transition name="premium-pop">
+        <div v-if="showInstallNotification && isInstallable" 
+          class="fixed bottom-6 left-6 right-6 lg:left-auto lg:right-12 lg:w-96 bg-bg-card border border-primary/30 p-6 rounded-[2rem] shadow-[0_30px_100px_-20px_rgba(var(--color-primary-rgb),0.5)] z-[100] flex flex-col gap-4 overflow-hidden animate-slide-up"
+        >
+          <div class="absolute -top-10 -left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+          
+          <div class="flex items-center gap-4 relative z-10">
+            <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary border border-primary/20 shadow-glow">
+              <DownloadCloud class="w-6 h-6 animate-bounce" />
+            </div>
+            <div class="flex-1">
+              <h4 class="text-xs font-black text-white uppercase tracking-wider mb-1 italic">¡Lleva MentorIA contigo!</h4>
+              <p class="text-[10px] text-white/40 font-bold leading-relaxed">Instala la aplicación en tu dispositivo para una experiencia más rápida y fluida.</p>
+            </div>
+            <button @click="showInstallNotification = false" class="text-white/20 hover:text-white transition-colors">
+              <X class="w-4 h-4" />
+            </button>
+          </div>
+          
+          <div class="flex gap-3 relative z-10">
+            <button 
+              @click="() => { installApp(); showInstallNotification = false }"
+              class="flex-1 py-3.5 bg-primary text-white rounded-xl font-black text-[9px] uppercase tracking-[0.3em] shadow-glow hover:bg-secondary transition-all active:scale-95"
+            >
+              Instalar Ahora
+            </button>
+            <button 
+              @click="showInstallNotification = false"
+              class="px-5 py-3.5 bg-white/5 text-white/40 rounded-xl font-black text-[9px] uppercase tracking-[0.3em] hover:bg-white/10 transition-all"
+            >
+              Más tarde
+            </button>
+          </div>
+        </div>
+      </Transition>
     </main>
   </div>
 </template>
