@@ -154,10 +154,10 @@ onMounted(() => {
 
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row justify-center gap-8 pt-6 animate-fade-in-up animation-delay-600 relative z-10">
-          <button @click="router.push('/login')" class="px-16 py-6 bg-white text-black rounded-full font-bold text-[9px] uppercase tracking-[0.6em] hover:bg-primary hover:text-white transition-all shadow-[0_0_60px_rgba(255,255,255,0.1)] active:scale-95">
+          <button @click="router.push('/login')" class="px-16 py-6 bg-white text-black rounded-full font-bold text-[9px] uppercase tracking-[0.6em] hover:bg-primary hover:text-white transition-all shadow-[0_0_80px_rgba(255,255,255,0.3)] active:scale-95">
             Entrar al Panel
           </button>
-          <button @click="router.push('/demo')" class="px-16 py-6 bg-white/5 border border-white/10 text-white rounded-full font-bold text-[9px] uppercase tracking-[0.6em] hover:bg-white/10 backdrop-blur-3xl transition-all active:scale-95">
+          <button @click="router.push('/demo')" class="px-16 py-6 border border-white/20 bg-white/10 backdrop-blur-3xl text-white rounded-full font-bold text-[9px] uppercase tracking-[0.6em] hover:bg-white/20 hover:border-white transition-all active:scale-95 shadow-lg">
             Ver Demo
           </button>
         </div>
@@ -171,9 +171,11 @@ onMounted(() => {
             { t: 'SEGURIDAD TOTAL', i: ShieldCheck },
             { t: 'ANÁLISIS VISIÓN', i: BrainCircuit }
           ]" :key="i" 
-          class="group flex items-center gap-4 opacity-30 hover:opacity-100 transition-opacity duration-700">
-            <component :is="card.i" class="w-4 h-4 text-primary" />
-            <h3 class="text-[8px] font-bold text-white uppercase tracking-[0.4em]">{{ card.t }}</h3>
+          class="group flex items-center gap-4 opacity-70 hover:opacity-100 transition-all duration-700">
+            <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center text-primary shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+               <component :is="card.i" class="w-4 h-4" />
+            </div>
+            <h3 class="text-[9px] font-black text-white/80 uppercase tracking-[0.4em]">{{ card.t }}</h3>
           </div>
         </div>
       </div>
