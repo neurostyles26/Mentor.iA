@@ -21,12 +21,14 @@ export function usePWA() {
   }
 
   onMounted(() => {
+    console.log('PWA: Buscando soporte de instalación...')
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     window.addEventListener('appinstalled', handleAppInstalled)
 
     // Detectar si ya está instalada
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
       isInstalled.value = true
+      console.log('PWA: Ya instalada en este dispositivo.')
     }
   })
 
