@@ -214,7 +214,7 @@ const helpCategories = [
         
         <div class="space-y-4 relative z-10">
           <a 
-            href="https://wa.me/573124567890?text=Hola%20equipo%20de%20MentorIA,%20tengo%20una%20propuesta%20de%20mejora%20para%20el%20software:" 
+            href="https://wa.me/573015997188?text=Hola%20equipo%20de%20MentorIA,%20tengo%20una%20propuesta%20de%20mejora%20para%20el%20software:" 
             target="_blank"
             class="w-full py-5 bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-2xl flex items-center justify-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-primary transition-all active:scale-95"
           >
