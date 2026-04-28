@@ -95,11 +95,7 @@ onMounted(() => {
         </div>
         
         <div class="hidden md:flex items-center gap-10">
-          <button @click="router.push('/demo')" class="text-[10px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-primary transition-all relative group">
-            Ver Demo
-            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-          </button>
-          <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-white transition-all">Sincronizar</button>
+          <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-white transition-all">Sincronizar Panel</button>
           <button @click="router.push('/login?signup=true')" class="px-8 py-3.5 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:scale-105 transition-all active:scale-95">
             Comenzar Ahora
           </button>
@@ -114,8 +110,18 @@ onMounted(() => {
 
     <!-- Hero Section -->
     <main class="container mx-auto px-6 pt-52 pb-32 text-center relative z-10">
+      <!-- 3D Neural Brain Centerpiece -->
+      <div class="absolute top-40 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[600px] pointer-events-none z-0">
+        <img 
+          src="/neural-brain.png" 
+          alt="Neural Brain 3D" 
+          class="w-full h-full object-contain opacity-40 mix-blend-screen animate-float-slow filter blur-[1px] md:blur-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent"></div>
+      </div>
+
       <!-- Neural Badge -->
-      <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 mb-12 animate-fade-in shadow-inner">
+      <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 mb-12 animate-fade-in shadow-inner relative z-10">
         <Activity class="w-4 h-4 text-primary animate-pulse" />
         <span class="text-[10px] font-black uppercase tracking-[0.4em]">Red Neuronal v4.0 Online</span>
         <div class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
@@ -234,6 +240,16 @@ onMounted(() => {
 @keyframes pulse-slow {
   from { opacity: 0.3; transform: scale(1); }
   to { opacity: 0.6; transform: scale(1.1); }
+}
+
+@keyframes float-slow {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(2deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 10s ease-in-out infinite;
 }
 
 @keyframes float-neuron {
