@@ -57,6 +57,15 @@ const navItems = [
 
 const { isInstallable, isInstalled, installApp } = usePWA()
 const showInstallNotification = ref(false)
+const showInstallHelp = ref(false)
+
+const handleInstallClick = () => {
+  if (isInstallable.value) {
+    installApp()
+  } else {
+    showInstallHelp.value = true
+  }
+}
 
 onMounted(async () => {
   await notificationStore.fetchNotifications()
@@ -170,7 +179,7 @@ const markRead = (id) => {
         <!-- Descargar App Button (Visible if not installed) -->
         <button 
           v-if="!isInstalled"
-          @click="isInstallable ? installApp() : router.push('/dashboard/help')"
+          @click="handleInstallClick"
           class="flex items-center gap-4 px-6 py-4 w-full rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all group mt-4 overflow-hidden relative"
           :class="isSidebarCollapsed ? 'justify-center px-0' : ''"
         >
@@ -349,39 +358,63 @@ const markRead = (id) => {
       <!-- Support Modal -->
       <SupportDeveloper :is-open="isSupportOpen" @close="isSupportOpen = false" />
 
-      <!-- PWA Install Notification (Toast) -->
+      <!-- PWA Install Help Modal -->
       <Transition name="premium-pop">
-        <div v-if="showInstallNotification && isInstallable" 
-          class="fixed bottom-6 left-6 right-6 lg:left-auto lg:right-12 lg:w-96 bg-bg-card border border-primary/30 p-6 rounded-[2rem] shadow-[0_30px_100px_-20px_rgba(var(--color-primary-rgb),0.5)] z-[100] flex flex-col gap-4 overflow-hidden animate-slide-up"
-        >
-          <div class="absolute -top-10 -left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
-          
-          <div class="flex items-center gap-4 relative z-10">
-            <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary border border-primary/20 shadow-glow">
-              <DownloadCloud class="w-6 h-6 animate-bounce" />
-            </div>
-            <div class="flex-1">
-              <h4 class="text-xs font-black text-white uppercase tracking-wider mb-1 italic">¡Lleva MentorIA contigo!</h4>
-              <p class="text-[10px] text-white/40 font-bold leading-relaxed">Instala la aplicación en tu dispositivo para una experiencia más rápida y fluida.</p>
-            </div>
-            <button @click="showInstallNotification = false" class="text-white/20 hover:text-white transition-colors">
-              <X class="w-4 h-4" />
-            </button>
-          </div>
-          
-          <div class="flex gap-3 relative z-10">
-            <button 
-              @click="() => { installApp(); showInstallNotification = false }"
-              class="flex-1 py-3.5 bg-primary text-white rounded-xl font-black text-[9px] uppercase tracking-[0.3em] shadow-glow hover:bg-secondary transition-all active:scale-95"
-            >
-              Instalar Ahora
-            </button>
-            <button 
-              @click="showInstallNotification = false"
-              class="px-5 py-3.5 bg-white/5 text-white/40 rounded-xl font-black text-[9px] uppercase tracking-[0.3em] hover:bg-white/10 transition-all"
-            >
-              Más tarde
-            </button>
+        <div v-if="showInstallHelp" class="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" @click="showInstallHelp = false"></div>
+          <div class="bg-bg-card border border-white/10 w-full max-w-xl rounded-[3rem] p-8 sm:p-12 relative z-10 shadow-premium overflow-hidden">
+             <div class="absolute top-0 right-0 p-8 opacity-5">
+                <DownloadCloud :size="150" />
+             </div>
+
+             <header class="flex items-center justify-between mb-10">
+                <div class="space-y-2">
+                   <h3 class="text-2xl sm:text-4xl font-black text-white italic tracking-tighter uppercase">Instalación Manual</h3>
+                   <p class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-[0.4em]">Guía Multi-Plataforma</p>
+                </div>
+                <button @click="showInstallHelp = false" class="p-3 bg-white/5 rounded-2xl hover:text-red-400 transition-all">
+                   <X class="w-6 h-6" />
+                </button>
+             </header>
+
+             <div class="space-y-8">
+                <div class="flex items-start gap-6 group">
+                   <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                      <LayoutDashboard class="w-6 h-6" />
+                   </div>
+                   <div>
+                      <h4 class="text-xs font-black text-white uppercase tracking-widest mb-1">Windows, Mac o Linux</h4>
+                      <p class="text-[10px] text-white/40 font-bold italic">Busca el icono de "Instalar" en la barra de direcciones de tu navegador (Chrome o Edge) y haz clic en él.</p>
+                   </div>
+                </div>
+
+                <div class="flex items-start gap-6 group">
+                   <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-all">
+                      <Sparkles class="w-6 h-6" />
+                   </div>
+                   <div>
+                      <h4 class="text-xs font-black text-white uppercase tracking-widest mb-1">Android (Chrome)</h4>
+                      <p class="text-[10px] text-white/40 font-bold italic">Toca los tres puntos (⋮) en la esquina superior y selecciona "Instalar aplicación" o "Añadir a pantalla de inicio".</p>
+                   </div>
+                </div>
+
+                <div class="flex items-start gap-6 group">
+                   <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                      <Heart class="w-6 h-6" />
+                   </div>
+                   <div>
+                      <h4 class="text-xs font-black text-white uppercase tracking-widest mb-1">iPhone o iPad (Safari)</h4>
+                      <p class="text-[10px] text-white/40 font-bold italic">Toca el botón "Compartir" (el cuadrado con la flecha) y elige "Añadir a la pantalla de inicio".</p>
+                   </div>
+                </div>
+             </div>
+
+             <button 
+               @click="showInstallHelp = false"
+               class="w-full mt-12 py-6 bg-white/5 hover:bg-white/10 rounded-[1.5rem] text-white font-black text-[10px] uppercase tracking-[0.3em] transition-all"
+             >
+               Entendido, continuar
+             </button>
           </div>
         </div>
       </Transition>
