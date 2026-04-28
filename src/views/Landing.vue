@@ -105,28 +105,33 @@ onMounted(() => {
         </div>
 
         <!-- Headline & Subheadline Group -->
-        <div class="text-center relative z-10 space-y-4 max-w-5xl">
-          <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 mb-2 animate-fade-in mx-auto">
-            <Sparkles class="w-3 h-3 text-primary animate-pulse" />
-            <span class="text-[8px] font-black uppercase tracking-[0.4em]">Red Neuronal v2.0 Online</span>
+        <div class="text-center relative z-10 space-y-6 max-w-5xl">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/50 mb-4 animate-fade-in mx-auto backdrop-blur-md">
+            <Sparkles class="w-3.5 h-3.5 text-primary animate-pulse" />
+            <span class="text-[9px] font-black uppercase tracking-[0.6em]">Ecosistema v2.0 Online</span>
           </div>
 
-          <h1 class="text-4xl md:text-6xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] animate-fade-in-up uppercase">
+          <h1 class="text-4xl md:text-6xl lg:text-[6.5rem] font-light tracking-[-0.04em] leading-[0.9] animate-fade-in-up uppercase text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
             LA IA QUE <br />
-            <span class="bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent italic px-2">ENTIENDE</span> <br />
-            TU MISION
+            <span class="font-black italic bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent px-4 animate-gradient-text bg-[length:200%_auto]">
+              ENTIENDE
+            </span> <br />
+            <span class="font-extrabold tracking-tighter">TU MISION</span>
           </h1>
 
-          <p class="text-sm md:text-lg text-white/30 max-w-xl mx-auto font-medium italic leading-snug animate-fade-in-up animation-delay-300">
-            Fusionamos el instinto pedagógico con redes neuronales para potenciar cada aula del mundo.
-          </p>
+          <div class="relative py-4">
+             <div class="absolute inset-0 bg-black/20 blur-xl rounded-full scale-110"></div>
+             <p class="text-base md:text-xl text-white/50 max-w-2xl mx-auto font-medium italic leading-relaxed animate-fade-in-up animation-delay-300 relative z-10 px-4">
+               "Fusionamos el instinto pedagógico con redes neuronales para potenciar cada aula del mundo."
+             </p>
+          </div>
 
           <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4 animate-fade-in-up animation-delay-600">
-            <button @click="router.push('/login')" class="px-10 py-5 bg-white text-black rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all shadow-xl active:scale-95">
+          <div class="flex flex-col sm:flex-row justify-center gap-6 pt-6 animate-fade-in-up animation-delay-600 relative z-10">
+            <button @click="router.push('/login')" class="px-12 py-5 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:bg-primary hover:text-white hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] active:scale-95">
               Entrar al Panel
             </button>
-            <button @click="router.push('/demo')" class="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] hover:bg-white/10 backdrop-blur-xl transition-all active:scale-95">
+            <button @click="router.push('/demo')" class="px-12 py-5 bg-white/5 border border-white/10 text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:bg-white/10 backdrop-blur-2xl transition-all hover:scale-105 active:scale-95">
               Ver Demo
             </button>
           </div>
