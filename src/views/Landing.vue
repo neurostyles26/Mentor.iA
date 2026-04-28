@@ -84,62 +84,63 @@ const toggleMenu = () => isMenuOpen.value = !isMenuOpen.value
     </nav>
 
     <!-- Hero -->
-    <main class="container mx-auto px-4 md:px-6 lg:px-12 pt-10 md:pt-16 pb-20 md:pb-32 text-center relative z-10">
-      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 text-primary mb-8 md:mb-10 animate-fade-in shadow-glow">
-        <Sparkles class="w-3.5 h-3.5 animate-pulse" />
-        <span class="text-[8px] md:text-[9px] font-black uppercase tracking-[0.15em] md:tracking-[0.2em]">Motor Neuronal Avanzado Activo</span>
+    <main class="container mx-auto px-4 md:px-6 lg:px-12 pt-8 sm:pt-10 md:pt-16 pb-16 sm:pb-20 md:pb-32 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/5 border border-primary/10 text-primary mb-6 sm:mb-8 md:mb-10 animate-fade-in shadow-glow">
+        <Sparkles class="w-3 sm:w-3.5 h-3 sm:h-3.5 animate-pulse" />
+        <span class="text-[7px] sm:text-[8px] md:text-[9px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em]">Motor Neuronal Avanzado Activo</span>
       </div>
       
-      <div class="max-w-5xl mx-auto space-y-6 md:space-y-8 mb-12 md:mb-20">
-        <h1 class="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] animate-fade-in-up">
+      <div class="max-w-5xl mx-auto space-y-4 sm:space-y-6 md:space-y-8 mb-10 sm:mb-12 md:mb-20">
+        <h1 class="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[0.95] sm:leading-[0.9] animate-fade-in-up">
           El Aula del Futuro <br />
           <span class="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent italic">se diseña hoy</span>
         </h1>
         
-        <p class="text-lg md:text-2xl text-white/70 max-w-2xl mx-auto font-bold animate-fade-in-up animation-delay-300 leading-relaxed px-2">
+        <p class="text-base sm:text-lg md:text-2xl text-white/70 max-w-2xl mx-auto font-bold animate-fade-in-up animation-delay-300 leading-relaxed px-2">
           MentorIA es la red neuronal de apoyo para docentes que transforma ideas en piezas pedagógicas de clase mundial.
         </p>
       </div>
       
-      <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 mb-20 md:mb-32 animate-fade-in-up animation-delay-600">
-        <button @click="router.push('/login')" class="px-8 py-5 md:px-12 md:py-6 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-2 transition-all active:scale-95 group relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 mb-16 sm:mb-20 md:mb-32 animate-fade-in-up animation-delay-600">
+        <button @click="router.push('/login')" class="px-6 py-4 sm:px-8 sm:py-5 md:px-12 md:py-6 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-2 transition-all active:scale-95 group relative overflow-hidden">
           <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity"></div>
           <span class="relative z-10 flex items-center justify-center gap-3 md:gap-4">
             Empezar <span class="hidden xs:inline">Experiencia</span> IA <ArrowRight class="w-5 h-5 group-hover:translate-x-2 transition-transform" />
           </span>
         </button>
-        <button class="px-8 py-5 md:px-12 md:py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all hover:-translate-y-2 active:scale-95">
+        <button class="px-6 py-4 sm:px-8 sm:py-5 md:px-12 md:py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all hover:-translate-y-2 active:scale-95">
           Ver Demo
         </button>
       </div>
 
       <!-- Features Grid with animations -->
-      <div class="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10 max-w-6xl mx-auto">
         <div class="feature-card animate-fade-in-up animation-delay-900 group">
-          <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 mx-auto lg:mx-0 group-hover:scale-110 group-hover:rotate-6 transition-all border border-primary/20 shadow-glow">
-            <Zap class="text-primary w-8 h-8" />
+          <div class="w-14 h-14 sm:w-16 sm:h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto md:mx-0 group-hover:scale-110 group-hover:rotate-6 transition-all border border-primary/20 shadow-glow">
+            <Zap class="text-primary w-6 h-6 sm:w-8 sm:h-8" />
           </div>
-          <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Generación Veloz</h3>
-          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Crea lecciones, talleres y exámenes en segundos optimizados con IA Cuántica.</p>
+          <h3 class="text-xl sm:text-2xl font-black text-white mb-3 sm:mb-4 tracking-tight uppercase italic md:text-left">Generación Veloz</h3>
+          <p class="text-sm sm:text-base text-white/60 font-bold leading-relaxed md:text-left">Crea lecciones, talleres y exámenes en segundos optimizados con IA Cuántica.</p>
         </div>
 
         <div class="feature-card animate-fade-in-up animation-delay-1100 group">
-          <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-8 mx-auto lg:mx-0 group-hover:scale-110 group-hover:-rotate-6 transition-all border border-secondary/20 shadow-glow">
-            <ClipboardList class="text-secondary w-8 h-8" />
+          <div class="w-14 h-14 sm:w-16 sm:h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto md:mx-0 group-hover:scale-110 group-hover:-rotate-6 transition-all border border-secondary/20 shadow-glow">
+            <ClipboardList class="text-secondary w-6 h-6 sm:w-8 sm:h-8" />
           </div>
-          <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Organización IA</h3>
-          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Sincroniza tus ideas directamente en un ecosistema persistente y estructurado.</p>
+          <h3 class="text-xl sm:text-2xl font-black text-white mb-3 sm:mb-4 tracking-tight uppercase italic md:text-left">Organización IA</h3>
+          <p class="text-sm sm:text-base text-white/60 font-bold leading-relaxed md:text-left">Sincroniza tus ideas directamente en un ecosistema persistente y estructurado.</p>
         </div>
 
-        <div class="feature-card animate-fade-in-up animation-delay-1300 group">
-          <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-8 mx-auto lg:mx-0 group-hover:scale-110 group-hover:rotate-12 transition-all border border-accent/20 shadow-glow">
-            <ShieldCheck class="text-accent w-8 h-8" />
+        <div class="feature-card animate-fade-in-up animation-delay-1300 group md:col-span-2 lg:col-span-1">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto md:mx-0 group-hover:scale-110 group-hover:rotate-12 transition-all border border-accent/20 shadow-glow">
+            <ShieldCheck class="text-accent w-6 h-6 sm:w-8 sm:h-8" />
           </div>
-          <h3 class="text-2xl font-black text-white mb-4 tracking-tight uppercase italic lg:text-left">Sello Pedagógico</h3>
-          <p class="text-white/60 font-bold leading-relaxed lg:text-left">Alineado con los Derechos Básicos de Aprendizaje (DBA) de Colombia.</p>
+          <h3 class="text-xl sm:text-2xl font-black text-white mb-3 sm:mb-4 tracking-tight uppercase italic md:text-left">Sello Pedagógico</h3>
+          <p class="text-sm sm:text-base text-white/60 font-bold leading-relaxed md:text-left">Alineado con los Derechos Básicos de Aprendizaje (DBA) de Colombia.</p>
         </div>
       </div>
     </main>
+
 
     <!-- Footer -->
     <footer class="border-t border-white/5 py-20 bg-black/20 relative z-20">

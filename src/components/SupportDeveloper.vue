@@ -37,40 +37,40 @@ const copyToClipboard = () => {
       <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" @click="$emit('close')"></div>
       
       <!-- Modal Content -->
-      <div class="relative w-full max-w-3xl bg-bg-card rounded-[3rem] border border-white/10 shadow-[0_0_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row">
+      <div class="relative w-full max-w-3xl bg-bg-card rounded-[2rem] sm:rounded-[3rem] border border-white/10 shadow-[0_0_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row max-h-[90vh] overflow-y-auto custom-scrollbar sm:max-h-none">
         
         <!-- Left Side: Visual/QR -->
-        <div class="relative w-full md:w-1/2 p-8 md:p-12 bg-gradient-to-br from-primary/10 to-transparent flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-white/5">
+        <div class="relative w-full md:w-1/2 p-6 sm:p-8 md:p-12 bg-gradient-to-br from-primary/10 to-transparent flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-white/5">
           <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(var(--color-primary-rgb),0.15),transparent_70%)]"></div>
           </div>
 
           <div class="relative z-10 group cursor-pointer">
-            <div class="relative p-6 bg-white rounded-[2.5rem] shadow-[0_20px_50px_-15px_rgba(255,255,255,0.1)] transition-all duration-700 group-hover:scale-[1.02] group-hover:-translate-y-2">
+            <div class="relative p-4 sm:p-6 bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_20px_50px_-15px_rgba(255,255,255,0.1)] transition-all duration-700 group-hover:scale-[1.02] group-hover:-translate-y-2">
               <img 
                 :src="qrImage" 
                 alt="QR Pago" 
-                class="w-56 h-56 md:w-72 md:h-72 object-contain rounded-2xl"
+                class="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 object-contain rounded-2xl"
               />
               <!-- Scanning effect line -->
               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-scan"></div>
             </div>
             <!-- Decorative rings -->
-            <div class="absolute -inset-4 border border-white/5 rounded-[3rem] animate-pulse-slow"></div>
-            <div class="absolute -inset-8 border border-white/5 rounded-[3.5rem] animate-pulse-slow" style="animation-delay: 1s"></div>
+            <div class="absolute -inset-4 border border-white/5 rounded-[2.5rem] sm:rounded-[3rem] animate-pulse-slow"></div>
+            <div class="absolute -inset-8 border border-white/5 rounded-[3rem] sm:rounded-[3.5rem] animate-pulse-slow" style="animation-delay: 1s"></div>
           </div>
 
-          <div class="mt-10 text-center relative z-10">
+          <div class="mt-6 sm:mt-10 text-center relative z-10">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full mb-4">
               <ShieldCheck class="w-3.5 h-3.5 text-primary" />
               <span class="text-[9px] font-black text-white/60 uppercase tracking-widest">Pago Seguro y Directo</span>
             </div>
-            <h3 class="text-xl font-black text-white tracking-tight italic">Escanea con tu Wallet</h3>
+            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight italic">Escanea con tu Wallet</h3>
           </div>
         </div>
 
         <!-- Right Side: Info & Actions -->
-        <div class="relative w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center space-y-8">
+        <div class="relative w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col justify-center space-y-6 sm:space-y-8">
           <header class="space-y-4">
             <div class="flex justify-between items-start">
                <div class="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary">
@@ -81,24 +81,24 @@ const copyToClipboard = () => {
                 <X class="w-5 h-5" />
               </button>
             </div>
-            <h2 class="text-4xl font-black text-white tracking-tighter leading-[0.9] italic">
+            <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tighter leading-[0.9] italic">
               Trasciende <br />
               <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">la educación</span>
             </h2>
           </header>
 
-          <p class="text-white/70 font-medium text-sm leading-relaxed">
+          <p class="text-white/70 font-medium text-xs sm:text-sm leading-relaxed">
             MentorIA es una plataforma independiente. Tu apoyo permite mantener la infraestructura y seguir creando herramientas de IA gratuitas para docentes.
           </p>
 
-          <div class="space-y-4">
+          <div class="space-y-3 sm:space-y-4">
              <button 
               @click="copyToClipboard"
-              class="w-full group relative flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-2xl transition-all hover:bg-white/10 hover:border-primary/40 active:scale-[0.98]"
+              class="w-full group relative flex items-center justify-between p-4 sm:p-5 bg-white/5 border border-white/10 rounded-2xl transition-all hover:bg-white/10 hover:border-primary/40 active:scale-[0.98]"
             >
-              <div class="flex items-center gap-4 text-left">
-                <div class="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                  <component :is="isCopied ? Check : Copy" class="w-5 h-5" />
+              <div class="flex items-center gap-3 sm:gap-4 text-left">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                  <component :is="isCopied ? Check : Copy" class="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
                   <p class="text-[8px] font-black text-white/40 uppercase tracking-widest mb-0.5">Copiar número Nequi</p>
@@ -109,9 +109,9 @@ const copyToClipboard = () => {
               <ChevronRight v-else class="w-4 h-4 text-white/20 group-hover:translate-x-1 transition-transform" />
             </button>
 
-            <div class="p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-start gap-4">
-               <Zap class="w-6 h-6 text-primary shrink-0 mt-1" />
-               <p class="text-[10px] font-bold text-white/60 leading-relaxed italic">
+            <div class="p-4 sm:p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-start gap-3 sm:gap-4">
+               <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-primary shrink-0 mt-1" />
+               <p class="text-[9px] sm:text-[10px] font-bold text-white/60 leading-relaxed italic">
                  "Cada aporte es una neurona más para nuestra IA. Gracias por ser parte de este ecosistema."
                </p>
             </div>
@@ -119,7 +119,7 @@ const copyToClipboard = () => {
             <a 
               href="https://wa.me/573015997188?text=Hola,%20tengo%20una%20sugerencia%20de%20mejora%20para%20MentorIA:"
               target="_blank"
-              class="w-full flex items-center justify-center gap-4 py-4 border border-white/5 bg-white/[0.02] hover:bg-white/5 rounded-2xl text-[9px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-white transition-all"
+              class="w-full flex items-center justify-center gap-3 sm:gap-4 py-3.5 sm:py-4 border border-white/5 bg-white/[0.02] hover:bg-white/5 rounded-2xl text-[9px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-white transition-all"
             >
               <MessageCircle class="w-4 h-4" /> Sugerir Mejoras
             </a>
@@ -133,6 +133,7 @@ const copyToClipboard = () => {
           </button>
         </div>
       </div>
+
     </div>
   </Transition>
 </template>

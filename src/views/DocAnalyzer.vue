@@ -119,55 +119,55 @@ const reset = () => {
 </script>
 
 <template>
-  <div class="p-6 md:p-12 space-y-12 max-w-7xl mx-auto animate-page-in">
+  <div class="p-4 sm:p-8 md:p-12 space-y-8 sm:space-y-12 max-w-7xl mx-auto animate-page-in">
     <!-- Header Elite -->
-    <header class="flex flex-col md:flex-row md:items-end justify-between gap-8">
-      <div class="space-y-4">
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 bg-primary rounded-full shadow-glow"></div>
-          <span class="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Laboratorio de Documentos</span>
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8">
+      <div class="space-y-3 sm:space-y-4">
+        <div class="flex items-center gap-2 sm:gap-3">
+          <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full shadow-glow"></div>
+          <span class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-[0.3em] sm:tracking-[0.4em]">Laboratorio de Documentos</span>
         </div>
-        <h1 class="text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-none">Análisis <br /> <span class="text-primary opacity-80">Multiformato</span></h1>
+        <h1 class="text-3xl sm:text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-none">Análisis <br /> <span class="text-primary opacity-80">Multiformato</span></h1>
       </div>
       
-      <p class="text-white/40 font-bold text-lg max-w-md md:text-right border-r-4 border-primary/20 pr-8 italic">
+      <p class="text-base sm:text-lg text-white/40 font-bold max-w-md md:text-right border-r-0 md:border-r-4 border-primary/20 md:pr-8 italic px-2 md:px-0">
         Sincroniza Excel, Word o PDF. El Mentor extraerá la inteligencia latente de tus archivos.
       </p>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10">
       <!-- Sidebar de Control -->
-      <aside class="lg:col-span-4 space-y-8">
+      <aside class="lg:col-span-4 space-y-6 sm:space-y-8">
         <!-- Mode Selection -->
-        <section class="space-y-6">
-           <h3 class="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] ml-2">Seleccionar Propósito</h3>
-           <div class="space-y-3">
+        <section class="space-y-4 sm:space-y-6">
+           <h3 class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.4em] sm:tracking-[0.5em] ml-2">Seleccionar Propósito</h3>
+           <div class="space-y-2 sm:space-y-3">
               <button 
                 v-for="mode in modes" 
                 :key="mode.id"
                 @click="selectedMode = mode"
-                class="w-full p-6 rounded-3xl border transition-all duration-500 text-left group flex items-start gap-5 relative overflow-hidden"
+                class="w-full p-4 sm:p-6 rounded-2xl sm:rounded-3xl border transition-all duration-500 text-left group flex items-start gap-4 sm:gap-5 relative overflow-hidden"
                 :class="selectedMode?.id === mode.id ? 'bg-primary/10 border-primary/40 shadow-glow' : 'bg-white/2 border-white/5 hover:border-white/20'"
               >
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
                      :class="selectedMode?.id === mode.id ? 'bg-primary text-white shadow-glow' : 'bg-white/5 text-white/20'">
-                  <component :is="mode.icon" class="w-6 h-6" />
+                  <component :is="mode.icon" class="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                   <h4 class="text-sm font-black text-white uppercase tracking-tight mb-1" :class="selectedMode?.id === mode.id ? 'text-primary' : ''">{{ mode.title }}</h4>
-                   <p class="text-[10px] text-white/30 font-medium leading-relaxed">{{ mode.desc }}</p>
+                   <h4 class="text-xs sm:text-sm font-black text-white uppercase tracking-tight mb-0.5 sm:mb-1" :class="selectedMode?.id === mode.id ? 'text-primary' : ''">{{ mode.title }}</h4>
+                   <p class="text-[8px] sm:text-[10px] text-white/30 font-medium leading-relaxed">{{ mode.desc }}</p>
                 </div>
-                <ChevronRight v-if="selectedMode?.id === mode.id" class="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
+                <ChevronRight v-if="selectedMode?.id === mode.id" class="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               </button>
            </div>
         </section>
 
         <!-- File Upload -->
-        <section class="space-y-6">
-          <h3 class="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] ml-2">Carga de Activos</h3>
+        <section class="space-y-4 sm:space-y-6">
+          <h3 class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.4em] sm:tracking-[0.5em] ml-2">Carga de Activos</h3>
           <div 
             @click="triggerFileInput"
-            class="border-4 border-dashed rounded-[3rem] p-12 flex flex-col items-center justify-center group cursor-pointer transition-all duration-700 relative overflow-hidden text-center"
+            class="border-4 border-dashed rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 flex flex-col items-center justify-center group cursor-pointer transition-all duration-700 relative overflow-hidden text-center"
             :class="[
               currentFile ? 'border-accent/40 bg-accent/5' : 'border-white/5 bg-white/2 hover:border-primary/40 hover:bg-primary/5',
               isUploading ? 'opacity-30 pointer-events-none' : ''
@@ -175,36 +175,36 @@ const reset = () => {
           >
             <input ref="fileInput" type="file" class="hidden" accept=".pdf,.docx,.xlsx,.xls" @change="handleFileUpload" />
             
-            <div v-if="isUploading" class="flex flex-col items-center gap-4">
-               <Loader2 class="w-10 h-10 text-primary animate-spin" />
-               <p class="text-[10px] font-black text-primary uppercase tracking-widest">Escaneando...</p>
+            <div v-if="isUploading" class="flex flex-col items-center gap-3 sm:gap-4">
+               <Loader2 class="w-8 h-8 sm:w-10 sm:h-10 text-primary animate-spin" />
+               <p class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-widest">Escaneando...</p>
             </div>
             
             <template v-else-if="currentFile">
-               <CheckCircle2 class="w-12 h-12 text-accent mb-4 animate-bounce" />
-               <p class="text-xs font-black text-white italic truncate max-w-[200px]">{{ currentFile.name }}</p>
-               <button @click.stop="reset" class="mt-4 text-[8px] font-black text-red-400 uppercase tracking-widest hover:underline">Eliminar</button>
+               <CheckCircle2 class="w-10 h-10 sm:w-12 sm:h-12 text-accent mb-3 sm:mb-4 animate-bounce" />
+               <p class="text-[10px] sm:text-xs font-black text-white italic truncate max-w-[150px] sm:max-w-[200px]">{{ currentFile.name }}</p>
+               <button @click.stop="reset" class="mt-3 sm:mt-4 text-[7px] sm:text-[8px] font-black text-red-400 uppercase tracking-widest hover:underline">Eliminar</button>
             </template>
 
             <template v-else>
-               <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all">
-                  <Upload class="w-8 h-8 text-white/20" />
+               <div class="w-14 h-14 sm:w-16 sm:h-16 bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all">
+                  <Upload class="w-6 h-6 sm:w-8 sm:h-8 text-white/20" />
                </div>
-               <p class="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Click para Cargar</p>
-               <p class="text-[8px] text-white/10 mt-2 font-bold italic">PDF, Word, Excel</p>
+               <p class="text-[9px] sm:text-[10px] font-black text-white/40 uppercase tracking-[0.2em] sm:tracking-[0.3em]">Click para Cargar</p>
+               <p class="text-[7px] sm:text-[8px] text-white/10 mt-1.5 sm:mt-2 font-bold italic">PDF, Word, Excel</p>
             </template>
           </div>
         </section>
 
         <!-- Process Button -->
         <button 
-          @click="processWithAI"
+          @click="processWithAI" 
           :disabled="!currentFile || !selectedMode || isProcessing"
-          class="w-full py-7 bg-primary text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-20 disabled:translate-y-0 group"
+          class="w-full py-5 sm:py-7 bg-primary text-white rounded-[1.5rem] sm:rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-20 disabled:translate-y-0 group"
         >
-           <div class="flex items-center justify-center gap-4">
-              <Loader2 v-if="isProcessing" class="w-5 h-5 animate-spin" />
-              <Zap v-else class="w-5 h-5 group-hover:animate-pulse" />
+           <div class="flex items-center justify-center gap-3 sm:gap-4">
+              <Loader2 v-if="isProcessing" class="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+              <Zap v-else class="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
               <span>Sintetizar con IA</span>
            </div>
         </button>
@@ -212,52 +212,52 @@ const reset = () => {
 
       <!-- Main Display -->
       <main class="lg:col-span-8">
-        <div class="glass-panel min-h-[700px] border-white/5 p-8 md:p-16 relative flex flex-col">
+        <div class="glass-panel min-h-[500px] sm:min-h-[700px] border-white/5 p-6 sm:p-10 md:p-16 relative flex flex-col">
           <!-- Background Decoration -->
-          <div class="absolute top-0 right-0 p-12 opacity-[0.02] pointer-events-none">
-             <Cpu :size="300" />
+          <div class="absolute top-0 right-0 p-8 sm:p-12 opacity-[0.02] pointer-events-none">
+             <Cpu :size="200" class="sm:size-[300px]" />
           </div>
 
-          <div v-if="analysisResult" class="relative z-10 space-y-12">
-             <header class="flex items-center justify-between border-b border-white/5 pb-8">
-                <div class="flex items-center gap-4">
-                   <div class="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary border border-primary/20">
-                      <Sparkles class="w-6 h-6" />
+          <div v-if="analysisResult" class="relative z-10 space-y-8 sm:space-y-12">
+             <header class="flex flex-wrap items-center justify-between border-b border-white/5 pb-6 sm:pb-8 gap-4">
+                <div class="flex items-center gap-3 sm:gap-4">
+                   <div class="w-9 h-9 sm:w-10 sm:h-10 bg-primary/20 rounded-lg sm:rounded-xl flex items-center justify-center text-primary border border-primary/20">
+                      <Sparkles class="w-5 h-5 sm:w-6 sm:h-6" />
                    </div>
                    <div>
-                      <h3 class="text-[10px] font-black text-white uppercase tracking-[0.4em]">Resultado de la Red</h3>
-                      <p class="text-xl font-black text-white italic tracking-tight">{{ selectedMode?.title }}</p>
+                      <h3 class="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-[0.3em] sm:tracking-[0.4em]">Resultado de la Red</h3>
+                      <p class="text-lg sm:text-xl font-black text-white italic tracking-tight">{{ selectedMode?.title }}</p>
                    </div>
                 </div>
                 <div class="flex gap-2">
-                   <button class="p-3 bg-white/5 rounded-xl text-white/40 hover:text-white transition-all"><Download class="w-4 h-4" /></button>
-                   <button class="p-3 bg-white/5 rounded-xl text-white/40 hover:text-white transition-all"><ClipboardCheck class="w-4 h-4" /></button>
+                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all"><Download class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
+                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all"><ClipboardCheck class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
                 </div>
              </header>
 
-             <div class="prose-content whitespace-pre-wrap text-white/70 font-medium leading-relaxed text-lg italic selection:bg-primary/40">
+             <div class="prose-content whitespace-pre-wrap text-white/70 font-medium leading-relaxed text-base sm:text-lg italic selection:bg-primary/40">
                 {{ analysisResult }}
              </div>
           </div>
 
-          <div v-else-if="isProcessing" class="flex-1 flex flex-col items-center justify-center text-center space-y-8">
+          <div v-else-if="isProcessing" class="flex-1 flex flex-col items-center justify-center text-center space-y-6 sm:space-y-8">
              <div class="relative">
-                <div class="w-32 h-32 border-4 border-primary/10 border-t-primary rounded-full animate-spin"></div>
+                <div class="w-24 h-24 sm:w-32 sm:h-32 border-4 border-primary/10 border-t-primary rounded-full animate-spin"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                   <BrainCircuit class="w-12 h-12 text-primary animate-pulse" />
+                   <BrainCircuit class="w-10 h-10 sm:w-12 sm:h-12 text-primary animate-pulse" />
                 </div>
              </div>
-             <div class="space-y-4">
-                <h3 class="text-4xl font-black text-white italic tracking-tighter uppercase animate-pulse">Procesando Neuronas</h3>
-                <p class="text-[10px] font-black text-primary uppercase tracking-[0.6em]">Extrayendo vectores de conocimiento</p>
+             <div class="space-y-3 sm:space-y-4">
+                <h3 class="text-2xl sm:text-4xl font-black text-white italic tracking-tighter uppercase animate-pulse">Procesando Neuronas</h3>
+                <p class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-[0.4em] sm:tracking-[0.6em]">Extrayendo vectores de conocimiento</p>
              </div>
           </div>
 
-          <div v-else class="flex-1 flex flex-col items-center justify-center text-center space-y-8 opacity-20 group">
-             <Search class="w-24 h-24 text-white/20 transition-transform group-hover:scale-110 duration-700" />
-             <div class="space-y-3">
-                <h3 class="text-2xl font-black text-white uppercase tracking-[0.2em]">Esperando Directivas</h3>
-                <p class="text-[10px] font-black uppercase tracking-[0.4em]">Configura el propósito y carga el activo</p>
+          <div v-else class="flex-1 flex flex-col items-center justify-center text-center space-y-6 sm:space-y-8 opacity-20 group py-10 sm:py-20">
+             <Search class="w-16 h-16 sm:w-24 sm:h-24 text-white/20 transition-transform group-hover:scale-110 duration-700" />
+             <div class="space-y-2 sm:space-y-3">
+                <h3 class="text-xl sm:text-2xl font-black text-white uppercase tracking-[0.1em] sm:tracking-[0.2em]">Esperando Directivas</h3>
+                <p class="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em]">Configura el propósito y carga el activo</p>
              </div>
           </div>
         </div>

@@ -92,34 +92,6 @@ const helpCategories = [
           </div>
         </div>
 
-        <!-- Visual element for header -->
-        <div class="hidden lg:flex justify-center items-center relative">
-           <div class="w-80 h-80 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-[4rem] border border-white/10 flex items-center justify-center animate-float">
-              <LifeBuoy class="w-32 h-32 text-primary opacity-50" />
-           </div>
-           <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl animate-pulse"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Premium Help Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div 
-        v-for="cat in helpCategories" 
-        :key="cat.title"
-        class="group relative p-10 bg-white/2 border border-white/5 rounded-[3rem] hover:border-primary/40 transition-all duration-700 overflow-hidden"
-      >
-        <div :class="['w-16 h-16 rounded-2xl bg-gradient-to-br flex items-center justify-center mb-10 transition-all duration-700 group-hover:scale-110 group-hover:rotate-12', cat.color]">
-          <component :is="cat.icon" class="w-8 h-8 text-white" />
-        </div>
-        <h3 class="text-2xl font-black text-white tracking-tight mb-4">{{ cat.title }}</h3>
-        <p class="text-xs font-bold text-white/40 leading-relaxed mb-10 group-hover:text-white/70 transition-colors">{{ cat.desc }}</p>
-        <div class="inline-flex items-center gap-2 text-[9px] font-black text-primary uppercase tracking-[0.3em] group-hover:translate-x-2 transition-transform">
-          Consultar Guía <ChevronRight class="w-4 h-4" />
-        </div>
-        
-        <!-- Decorative subtle gradient -->
-        <div class="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
       </div>
     </div>
 

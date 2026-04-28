@@ -149,30 +149,30 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 <template>
   <div class="max-w-7xl mx-auto pb-24 animate-page-in">
     <!-- Sophisticated Header -->
-    <header class="py-10 lg:py-16 flex flex-col md:flex-row items-center justify-between gap-10">
-      <div class="flex items-center gap-8 w-full md:w-auto">
-        <button @click="router.push('/dashboard')" class="p-5 bg-white/5 rounded-3xl border border-white/10 hover:bg-white/10 hover:border-primary/40 transition-all active:scale-95 group shrink-0">
-          <ArrowLeft class="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
+    <header class="py-8 sm:py-10 lg:py-16 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10">
+      <div class="flex items-center gap-4 sm:gap-8 w-full md:w-auto">
+        <button @click="router.push('/dashboard')" class="p-4 sm:p-5 bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 hover:bg-white/10 hover:border-primary/40 transition-all active:scale-95 group shrink-0">
+          <ArrowLeft class="w-5 h-5 sm:w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
         </button>
-        <div>
-          <h1 class="text-4xl lg:text-5xl font-black text-white tracking-tighter leading-none mb-3 italic">
+        <div class="overflow-hidden">
+          <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tighter leading-none mb-2 sm:mb-3 italic truncate">
             Arquitecto <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Inteligente</span>
           </h1>
           <div class="flex items-center gap-3">
-            <ShieldCheck class="w-3.5 h-3.5 text-primary" />
-            <p class="text-[9px] font-black text-white/30 uppercase tracking-[0.4em]">Soporte Pedagógico Elite</p>
+            <ShieldCheck class="w-3 sm:w-3.5 h-3 sm:h-3.5 text-primary" />
+            <p class="text-[7px] sm:text-[9px] font-black text-white/30 uppercase tracking-[0.2em] sm:tracking-[0.4em]">Soporte Pedagógico Elite</p>
           </div>
         </div>
       </div>
 
       <!-- Elevated Step Indicator -->
-      <div class="flex items-center gap-3 bg-white/2 p-2.5 rounded-[2.5rem] border border-white/5 w-full md:w-auto justify-center shadow-inner">
+      <div class="flex items-center gap-2 sm:gap-3 bg-white/2 p-2 rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 w-full md:w-auto justify-center shadow-inner">
         <div v-for="s in [1,2,3]" :key="s" 
-          :class="['px-8 py-3 rounded-2xl flex items-center gap-3 transition-all duration-700 relative overflow-hidden', 
+          :class="['px-5 sm:px-8 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl flex items-center gap-2 sm:gap-3 transition-all duration-700 relative overflow-hidden', 
           currentStep === s ? 'bg-primary text-white shadow-glow' : 'text-white/20']"
         >
-          <span class="text-xs font-black">{{ s }}</span>
-          <span v-if="currentStep === s" class="text-[10px] font-black uppercase tracking-[0.3em] hidden sm:block animate-fade-in whitespace-nowrap">
+          <span class="text-[10px] sm:text-xs font-black">{{ s }}</span>
+          <span v-if="currentStep === s" class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] animate-fade-in whitespace-nowrap">
             {{ s === 1 ? 'Contexto' : s === 2 ? 'Ideación' : 'Síntesis' }}
           </span>
           <!-- Active indicator background shine -->
@@ -181,41 +181,41 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
       </div>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12">
       
       <!-- STEP 1: CONTEXTO -->
        <section v-if="currentStep === 1" class="lg:col-span-12 max-w-2xl mx-auto w-full animate-slide-up">
-        <div class="relative overflow-hidden rounded-[4rem] bg-bg-card border border-white/10 p-10 lg:p-20 shadow-[0_0_80px_-20px_rgba(0,0,0,0.5)] group">
+        <div class="relative overflow-hidden rounded-[2.5rem] sm:rounded-[4rem] bg-bg-card border border-white/10 p-8 sm:p-10 lg:p-20 shadow-[0_0_80px_-20px_rgba(0,0,0,0.5)] group">
           <div class="absolute -top-24 -left-24 w-80 h-80 bg-primary/10 rounded-full blur-[100px] animate-pulse group-hover:scale-125 transition-transform duration-1000"></div>
           
-          <div class="relative z-10 text-center space-y-12">
-            <div class="w-20 h-20 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto border border-primary/20 shadow-glow group-hover:rotate-12 transition-transform duration-700">
-              <Cpu class="w-10 h-10 text-primary" />
+          <div class="relative z-10 text-center space-y-8 sm:space-y-12">
+            <div class="w-16 h-16 sm:w-20 h-20 bg-primary/10 rounded-[1.5rem] sm:rounded-[2rem] flex items-center justify-center mx-auto border border-primary/20 shadow-glow group-hover:rotate-12 transition-transform duration-700">
+              <Cpu class="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
             </div>
             
-            <div class="space-y-4">
-              <h2 class="text-4xl font-black text-white tracking-tighter italic">Núcleo del Aprendizaje</h2>
-              <p class="text-white/30 font-black uppercase text-[10px] tracking-[0.5em]">Configura las bases de la intervención</p>
+            <div class="space-y-3 sm:space-y-4">
+              <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tighter italic">Núcleo del Aprendizaje</h2>
+              <p class="text-white/30 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.3em] sm:tracking-[0.5em]">Configura las bases de la intervención</p>
             </div>
             
-            <div class="space-y-10 text-left">
-              <div class="space-y-8">
-                <div class="space-y-4">
-                  <label class="text-[9px] font-black uppercase tracking-[0.4em] text-white/30 ml-2">Materia / Disciplina</label>
+            <div class="space-y-8 sm:space-y-10 text-left">
+              <div class="space-y-6 sm:space-y-8">
+                <div class="space-y-3 sm:space-y-4">
+                  <label class="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.4em] text-white/30 ml-2">Materia / Disciplina</label>
                   <input 
                     v-model="subject" 
                     type="text" 
                     placeholder="Ej: Pensamiento Crítico" 
-                    class="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white font-bold text-lg focus:border-primary/50 focus:bg-white/10 outline-none transition-all duration-500 placeholder:text-white/10 shadow-inner" 
+                    class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 sm:px-8 py-4 sm:py-5 text-white font-bold text-base sm:text-lg focus:border-primary/50 focus:bg-white/10 outline-none transition-all duration-500 placeholder:text-white/10 shadow-inner" 
                   />
                 </div>
-                <div class="space-y-4">
-                  <label class="text-[9px] font-black uppercase tracking-[0.4em] text-white/30 ml-2">Nivel Educativo</label>
+                <div class="space-y-3 sm:space-y-4">
+                  <label class="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.4em] text-white/30 ml-2">Nivel Educativo</label>
                   <input 
                     v-model="grade" 
                     type="text" 
                     placeholder="Ej: Grado 11" 
-                    class="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white font-bold text-lg focus:border-primary/50 focus:bg-white/10 outline-none transition-all duration-500 placeholder:text-white/10 shadow-inner" 
+                    class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 sm:px-8 py-4 sm:py-5 text-white font-bold text-base sm:text-lg focus:border-primary/50 focus:bg-white/10 outline-none transition-all duration-500 placeholder:text-white/10 shadow-inner" 
                   />
                 </div>
               </div>
@@ -223,10 +223,10 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
               <button 
                 @click="currentStep = 2" 
                 :disabled="!isContextValid" 
-                class="relative group w-full py-6 bg-primary text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-20 disabled:translate-y-0 overflow-hidden"
+                class="relative group w-full py-5 sm:py-6 bg-primary text-white rounded-[1.5rem] sm:rounded-[2rem] font-black text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-20 disabled:translate-y-0 overflow-hidden"
               >
                 <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
-                <div class="flex items-center justify-center gap-4 relative z-10">
+                <div class="flex items-center justify-center gap-3 sm:gap-4 relative z-10">
                    Siguiente Fase: Ideación
                    <ChevronRight class="w-5 h-5 transition-transform group-hover:translate-x-2" />
                 </div>
@@ -237,144 +237,144 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
       </section>
 
       <!-- STEP 2: BRAINSTORMING (CHAT) -->
-      <section v-if="currentStep === 2" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-10 animate-slide-up">
+      <section v-if="currentStep === 2" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 animate-slide-up">
         <!-- Chat Side -->
-        <div class="lg:col-span-8 flex flex-col h-[750px] bg-bg-card border border-white/10 rounded-[3.5rem] overflow-hidden shadow-2xl relative">
-          <div class="p-8 bg-white/[0.02] border-b border-white/5 flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-5">
-              <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/40 shadow-glow">
-                <BrainCircuit class="w-7 h-7 text-primary" />
+        <div class="lg:col-span-8 flex flex-col h-[500px] sm:h-[600px] lg:h-[750px] bg-bg-card border border-white/10 rounded-[2.5rem] sm:rounded-[3.5rem] overflow-hidden shadow-2xl relative">
+          <div class="p-6 sm:p-8 bg-white/[0.02] border-b border-white/5 flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-4 sm:gap-5">
+              <div class="w-10 h-10 sm:w-12 h-12 bg-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-primary/40 shadow-glow">
+                <BrainCircuit class="w-6 h-6 sm:w-7 h-7 text-primary" />
               </div>
               <div>
-                <h3 class="text-[10px] font-black text-white uppercase tracking-[0.4em]">Cocreación Neuronal</h3>
-                <div class="flex items-center gap-2">
+                <h3 class="text-[9px] sm:text-[10px] font-black text-white uppercase tracking-[0.3em] sm:tracking-[0.4em]">Cocreación Neuronal</h3>
+                <div class="flex items-center gap-1.5 sm:gap-2">
                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-                   <p class="text-[9px] font-black text-emerald-400/70 uppercase tracking-widest">Listo para Ideación</p>
+                   <p class="text-[8px] sm:text-[9px] font-black text-emerald-400/70 uppercase tracking-widest">Listo para Ideación</p>
                 </div>
               </div>
             </div>
-            <button @click="currentStep = 1" class="px-5 py-2.5 bg-white/5 rounded-xl text-[9px] font-black text-white/40 hover:text-white hover:bg-white/10 flex items-center gap-2 uppercase tracking-[0.2em] transition-all border border-white/5">
-              <ChevronLeft class="w-4 h-4" /> Volver
+            <button @click="currentStep = 1" class="px-4 sm:px-5 py-2 sm:py-2.5 bg-white/5 rounded-xl text-[8px] sm:text-[9px] font-black text-white/40 hover:text-white hover:bg-white/10 flex items-center gap-1.5 sm:gap-2 uppercase tracking-[0.2em] transition-all border border-white/5">
+              <ChevronLeft class="w-3.5 h-3.5 sm:w-4 h-4" /> Volver
             </button>
           </div>
 
           <!-- Messages Area -->
-          <div ref="chatContainer" class="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar scroll-smooth bg-white/[0.01]">
-            <div v-if="chatStore.messages.length === 0" class="flex flex-col items-center justify-center h-full text-center space-y-10 opacity-40 py-20">
+          <div ref="chatContainer" class="flex-1 overflow-y-auto p-6 sm:p-8 space-y-8 sm:space-y-10 custom-scrollbar scroll-smooth bg-white/[0.01]">
+            <div v-if="chatStore.messages.length === 0" class="flex flex-col items-center justify-center h-full text-center space-y-8 sm:space-y-10 opacity-40 py-10 sm:py-20">
               <div class="relative">
-                 <Sparkles class="w-20 h-20 text-primary animate-pulse" />
-                 <div class="absolute -inset-10 bg-primary/10 blur-3xl rounded-full"></div>
+                 <Sparkles class="w-16 h-16 sm:w-20 h-20 text-primary animate-pulse" />
+                 <div class="absolute -inset-8 sm:-inset-10 bg-primary/10 blur-3xl rounded-full"></div>
               </div>
-              <div class="space-y-4">
-                 <p class="text-white/60 font-black uppercase tracking-[0.5em] text-[10px]">Describe tu visión pedagógica</p>
-                 <div class="flex flex-wrap justify-center gap-4">
-                  <button @click="teacherMessage = 'Diseña una dinámica disruptiva para ' + subject; sendToMentor()" class="px-6 py-3 bg-white/5 border border-white/10 rounded-2xl text-[9px] font-black text-white/50 uppercase tracking-[0.2em] hover:border-primary/40 hover:text-primary transition-all active:scale-95">Disrupción Grupal</button>
-                  <button @click="teacherMessage = 'Planifica una evaluación por competencias para ' + subject; sendToMentor()" class="px-6 py-3 bg-white/5 border border-white/10 rounded-2xl text-[9px] font-black text-white/50 uppercase tracking-[0.2em] hover:border-primary/40 hover:text-primary transition-all active:scale-95">Evaluación Elite</button>
+              <div class="space-y-4 px-4">
+                 <p class="text-white/60 font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] text-[9px] sm:text-[10px]">Describe tu visión pedagógica</p>
+                 <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+                  <button @click="teacherMessage = 'Diseña una dinámica disruptiva para ' + subject; sendToMentor()" class="px-4 sm:px-6 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-2xl text-[8px] sm:text-[9px] font-black text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] hover:border-primary/40 hover:text-primary transition-all active:scale-95">Disrupción Grupal</button>
+                  <button @click="teacherMessage = 'Planifica una evaluación por competencias para ' + subject; sendToMentor()" class="px-4 sm:px-6 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-2xl text-[8px] sm:text-[9px] font-black text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] hover:border-primary/40 hover:text-primary transition-all active:scale-95">Evaluación Elite</button>
                 </div>
               </div>
             </div>
 
             <div v-for="(msg, i) in chatStore.messages" :key="i" 
-              :class="['flex flex-col gap-4 w-full', msg.role === 'user' ? 'items-end' : 'items-start']"
+              :class="['flex flex-col gap-3 sm:gap-4 w-full', msg.role === 'user' ? 'items-end' : 'items-start']"
             >
-              <div :class="['max-w-[85%] p-7 rounded-[2.5rem] text-[15px] leading-relaxed shadow-lg font-medium transition-all duration-700', 
+              <div :class="['max-w-[90%] sm:max-w-[85%] p-5 sm:p-7 rounded-[1.5rem] sm:rounded-[2.5rem] text-sm sm:text-[15px] leading-relaxed shadow-lg font-medium transition-all duration-700', 
                 msg.role === 'user' ? 'bg-primary text-white rounded-br-none shadow-glow-primary' : 'bg-white/5 border border-white/10 text-white/80 rounded-bl-none']">
                 {{ msg.content }}
               </div>
               
-              <div class="flex items-center gap-3 px-4">
-                 <div class="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                    <User v-if="msg.role === 'user'" class="w-4 h-4 text-white/30" />
-                    <Bot v-else class="w-4 h-4 text-primary" />
+              <div class="flex items-center gap-2 sm:gap-3 px-3 sm:px-4">
+                 <div class="w-6 h-6 sm:w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
+                    <User v-if="msg.role === 'user'" class="w-3 h-3 sm:w-4 h-4 text-white/30" />
+                    <Bot v-else class="w-3 h-3 sm:w-4 h-4 text-primary" />
                  </div>
-                 <span class="text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
+                 <span class="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white/20">
                     {{ msg.role === 'user' ? 'Tú' : 'Mentor IA' }}
                  </span>
                  <button 
                   v-if="msg.role === 'assistant'" 
                   @click="useIdeaFromChat(msg.content)" 
-                  class="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-[8px] font-black text-emerald-400 uppercase tracking-widest hover:bg-emerald-500/20 transition-all active:scale-95 ml-4"
+                  class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-[7px] sm:text-[8px] font-black text-emerald-400 uppercase tracking-widest hover:bg-emerald-500/20 transition-all active:scale-95 ml-2 sm:ml-4"
                 >
-                  <Wand2 class="w-3 h-3" /> Sintetizar Documento
+                  <Wand2 class="w-3 h-3" /> Sintetizar
                 </button>
               </div>
             </div>
             
             <!-- Typing Indicator -->
             <div v-if="chatStore.isLoading" class="flex flex-col items-start">
-               <div class="bg-white/5 border border-white/10 p-6 rounded-[2rem] rounded-bl-none flex items-center gap-4">
+               <div class="bg-white/5 border border-white/10 p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] rounded-bl-none flex items-center gap-3 sm:gap-4">
                   <div class="flex gap-1.5">
-                    <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0s"></span>
-                    <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-                    <span class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                    <span class="w-1.5 h-1.5 sm:w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0s"></span>
+                    <span class="w-1.5 h-1.5 sm:w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                    <span class="w-1.5 h-1.5 sm:w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
                   </div>
-                  <span class="text-[9px] font-black text-primary uppercase tracking-[0.3em]">Procesando Neuronas...</span>
+                  <span class="text-[8px] sm:text-[9px] font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em]">Procesando...</span>
                </div>
             </div>
           </div>
 
           <!-- Input Area -->
-          <div class="p-8 bg-bg-card border-t border-white/5">
-            <div class="flex items-center gap-4 bg-white/5 p-2.5 pl-6 rounded-[2.5rem] border border-white/10 focus-within:border-primary/50 transition-all duration-500 shadow-inner group relative">
+          <div class="p-6 sm:p-8 bg-bg-card border-t border-white/5">
+            <div class="flex items-center gap-3 sm:gap-4 bg-white/5 p-2 sm:p-2.5 pl-4 sm:pl-6 rounded-[2rem] sm:rounded-[2.5rem] border border-white/10 focus-within:border-primary/50 transition-all duration-500 shadow-inner group relative">
               <input 
                 v-model="teacherMessage" 
                 @keyup.enter="sendToMentor"
                 type="text" 
-                placeholder="Prescribe tu visión pedagógica..." 
-                class="flex-1 bg-transparent border-none outline-none text-sm font-bold text-white placeholder:text-white/20"
+                placeholder="Prescribe tu visión..." 
+                class="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-bold text-white placeholder:text-white/20"
                 :disabled="chatStore.isLoading"
               />
               <VoiceAssistant v-model="teacherMessage" :disabled="chatStore.isLoading" />
               <button 
                 @click="sendToMentor" 
-                class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-all shadow-glow active:scale-90 disabled:opacity-20 group-hover:rotate-12"
+                class="w-10 h-10 sm:w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-all shadow-glow active:scale-90 disabled:opacity-20 group-hover:rotate-12 shrink-0"
                 :disabled="!teacherMessage.trim() || chatStore.isLoading"
               >
-                <Send class="w-6 h-6" />
+                <Send class="w-4 h-4 sm:w-6 h-6" />
               </button>
             </div>
           </div>
         </div>
 
         <!-- Right Side: Telemetry -->
-        <div class="lg:col-span-4 space-y-8">
-          <div class="bg-bg-card border border-white/10 rounded-[3.5rem] p-10 relative overflow-hidden group shadow-2xl">
+        <div class="lg:col-span-4 space-y-6 sm:space-y-8">
+          <div class="bg-bg-card border border-white/10 rounded-[2.5rem] sm:rounded-[3.5rem] p-8 sm:p-10 relative overflow-hidden group shadow-2xl">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
-            <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-10 flex items-center gap-3">
-              <Zap class="w-5 h-5" /> Telemetría IA
+            <h4 class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] text-primary mb-6 sm:mb-10 flex items-center gap-3">
+              <Zap class="w-4 h-4 sm:w-5 h-5" /> Telemetría IA
             </h4>
             
-            <div class="space-y-6">
-              <div class="flex justify-between items-center p-5 bg-white/[0.02] rounded-2xl border border-white/5">
-                <span class="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Motor de Proceso</span>
-                <span class="text-[11px] font-black text-white/60 tracking-widest italic">Core v4.0</span>
+            <div class="space-y-4 sm:space-y-6">
+              <div class="flex justify-between items-center p-4 sm:p-5 bg-white/[0.02] rounded-2xl border border-white/5">
+                <span class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Motor de Proceso</span>
+                <span class="text-[10px] sm:text-[11px] font-black text-white/60 tracking-widest italic">Core v4.0</span>
               </div>
-              <div class="flex justify-between items-center p-5 bg-white/[0.02] rounded-2xl border border-white/5">
-                <span class="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Estado de Red</span>
-                <span class="text-[11px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+              <div class="flex justify-between items-center p-4 sm:p-5 bg-white/[0.02] rounded-2xl border border-white/5">
+                <span class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Estado de Red</span>
+                <span class="text-[10px] sm:text-[11px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> Optimizado
                 </span>
               </div>
             </div>
 
-            <hr class="my-10 border-white/5" />
+            <hr class="my-6 sm:my-10 border-white/5" />
             
             <button 
               @click="currentStep = 3" 
-              class="relative group w-full py-5 bg-white text-bg-deep rounded-[1.5rem] font-black uppercase tracking-[0.3em] text-[10px] hover:bg-primary hover:text-white transition-all shadow-2xl active:scale-95 overflow-hidden"
+              class="relative group w-full py-4 sm:py-5 bg-white text-bg-deep rounded-[1.25rem] sm:rounded-[1.5rem] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[9px] sm:text-[10px] hover:bg-primary hover:text-white transition-all shadow-2xl active:scale-95 overflow-hidden"
             >
-              <div class="flex items-center justify-center gap-3 relative z-10">
+              <div class="flex items-center justify-center gap-2 sm:gap-3 relative z-10">
                 Confirmar Diseño
                 <ChevronRight class="w-4 h-4 transition-transform group-hover:translate-x-2" />
               </div>
             </button>
           </div>
           
-          <div class="p-10 bg-primary/5 rounded-[3.5rem] border border-primary/20 relative group border-dashed shadow-inner">
-            <p class="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-6 flex items-center gap-3 italic">
-              <Sparkles class="w-5 h-5" /> Mentor Insight
+          <div class="p-8 sm:p-10 bg-primary/5 rounded-[2.5rem] sm:rounded-[3.5rem] border border-primary/20 relative group border-dashed shadow-inner">
+            <p class="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-4 sm:mb-6 flex items-center gap-3 italic">
+              <Sparkles class="w-4 h-4 sm:w-5 h-5" /> Mentor Insight
             </p>
-            <p class="text-sm text-white/60 leading-relaxed font-bold italic group-hover:text-white/80 transition-colors">
+            <p class="text-xs sm:text-sm text-white/60 leading-relaxed font-bold italic group-hover:text-white/80 transition-colors">
               "La ideación ha detectado patrones disruptivos en tu visión. Procede a la fase de síntesis final."
             </p>
           </div>
@@ -382,49 +382,49 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
       </section>
 
       <!-- STEP 3: SÍNTESIS -->
-      <section v-if="currentStep === 3" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-10 animate-slide-up relative">
+      <section v-if="currentStep === 3" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 animate-slide-up relative">
         <!-- Configuration Side -->
         <aside 
-          :class="['transition-all duration-700 ease-in-out h-fit sticky top-28', 
+          :class="['transition-all duration-700 ease-in-out h-fit sticky top-24 lg:top-28', 
             isSidebarCollapsed ? 'lg:col-span-1' : 'lg:col-span-4']"
         >
-          <div :class="['bg-bg-card border border-white/10 rounded-[3.5rem] relative shadow-2xl overflow-hidden', isSidebarCollapsed ? 'p-4' : 'p-10']">
-             <div class="flex items-center justify-between mb-10">
-                <h3 v-if="!isSidebarCollapsed" class="text-[10px] font-black text-white/30 uppercase tracking-[0.5em] animate-fade-in italic">Síntesis Final</h3>
+          <div :class="['bg-bg-card border border-white/10 rounded-[2.5rem] sm:rounded-[3.5rem] relative shadow-2xl overflow-hidden', isSidebarCollapsed ? 'p-3 sm:p-4' : 'p-6 sm:p-10']">
+             <div class="flex items-center justify-between mb-6 sm:mb-10">
+                <h3 v-if="!isSidebarCollapsed" class="text-[9px] sm:text-[10px] font-black text-white/30 uppercase tracking-[0.3em] sm:tracking-[0.5em] animate-fade-in italic">Síntesis Final</h3>
                 <button 
                   @click="isSidebarCollapsed = !isSidebarCollapsed"
-                  class="w-10 h-10 bg-white/5 hover:bg-white/10 rounded-xl text-white/30 hover:text-primary transition-all border border-white/5 flex items-center justify-center shadow-inner"
+                  class="w-9 h-9 sm:w-10 sm:h-10 bg-white/5 hover:bg-white/10 rounded-xl text-white/30 hover:text-primary transition-all border border-white/5 flex items-center justify-center shadow-inner"
                 >
-                  <Maximize2 v-if="isSidebarCollapsed" :size="16" />
-                  <Minimize2 v-else :size="16" />
+                  <Maximize2 v-if="isSidebarCollapsed" :size="14" class="sm:size-16" />
+                  <Minimize2 v-else :size="14" class="sm:size-16" />
                 </button>
              </div>
              
-             <div v-show="!isSidebarCollapsed" class="space-y-12 animate-fade-in">
-               <div class="space-y-4">
+             <div v-show="!isSidebarCollapsed" class="space-y-8 sm:space-y-12 animate-fade-in">
+               <div class="space-y-3 sm:space-y-4">
                   <div class="flex items-center justify-between px-2">
-                    <label class="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Núcleo Temático</label>
+                    <label class="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Temática</label>
                     <VoiceAssistant v-model="topic" />
                   </div>
                   <textarea 
                     v-model="topic" 
-                    class="w-full h-48 bg-white/5 border border-white/10 rounded-2xl p-6 text-white font-bold text-sm focus:border-primary/50 outline-none resize-none transition-all duration-500 custom-scrollbar"
+                    class="w-full h-32 sm:h-48 bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 text-white font-bold text-xs sm:text-sm focus:border-primary/50 outline-none resize-none transition-all duration-500 custom-scrollbar"
                   ></textarea>
                </div>
 
-               <div class="space-y-6">
-                <label class="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 px-2">Arquitectura del Documento</label>
-                <div class="grid grid-cols-1 gap-3">
+               <div class="space-y-4 sm:space-y-6">
+                <label class="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.4em] text-white/20 px-2">Arquitectura</label>
+                <div class="grid grid-cols-1 gap-2 sm:gap-3">
                   <button v-for="t in types" :key="t.id" @click="type = t.id"
-                    :class="['flex items-center gap-5 p-5 rounded-2xl border-2 transition-all duration-500 group', 
+                    :class="['flex items-center gap-3 sm:gap-5 p-4 sm:p-5 rounded-2xl border-2 transition-all duration-500 group', 
                     type === t.id ? 'border-primary bg-primary/10 shadow-glow' : 'border-white/5 bg-white/[0.02] hover:bg-white/5 hover:border-white/10']"
                   >
-                    <div :class="['w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500', type === t.id ? 'bg-primary text-white scale-110 rotate-6 shadow-glow' : 'bg-white/5 text-white/20 group-hover:text-white/40']">
-                       <component :is="t.icon" class="w-5 h-5" />
+                    <div :class="['w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-500', type === t.id ? 'bg-primary text-white scale-110 rotate-6 shadow-glow' : 'bg-white/5 text-white/20 group-hover:text-white/40']">
+                       <component :is="t.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div class="text-left">
-                       <p :class="['font-black text-[11px] uppercase tracking-widest mb-0.5', type === t.id ? 'text-white' : 'text-white/40 group-hover:text-white/60']">{{ t.name }}</p>
-                       <p class="text-[8px] font-black text-white/20 uppercase tracking-widest">{{ t.desc }}</p>
+                       <p :class="['font-black text-[10px] sm:text-[11px] uppercase tracking-widest mb-0.5', type === t.id ? 'text-white' : 'text-white/40 group-hover:text-white/60']">{{ t.name }}</p>
+                       <p class="text-[7px] sm:text-[8px] font-black text-white/20 uppercase tracking-widest">{{ t.desc }}</p>
                     </div>
                   </button>
                 </div>
@@ -433,25 +433,25 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                 <button 
                   @click="handleGenerate" 
                   :disabled="courseStore.isGenerating"
-                  class="relative group w-full py-6 bg-primary text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-20 overflow-hidden mt-6"
+                  class="relative group w-full py-5 sm:py-6 bg-primary text-white rounded-[1.5rem] sm:rounded-[2rem] font-black text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-20 overflow-hidden mt-4 sm:mt-6"
                 >
                    <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
-                   <div class="flex items-center justify-center gap-4 relative z-10">
-                      <Loader2 v-if="courseStore.isGenerating" class="w-5 h-5 animate-spin" />
-                      <Sparkles v-else class="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                   <div class="flex items-center justify-center gap-3 sm:gap-4 relative z-10">
+                      <Loader2 v-if="courseStore.isGenerating" class="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                      <Sparkles v-else class="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform" />
                       <span>{{ courseStore.isGenerating ? 'Trascendiendo...' : 'Generar Artefacto' }}</span>
                    </div>
                 </button>
                 
-                <button @click="currentStep = 2" class="w-full text-center text-[9px] font-black text-white/20 hover:text-primary uppercase tracking-[0.3em] transition-all underline decoration-primary/20 hover:decoration-primary">
+                <button @click="currentStep = 2" class="w-full text-center text-[8px] sm:text-[9px] font-black text-white/20 hover:text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all underline decoration-primary/20 hover:decoration-primary">
                   Regresar a Ideación
                 </button>
              </div>
              
              <!-- Collapsed Sidebar Decor -->
-             <div v-if="isSidebarCollapsed" class="flex flex-col items-center gap-12 py-10 animate-fade-in">
-                <Zap class="text-primary animate-neural-pulse w-8 h-8 shadow-glow" />
-                <div class="[writing-mode:vertical-lr] rotate-180 text-[11px] font-black text-white/10 uppercase tracking-[0.6em] italic">DOCK CONFIGURATION</div>
+             <div v-if="isSidebarCollapsed" class="flex flex-col items-center gap-10 sm:gap-12 py-8 sm:py-10 animate-fade-in">
+                <Zap class="text-primary animate-neural-pulse w-6 h-6 sm:w-8 sm:h-8 shadow-glow" />
+                <div class="[writing-mode:vertical-lr] rotate-180 text-[10px] sm:text-[11px] font-black text-white/10 uppercase tracking-[0.4em] sm:tracking-[0.6em] italic">DOCK CONFIGURATION</div>
              </div>
           </div>
         </aside>
@@ -461,67 +461,68 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
           :class="['transition-all duration-700 ease-in-out flex flex-col', 
             isSidebarCollapsed ? 'lg:col-span-11' : 'lg:col-span-8']"
         >
-          <div v-if="courseStore.generatedContent" class="bg-bg-card border border-primary/20 rounded-[4rem] min-h-[700px] flex flex-col overflow-hidden animate-slide-up shadow-[0_40px_100px_-40px_rgba(var(--color-primary-rgb),0.3)]">
+          <div v-if="courseStore.generatedContent" class="bg-bg-card border border-primary/20 rounded-[2.5rem] sm:rounded-[4rem] min-h-[500px] sm:min-h-[700px] flex flex-col overflow-hidden animate-slide-up shadow-[0_40px_100px_-40px_rgba(var(--color-primary-rgb),0.3)]">
              <!-- Result Header -->
-             <header class="p-8 bg-white/[0.02] border-b border-white/5 flex flex-wrap items-center justify-between gap-6 relative overflow-hidden">
+             <header class="p-6 sm:p-8 bg-white/[0.02] border-b border-white/5 flex flex-wrap items-center justify-between gap-4 sm:gap-6 relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-full bg-primary/5 blur-3xl rounded-full -mr-32"></div>
                 
-                <div class="flex items-center gap-6 relative z-10">
-                  <div class="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/40 shadow-glow">
-                    <Check class="w-7 h-7 text-primary" />
+                <div class="flex items-center gap-4 sm:gap-6 relative z-10">
+                  <div class="w-10 h-10 sm:w-12 h-12 bg-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-primary/40 shadow-glow">
+                    <Check class="w-6 h-6 sm:w-7 h-7 text-primary" />
                   </div>
                   <div>
-                    <h3 class="text-[10px] font-black text-white uppercase tracking-[0.4em] italic mb-1">Resultado Maestro</h3>
-                    <p class="text-[9px] font-black text-white/30 uppercase tracking-[0.2em]">{{ type }} • Ecosistema MentorIA</p>
+                    <h3 class="text-[9px] sm:text-[10px] font-black text-white uppercase tracking-[0.3em] sm:tracking-[0.4em] italic mb-0.5 sm:mb-1">Resultado Maestro</h3>
+                    <p class="text-[8px] sm:text-[9px] font-black text-white/30 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{{ type }} • Ecosistema MentorIA</p>
                   </div>
                 </div>
                 
-                <div class="flex items-center gap-3 relative z-10">
-                  <!-- Escuchar -->
-                  <button 
-                    @click="isSpeaking ? stop() : speak(renderedContent.replace(/<[^>]*>/g, ''))"
-                    class="w-11 h-11 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center transition-all hover:bg-white/10 hover:border-primary/40 group shadow-inner"
-                    :class="isSpeaking ? 'text-primary' : 'text-white/40'"
-                    title="Reproducción por Voz"
-                  >
-                    <Volume2 v-if="!isSpeaking" class="w-5 h-5" />
-                    <Square v-else :size="14" class="fill-current animate-pulse" />
-                  </button>
+                <div class="flex items-center gap-2 sm:gap-3 relative z-10 flex-wrap">
+                   <!-- Controls Group -->
+                   <div class="flex items-center gap-2">
+                      <button 
+                        @click="isSpeaking ? stop() : speak(renderedContent.replace(/<[^>]*>/g, ''))"
+                        class="w-10 h-10 sm:w-11 h-11 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center transition-all hover:bg-white/10 hover:border-primary/40 group shadow-inner"
+                        :class="isSpeaking ? 'text-primary' : 'text-white/40'"
+                        title="Reproducción por Voz"
+                      >
+                        <Volume2 v-if="!isSpeaking" class="w-4 h-4 sm:w-5 sm:h-5" />
+                        <Square v-else :size="12" class="fill-current animate-pulse" />
+                      </button>
 
-                  <div class="h-8 w-px bg-white/5 mx-1"></div>
+                      <div class="h-8 w-px bg-white/5 mx-1 hidden sm:block"></div>
 
-                  <!-- Copiar/Guardar -->
-                  <button @click="saveToClipboard" class="px-5 py-3 bg-white/5 rounded-xl border border-white/10 text-[9px] font-black text-white/40 uppercase tracking-[0.2em] hover:text-white hover:bg-white/10 transition-all flex items-center gap-3">
-                    <ClipboardPlus class="w-4 h-4" /> <span class="hidden sm:inline">Guardar</span>
-                  </button>
+                      <button @click="saveToClipboard" class="p-3 sm:px-5 sm:py-3 bg-white/5 rounded-xl border border-white/10 text-[9px] font-black text-white/40 uppercase tracking-[0.2em] hover:text-white hover:bg-white/10 transition-all flex items-center gap-2 sm:gap-3">
+                        <ClipboardPlus class="w-4 h-4" /> <span class="hidden md:inline">Guardar</span>
+                      </button>
 
-                  <button @click="copyToClipboard" class="px-5 py-3 bg-white/5 rounded-xl border border-white/10 text-[9px] font-black text-white/40 uppercase tracking-[0.2em] hover:text-white hover:bg-white/10 transition-all flex items-center gap-3 relative overflow-hidden">
-                    <Copy v-if="!copySuccess" class="w-4 h-4" />
-                    <Check v-else class="w-4 h-4 text-emerald-400" />
-                    <span class="hidden sm:inline">{{ copySuccess ? 'Copiado' : 'Copiar' }}</span>
-                  </button>
+                      <button @click="copyToClipboard" class="p-3 sm:px-5 sm:py-3 bg-white/5 rounded-xl border border-white/10 text-[9px] font-black text-white/40 uppercase tracking-[0.2em] hover:text-white hover:bg-white/10 transition-all flex items-center gap-2 sm:gap-3 relative overflow-hidden">
+                        <Copy v-if="!copySuccess" class="w-4 h-4" />
+                        <Check v-else class="w-4 h-4 text-emerald-400" />
+                        <span class="hidden md:inline">{{ copySuccess ? 'Copiado' : 'Copiar' }}</span>
+                      </button>
+                   </div>
 
                   <!-- Export Elite -->
                   <div class="relative">
                     <button 
                       @click="showExportMenu = !showExportMenu"
-                      class="px-8 py-3 bg-primary text-white rounded-xl font-black text-[10px] uppercase tracking-[0.3em] shadow-glow hover:bg-secondary transition-all active:scale-95 flex items-center gap-3 group"
+                      class="px-5 sm:px-8 py-3 bg-primary text-white rounded-xl font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] shadow-glow hover:bg-secondary transition-all active:scale-95 flex items-center gap-2 sm:gap-3 group"
                     >
-                      <FileDown class="w-4 h-4" /> Exportar
-                      <ChevronDown class="w-4 h-4 transition-transform duration-500" :class="showExportMenu ? 'rotate-180' : ''" />
+                      <FileDown class="w-4 h-4" /> <span class="hidden sm:inline">Exportar</span>
+                      <ChevronDown class="w-3.5 h-3.5 sm:w-4 h-4 transition-transform duration-500" :class="showExportMenu ? 'rotate-180' : ''" />
                     </button>
                     
-                    <div v-if="showExportMenu" class="absolute right-0 mt-4 w-64 bg-bg-card border border-white/10 rounded-[2rem] shadow-2xl z-50 overflow-hidden py-3 animate-page-in">
-                      <button @click="handleExportResult('pdf')" class="w-full text-left px-6 py-4 text-[10px] font-black text-white/50 hover:bg-white/5 hover:text-white transition-all flex items-center justify-between group uppercase tracking-[0.2em]">
-                        <span class="flex items-center gap-4"><div class="w-2 h-2 bg-red-500 rounded-full group-hover:scale-150 transition-transform"></div> PDF Profesional</span>
+                    <div v-if="showExportMenu" class="absolute right-0 mt-4 w-56 sm:w-64 bg-bg-card border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] shadow-2xl z-50 overflow-hidden py-2 sm:py-3 animate-page-in">
+                      <button @click="handleExportResult('pdf')" class="w-full text-left px-5 sm:px-6 py-3.5 sm:py-4 text-[9px] sm:text-[10px] font-black text-white/50 hover:bg-white/5 hover:text-white transition-all flex items-center justify-between group uppercase tracking-[0.15em] sm:tracking-[0.2em]">
+                        <span class="flex items-center gap-3 sm:gap-4"><div class="w-2 h-2 bg-red-500 rounded-full group-hover:scale-150 transition-transform"></div> PDF Elite</span>
                         <ExternalLink class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </button>
-                      <button @click="handleExportResult('excel')" class="w-full text-left px-6 py-4 text-[10px] font-black text-white/50 hover:bg-white/5 hover:text-white transition-all flex items-center justify-between group uppercase tracking-[0.2em]">
-                        <span class="flex items-center gap-4"><div class="w-2 h-2 bg-emerald-500 rounded-full group-hover:scale-150 transition-transform"></div> Hoja Excel</span>
+                      <button @click="handleExportResult('excel')" class="w-full text-left px-5 sm:px-6 py-3.5 sm:py-4 text-[9px] sm:text-[10px] font-black text-white/50 hover:bg-white/5 hover:text-white transition-all flex items-center justify-between group uppercase tracking-[0.15em] sm:tracking-[0.2em]">
+                        <span class="flex items-center gap-3 sm:gap-4"><div class="w-2 h-2 bg-emerald-500 rounded-full group-hover:scale-150 transition-transform"></div> Excel</span>
                         <ExternalLink class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </button>
-                      <button @click="handleExportResult('slides')" class="w-full text-left px-6 py-4 text-[10px] font-black text-white/50 hover:bg-white/5 hover:text-white transition-all flex items-center justify-between group uppercase tracking-[0.2em]">
-                        <span class="flex items-center gap-4"><div class="w-2 h-2 bg-amber-500 rounded-full group-hover:scale-150 transition-transform"></div> Diapositivas</span>
+                      <button @click="handleExportResult('slides')" class="w-full text-left px-5 sm:px-6 py-3.5 sm:py-4 text-[9px] sm:text-[10px] font-black text-white/50 hover:bg-white/5 hover:text-white transition-all flex items-center justify-between group uppercase tracking-[0.15em] sm:tracking-[0.2em]">
+                        <span class="flex items-center gap-3 sm:gap-4"><div class="w-2 h-2 bg-amber-500 rounded-full group-hover:scale-150 transition-transform"></div> Slides</span>
                         <ExternalLink class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </button>
                     </div>
@@ -530,10 +531,11 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
              </header>
 
              <!-- Preview Content -->
-             <div class="flex-1 p-10 lg:p-20 overflow-y-auto preview-markdown custom-scrollbar bg-white/[0.01]">
+             <div class="flex-1 p-6 sm:p-10 lg:p-20 overflow-y-auto preview-markdown custom-scrollbar bg-white/[0.01]">
                 <div v-html="renderedContent" class="prose prose-invert prose-emerald max-w-none font-medium text-white/70 leading-relaxed"></div>
              </div>
           </div>
+
 
           <!-- Error Handle -->
           <div v-else-if="courseStore.generationError" class="bg-red-500/5 border border-red-500/20 rounded-[4rem] p-16 text-center shadow-2xl">

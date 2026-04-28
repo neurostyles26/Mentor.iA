@@ -153,59 +153,59 @@ onMounted(() => {
 <template>
   <div class="max-w-7xl mx-auto pb-24 space-y-16 animate-page-in">
     <!-- Sophisticated Header -->
-    <header class="flex flex-col md:flex-row items-center justify-between gap-12 py-10 relative overflow-hidden">
+    <header class="flex flex-col md:flex-row items-center justify-between gap-8 sm:gap-12 py-8 sm:py-10 relative overflow-hidden">
       <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-[100px] animate-pulse"></div>
       
-      <div class="flex items-center gap-8 relative z-10">
-        <div class="w-16 h-16 bg-primary/10 rounded-[2rem] flex items-center justify-center border border-primary/20 shadow-glow transform rotate-6 hover:rotate-0 transition-transform duration-700">
-          <CalendarDays class="w-9 h-9 text-primary" />
+      <div class="flex items-center gap-4 sm:gap-8 relative z-10 w-full md:w-auto">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-primary/10 rounded-2xl sm:rounded-[2rem] flex items-center justify-center border border-primary/20 shadow-glow transform rotate-6 hover:rotate-0 transition-transform duration-700 shrink-0">
+          <CalendarDays class="w-7 h-7 sm:w-9 sm:h-9 text-primary" />
         </div>
-        <div>
-          <h1 class="text-5xl font-black text-white italic tracking-tighter uppercase leading-none mb-3">Agenda Digital</h1>
+        <div class="overflow-hidden">
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white italic tracking-tighter uppercase leading-none mb-2 sm:mb-3 truncate">Agenda Digital</h1>
           <div class="flex items-center gap-3">
-             <ShieldCheck class="w-4 h-4 text-primary" />
-             <p class="text-[9px] font-black text-white/30 uppercase tracking-[0.5em]">Arquitectura de Tiempos v4.0</p>
+             <ShieldCheck class="w-3.5 h-3.5 text-primary" />
+             <p class="text-[7px] sm:text-[9px] font-black text-white/30 uppercase tracking-[0.3em] sm:tracking-[0.5em]">Arquitectura de Tiempos v4.0</p>
           </div>
         </div>
       </div>
 
       <button 
         @click="showAddModal = true"
-        class="group relative flex items-center gap-4 px-12 py-6 bg-primary text-white rounded-[2rem] font-black uppercase tracking-[0.3em] text-xs shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 overflow-hidden w-full md:w-auto justify-center"
+        class="group relative flex items-center gap-3 sm:gap-4 px-8 py-5 sm:px-12 sm:py-6 bg-primary text-white rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[10px] sm:text-xs shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 overflow-hidden w-full md:w-auto justify-center"
       >
         <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
-        <Plus class="w-5 h-5 group-hover:rotate-180 transition-transform duration-700 relative z-10" />
+        <Plus class="w-4 h-4 sm:w-5 h-5 group-hover:rotate-180 transition-transform duration-700 relative z-10" />
         <span class="relative z-10">Agendar Sesión</span>
       </button>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 relative z-10">
       <!-- Calendar Grid Area -->
-      <div class="lg:col-span-8 space-y-8">
-        <div class="bg-bg-card border border-white/10 rounded-[4rem] p-10 lg:p-14 shadow-2xl relative overflow-hidden group">
+      <div class="lg:col-span-8 space-y-6 sm:space-y-8">
+        <div class="bg-bg-card border border-white/10 rounded-[2.5rem] sm:rounded-[4rem] p-6 sm:p-10 lg:p-14 shadow-2xl relative overflow-hidden group">
           <div class="absolute -top-24 -right-24 w-80 h-80 bg-primary/5 rounded-full blur-[100px] group-hover:scale-125 transition-transform duration-1000"></div>
           
           <!-- Calendar Header -->
-          <div class="flex flex-wrap items-center justify-between mb-12 relative z-10 gap-6">
-             <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter">
-               {{ currentMonthName }} <span class="text-primary not-italic tracking-tighter ml-3 font-bold">{{ currentYear }}</span>
+          <div class="flex flex-wrap items-center justify-between mb-8 sm:mb-12 relative z-10 gap-4 sm:gap-6">
+             <h2 class="text-2xl sm:text-3xl font-black text-white uppercase italic tracking-tighter">
+               {{ currentMonthName }} <span class="text-primary not-italic tracking-tighter ml-2 sm:ml-3 font-bold">{{ currentYear }}</span>
              </h2>
-             <div class="flex items-center gap-4 bg-white/5 p-2 rounded-[1.5rem] border border-white/5 shadow-inner">
-               <button @click="prevMonth" class="w-12 h-12 flex items-center justify-center bg-transparent rounded-xl text-white/30 hover:bg-primary hover:text-white transition-all shadow-inner">
-                 <ChevronLeft class="w-6 h-6" />
+             <div class="flex items-center gap-3 sm:gap-4 bg-white/5 p-1.5 sm:p-2 rounded-xl sm:rounded-[1.5rem] border border-white/5 shadow-inner">
+               <button @click="prevMonth" class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-transparent rounded-lg sm:rounded-xl text-white/30 hover:bg-primary hover:text-white transition-all shadow-inner">
+                 <ChevronLeft class="w-5 h-5 sm:w-6 h-6" />
                </button>
-               <button @click="nextMonth" class="w-12 h-12 flex items-center justify-center bg-transparent rounded-xl text-white/30 hover:bg-primary hover:text-white transition-all shadow-inner">
-                 <ChevronRight class="w-6 h-6" />
+               <button @click="nextMonth" class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-transparent rounded-lg sm:rounded-xl text-white/30 hover:bg-primary hover:text-white transition-all shadow-inner">
+                 <ChevronRight class="w-5 h-5 sm:w-6 h-6" />
                </button>
              </div>
           </div>
 
           <!-- Calendar Days Layout -->
-          <div class="grid grid-cols-7 gap-3 relative z-10">
+          <div class="grid grid-cols-7 gap-2 sm:gap-3 relative z-10">
             <div 
               v-for="day in daysOfWeek" 
               :key="day" 
-              class="text-center text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-6"
+              class="text-center text-[7px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6"
             >
               {{ day }}
             </div>
@@ -214,25 +214,25 @@ onMounted(() => {
               v-for="(dayObj, idx) in calendarDays" 
               :key="idx"
               @click="selectDay(dayObj)"
-              class="aspect-square rounded-[1.5rem] p-4 border border-transparent transition-all duration-500 cursor-pointer relative group overflow-hidden flex flex-col justify-between"
+              class="aspect-square rounded-xl sm:rounded-[1.5rem] p-2 sm:p-4 border border-transparent transition-all duration-500 cursor-pointer relative group overflow-hidden flex flex-col justify-between"
               :class="[
                 dayObj.currentMonth ? 'bg-white/[0.03] hover:bg-white/[0.08] hover:scale-105' : 'bg-transparent opacity-10 cursor-default',
-                dayObj.isToday ? 'border-primary bg-primary/10 shadow-glow-primary scale-110' : 'border-white/5'
+                dayObj.isToday ? 'border-primary bg-primary/10 shadow-glow-primary scale-110 z-10' : 'border-white/5'
               ]"
             >
               <span 
-                class="text-base font-black transition-colors"
+                class="text-sm sm:text-base font-black transition-colors"
                 :class="dayObj.currentMonth ? (dayObj.isToday ? 'text-primary' : 'text-white/60 group-hover:text-white') : 'text-white/10'"
               >
                 {{ dayObj.day }}
               </span>
               
               <!-- Indicator Dots -->
-              <div class="flex flex-wrap gap-1 mt-auto">
+              <div class="flex flex-wrap gap-0.5 sm:gap-1 mt-auto">
                 <div 
                   v-for="ev in getEventsForDay(dayObj).slice(0, 3)" 
                   :key="ev.id"
-                  class="w-1.5 h-1.5 rounded-full bg-primary shadow-glow animate-neural-pulse"
+                  class="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-primary shadow-glow animate-neural-pulse"
                 ></div>
               </div>
 
@@ -244,49 +244,49 @@ onMounted(() => {
       </div>
 
       <!-- Detail Area -->
-      <div class="lg:col-span-4 space-y-10">
-        <div class="bg-bg-card border border-primary/20 rounded-[4rem] p-10 lg:p-12 relative overflow-hidden shadow-2xl min-h-[500px]">
-          <div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-            <CalendarIcon :size="160" class="text-primary" />
+      <div class="lg:col-span-4 space-y-8 sm:space-y-10">
+        <div class="bg-bg-card border border-primary/20 rounded-[2.5rem] sm:rounded-[4rem] p-8 sm:p-10 lg:p-12 relative overflow-hidden shadow-2xl min-h-[400px] sm:min-h-[500px]">
+          <div class="absolute top-0 right-0 p-8 sm:p-12 opacity-5 pointer-events-none">
+            <CalendarIcon :size="120" class="sm:size-[160px] text-primary" />
           </div>
 
-          <header class="mb-12 relative z-10">
-             <h4 class="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4 italic">Itinerario de Sesión</h4>
-             <p class="text-white text-3xl font-black tracking-tighter leading-none italic">{{ selectedDateLabel }}</p>
+          <header class="mb-8 sm:mb-12 relative z-10">
+             <h4 class="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-3 sm:mb-4 italic">Itinerario de Sesión</h4>
+             <p class="text-white text-2xl sm:text-3xl font-black tracking-tighter leading-none italic">{{ selectedDateLabel }}</p>
           </header>
 
-          <div v-if="selectedDayEvents.length === 0" class="flex flex-col items-center justify-center py-20 text-center space-y-8 opacity-20 relative z-10">
-            <div class="w-20 h-20 bg-white/5 rounded-[2.5rem] flex items-center justify-center border border-white/5 animate-float shadow-inner">
-               <Sparkles class="w-10 h-10 text-primary" />
+          <div v-if="selectedDayEvents.length === 0" class="flex flex-col items-center justify-center py-16 sm:py-20 text-center space-y-6 sm:space-y-8 opacity-20 relative z-10">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/5 rounded-2xl sm:rounded-[2.5rem] flex items-center justify-center border border-white/5 animate-float shadow-inner">
+               <Sparkles class="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
             </div>
-            <p class="text-[11px] font-black uppercase tracking-[0.5em] leading-relaxed">Sin Compromisos<br/>Neuronal</p>
+            <p class="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] leading-relaxed">Sin Compromisos<br/>Neuronal</p>
           </div>
 
-          <div v-else class="space-y-6 relative z-10">
+          <div v-else class="space-y-4 sm:space-y-6 relative z-10">
             <div 
               v-for="event in selectedDayEvents" 
               :key="event.id"
-              class="p-8 bg-white/[0.03] rounded-[2.5rem] border border-white/5 group relative hover:border-primary/40 hover:bg-white/[0.05] transition-all duration-700 animate-slide-right shadow-inner"
+              class="p-6 sm:p-8 bg-white/[0.03] rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 group relative hover:border-primary/40 hover:bg-white/[0.05] transition-all duration-700 animate-slide-right shadow-inner"
             >
-               <div class="flex justify-between items-start mb-6">
-                 <h4 class="font-black text-white text-base uppercase tracking-tight italic group-hover:text-primary transition-colors">{{ event.title }}</h4>
-                 <button @click.stop="deleteEvent(event.id)" class="w-10 h-10 bg-white/5 rounded-xl text-white/10 hover:text-red-400 hover:bg-red-500/10 transition-all flex items-center justify-center border border-white/5 hover:border-red-500/20 shadow-inner">
-                   <Trash2 class="w-4 h-4" />
+               <div class="flex justify-between items-start mb-4 sm:mb-6">
+                 <h4 class="font-black text-white text-sm sm:text-base uppercase tracking-tight italic group-hover:text-primary transition-colors truncate max-w-[80%]">{{ event.title }}</h4>
+                 <button @click.stop="deleteEvent(event.id)" class="w-9 h-9 sm:w-10 sm:h-10 bg-white/5 rounded-lg sm:rounded-xl text-white/10 hover:text-red-400 hover:bg-red-500/10 transition-all flex items-center justify-center border border-white/5 hover:border-red-500/20 shadow-inner">
+                   <Trash2 class="w-3.5 h-3.5 sm:w-4 h-4" />
                  </button>
                </div>
                
-               <div class="flex flex-wrap items-center gap-8 text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">
-                 <div class="flex items-center gap-3">
-                   <Clock class="w-4 h-4 text-primary animate-pulse" />
+               <div class="flex flex-wrap items-center gap-6 sm:gap-8 text-[8px] sm:text-[10px] font-black text-white/30 uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+                 <div class="flex items-center gap-2 sm:gap-3">
+                   <Clock class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary animate-pulse" />
                    {{ event.start_time || '--:--' }}
                  </div>
-                 <div class="flex items-center gap-3">
-                   <MapPin class="w-4 h-4 text-secondary" />
+                 <div class="flex items-center gap-2 sm:gap-3">
+                   <MapPin class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary" />
                    Aula MentorIA
                  </div>
                </div>
 
-               <div v-if="event.description" class="mt-8 p-6 bg-primary/5 rounded-2xl border-l-4 border-primary/40 text-xs text-white/50 leading-relaxed font-bold italic transition-all group-hover:text-white/70">
+               <div v-if="event.description" class="mt-6 sm:mt-8 p-4 sm:p-6 bg-primary/5 rounded-xl sm:rounded-2xl border-l-4 border-primary/40 text-[10px] sm:text-xs text-white/50 leading-relaxed font-bold italic transition-all group-hover:text-white/70">
                  "{{ event.description }}"
                </div>
             </div>
@@ -294,17 +294,18 @@ onMounted(() => {
         </div>
 
         <!-- AI Productivity Note -->
-        <div class="p-10 bg-primary/5 rounded-[3.5rem] border border-primary/20 border-dashed relative group overflow-hidden shadow-inner">
+        <div class="p-8 sm:p-10 bg-primary/5 rounded-[2.5rem] sm:rounded-[3.5rem] border border-primary/20 border-dashed relative group overflow-hidden shadow-inner">
           <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
-          <p class="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-6 italic">
-             <Zap class="w-5 h-5 inline-block mr-2" /> Telemetría de Productividad
+          <p class="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-4 sm:mb-6 italic">
+             <Zap class="w-4 h-4 sm:w-5 sm:h-5 inline-block mr-2" /> Telemetría de Productividad
           </p>
-          <p class="text-sm text-white/30 font-black leading-relaxed italic group-hover:text-white/60 transition-colors">
+          <p class="text-xs sm:text-sm text-white/30 font-black leading-relaxed italic group-hover:text-white/60 transition-colors">
             "Sincronizar tus momentos de ideación con tu agenda reduce la entropía cognitiva. Deja que MentorIA gestione los hitos."
           </p>
         </div>
       </div>
     </div>
+
 
     <!-- ELITE ADD EVENT MODAL -->
     <Transition name="modal-fade">

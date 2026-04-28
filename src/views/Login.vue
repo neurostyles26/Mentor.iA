@@ -125,28 +125,28 @@ const toggleMode = () => {
     </section>
 
     <!-- FORM SECTION -->
-    <main class="flex-1 flex flex-col items-center justify-center p-5 sm:p-8 lg:p-24 relative z-30">
+    <main class="flex-1 flex flex-col items-center justify-center p-6 sm:p-8 lg:p-24 relative z-30">
       <!-- Mobile Only Header -->
-      <div class="lg:hidden flex flex-col items-center mb-12 animate-fade-in-down">
-        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20 mb-4 shadow-glow">
-          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-12 h-12 object-contain" />
+      <div class="lg:hidden flex flex-col items-center mb-10 sm:mb-12 animate-fade-in-down w-full">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20 mb-4 shadow-glow">
+          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
         </div>
-        <h2 class="text-4xl font-black text-white tracking-tighter uppercase mb-1">MentorIA</h2>
-        <span class="text-[9px] font-black text-primary uppercase tracking-[0.4em]">Intelligence Suite v2.5</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tighter uppercase mb-1">MentorIA</h2>
+        <span class="text-[8px] sm:text-[9px] font-black text-primary uppercase tracking-[0.4em]">Intelligence Suite v2.5</span>
       </div>
 
       <div class="w-full max-w-[440px]">
         <!-- Auth Card -->
-        <div class="bg-transparent space-y-12">
+        <div class="bg-transparent space-y-10 sm:space-y-12">
           <header class="text-center lg:text-left animate-fade-in-up">
-             <div class="flex items-center justify-center lg:justify-start gap-4 mb-4">
-               <div :class="['w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-700 shadow-glow', isSignup ? 'bg-secondary' : 'bg-primary']">
-                 <Fingerprint v-if="isSignup" class="w-6 h-6 text-white" />
-                 <LogIn v-else class="w-6 h-6 text-white" />
-               </div>
-               <h2 class="text-4xl font-black text-white tracking-tighter">{{ isSignup ? 'Comenzar' : 'Entrar' }}</h2>
+             <div class="flex items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-4">
+                <div :class="['w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-700 shadow-glow', isSignup ? 'bg-secondary' : 'bg-primary']">
+                  <Fingerprint v-if="isSignup" class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  <LogIn v-else class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tighter">{{ isSignup ? 'Comenzar' : 'Entrar' }}</h2>
              </div>
-             <p class="text-white/70 font-bold text-lg leading-tight lg:pr-10">
+             <p class="text-white/70 font-bold text-base sm:text-lg leading-tight lg:pr-10 px-4 lg:px-0">
                {{ isSignup ? 'Únete a la red neuronal de docentes más innovadora de Colombia.' : 'Bienvenido de nuevo al ecosistema pedagógico inteligente.' }}
              </p>
           </header>
@@ -155,52 +155,52 @@ const toggleMode = () => {
             <button 
               type="button" 
               @click="handleGoogleLogin"
-              class="w-full py-5 bg-white text-bg-deep rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] flex items-center justify-center gap-4 hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95 shadow-premium group border-0"
+              class="w-full py-4 sm:py-5 bg-white text-bg-deep rounded-2xl font-black text-[9px] sm:text-[11px] uppercase tracking-[0.1em] sm:tracking-[0.2em] flex items-center justify-center gap-3 sm:gap-4 hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95 shadow-premium group border-0"
             >
-              <svg class="w-5 h-5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 sm:w-5 h-5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
-              Continuar con Google Workspace
+              <span>Continuar con Google Workspace</span>
             </button>
 
-            <div class="relative flex items-center py-10">
+            <div class="relative flex items-center py-8 sm:py-10">
               <div class="flex-grow border-t border-white/5"></div>
-              <span class="flex-shrink mx-6 text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">O usa tus credenciales</span>
+              <span class="flex-shrink mx-4 sm:mx-6 text-[8px] sm:text-[10px] font-black text-white/40 uppercase tracking-[0.3em] sm:tracking-[0.4em]">O usa tus credenciales</span>
               <div class="flex-grow border-t border-white/5"></div>
             </div>
           </footer>
 
-          <div v-if="errorMsg" class="p-5 bg-red-500/10 border border-red-500/20 text-red-500 text-[11px] font-black uppercase tracking-widest rounded-2xl text-center animate-shake">
+          <div v-if="errorMsg" class="p-4 sm:p-5 bg-red-500/10 border border-red-500/20 text-red-500 text-[9px] sm:text-[11px] font-black uppercase tracking-widest rounded-2xl text-center animate-shake mx-2">
             {{ errorMsg }}
           </div>
 
-          <form @submit.prevent="handleAuth" class="space-y-6 animate-fade-in-up animation-delay-400">
-            <div class="space-y-3">
-              <label class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] ml-1">Ecosistema Email</label>
+          <form @submit.prevent="handleAuth" class="space-y-4 sm:space-y-6 animate-fade-in-up animation-delay-400">
+            <div class="space-y-2 sm:space-y-3">
+              <label class="text-[9px] sm:text-[10px] font-black text-white/50 uppercase tracking-[0.3em] ml-1">Ecosistema Email</label>
               <div class="relative group">
-                <Mail class="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors duration-500" :size="20" />
+                <Mail class="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors duration-500" :size="18" />
                 <input 
                   v-model="email"
                   type="email" 
                   placeholder="profesor@ejemplo.edu"
-                  class="input-field w-full pl-14 h-16 text-[15px] font-bold placeholder:text-white/40 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
+                  class="input-field w-full pl-14 h-14 sm:h-16 text-sm sm:text-[15px] font-bold placeholder:text-white/40 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
                   required
                 />
               </div>
             </div>
 
-            <div class="space-y-3">
-              <label class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] ml-1">Clave de Acceso</label>
+            <div class="space-y-2 sm:space-y-3">
+              <label class="text-[9px] sm:text-[10px] font-black text-white/50 uppercase tracking-[0.3em] ml-1">Clave de Acceso</label>
               <div class="relative group">
-                <Lock class="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors duration-500" :size="20" />
+                <Lock class="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary transition-colors duration-500" :size="18" />
                 <input 
                   v-model="password"
                   type="password" 
                   placeholder="••••••••••••"
-                  class="input-field w-full pl-14 h-16 text-[15px] font-bold placeholder:text-white/40 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
+                  class="input-field w-full pl-14 h-14 sm:h-16 text-sm sm:text-[15px] font-bold placeholder:text-white/40 bg-white/2 border-white/5 focus:border-primary/50 focus:bg-white/5 transition-all duration-500 rounded-2xl outline-none"
                   required
                 />
               </div>
@@ -209,24 +209,24 @@ const toggleMode = () => {
             <button 
               type="submit" 
               :disabled="authStore.loading"
-              class="w-full py-6 px-8 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-1.5 transition-all active:scale-95 disabled:opacity-50 disabled:translate-y-0 relative overflow-hidden group flex items-center justify-center gap-4"
+              class="w-full py-5 sm:py-6 px-8 bg-primary text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:-translate-y-1.5 transition-all active:scale-95 disabled:opacity-50 disabled:translate-y-0 relative overflow-hidden group flex items-center justify-center gap-3 sm:gap-4"
             >
               <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity"></div>
               <template v-if="authStore.loading">
-                <Loader2 class="w-5 h-5 animate-spin" />
+                <Loader2 class="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                 <span>Transmitiendo...</span>
               </template>
               <template v-else>
                 <span>{{ isSignup ? 'Registrar Cuenta' : 'Sincronizar Panel' }}</span>
-                <ArrowRight class="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                <ArrowRight class="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-2 transition-transform" />
               </template>
             </button>
           </form>
 
           <footer class="text-center animate-fade-in-up animation-delay-600">
             <p class="mb-4">
-              <span class="text-white/60 text-[11px] font-bold uppercase tracking-widest">{{ isSignup ? '¿Ya posees una suscripción?' : '¿Nuevo en el ecosistema?' }}</span>
-              <button @click="toggleMode" class="ml-2 text-primary font-black uppercase text-[11px] tracking-widest hover:text-white transition-colors">
+              <span class="text-white/60 text-[9px] sm:text-[11px] font-bold uppercase tracking-widest">{{ isSignup ? '¿Ya posees una suscripción?' : '¿Nuevo en el ecosistema?' }}</span>
+              <button @click="toggleMode" class="ml-2 text-primary font-black uppercase text-[9px] sm:text-[11px] tracking-widest hover:text-white transition-colors">
                 {{ isSignup ? 'Sincronizar aquí' : 'Generar Acceso' }}
               </button>
             </p>
@@ -234,6 +234,7 @@ const toggleMode = () => {
         </div>
       </div>
     </main>
+
 
     <!-- Global Floating Background Elements -->
     <div class="fixed inset-0 pointer-events-none z-0">
