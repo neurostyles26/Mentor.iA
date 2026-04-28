@@ -22,6 +22,12 @@ export function usePWA() {
 
   onMounted(() => {
     console.log('PWA: Buscando soporte de instalación...')
+    
+    // Si el evento ya fue capturado globalmente, lo usamos
+    if (window.deferredPrompt) {
+      handleBeforeInstallPrompt(window.deferredPrompt)
+    }
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     window.addEventListener('appinstalled', handleAppInstalled)
 
