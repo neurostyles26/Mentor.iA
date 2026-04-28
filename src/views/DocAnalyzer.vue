@@ -17,13 +17,17 @@ import {
   Loader2,
   Trash2,
   Download,
-  ClipboardCheck
+  ClipboardCheck,
+  Volume2,
+  VolumeX
 } from 'lucide-vue-next'
 import { documentProcessor } from '../lib/documentProcessor'
 import { supabase } from '../lib/supabase'
 import { useCourseStore } from '../store/index'
+import { useTextToSpeech } from '../composables/useTextToSpeech'
 
 const courseStore = useCourseStore()
+const { speak, stop, isSpeaking } = useTextToSpeech()
 const isUploading = ref(false)
 const isProcessing = ref(false)
 const currentFile = ref(null)
@@ -115,6 +119,15 @@ const reset = () => {
   extractedText.value = ''
   analysisResult.value = null
   selectedMode.value = null
+  stop()
+}
+
+const toggleSpeech = () => {
+  if (isSpeaking.value) {
+    stop()
+  } else {
+    speak(analysisResult.value)
+  }
 }
 </script>
 
@@ -230,8 +243,16 @@ const reset = () => {
                    </div>
                 </div>
                 <div class="flex gap-2">
-                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all"><Download class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
-                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all"><ClipboardCheck class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
+                   <button 
+                     @click="toggleSpeech"
+                     class="p-2.5 sm:p-3 rounded-lg sm:rounded-xl transition-all border"
+                     :class="isSpeaking ? 'bg-primary/20 text-primary border-primary/40 shadow-glow' : 'bg-white/5 text-white/40 border-white/10 hover:text-white'"
+                   >
+                     <Volume2 v-if="!isSpeaking" class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                     <VolumeX v-else class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                   </button>
+                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all border border-white/10"><Download class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
+                   <button class="p-2.5 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/40 hover:text-white transition-all border border-white/10"><ClipboardCheck class="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
                 </div>
              </header>
 
