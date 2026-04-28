@@ -90,9 +90,9 @@ const processWithAI = async () => {
   analysisResult.value = null
 
   try {
-    // Truncate to avoid token limits (approx 15000 chars is safe for most models)
-    const truncatedText = extractedText.value.length > 15000 
-      ? extractedText.value.substring(0, 15000) + '... [Texto truncado por longitud]'
+    // Aumentamos el límite a 200,000 caracteres para procesar documentos extensos
+    const truncatedText = extractedText.value.length > 200000 
+      ? extractedText.value.substring(0, 200000) + '... [Texto truncado por longitud máxima]'
       : extractedText.value
 
     const prompt = `Modo: ${selectedMode.value.title}\nInstrucción específica: ${selectedMode.value.prompt}\n\nContenido del documento:\n"""\n${truncatedText}\n"""`
@@ -131,10 +131,11 @@ const downloadAsWord = () => {
   
   // Limpieza profunda de Markdown para Word
   const cleanContent = analysisResult.value
-    .replace(/### (.*?)\n/g, '<h2 style="color: #1e293b; font-size: 16pt;">$1</h2>')
-    .replace(/\*\* (.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/#{1,6}\s?(.*?)\n/g, '<h2 style="color: #1e293b; font-size: 16pt; margin-top: 20pt; margin-bottom: 10pt;">$1</h2>')
+    .replace(/\*\*\s?(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*\s?(.*?)\*/g, '<em>$1</em>')
+    .replace(/^\s*[-*+]\s+(.*)/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
     .replace(/\n/g, '<br>')
 
   const header = `
