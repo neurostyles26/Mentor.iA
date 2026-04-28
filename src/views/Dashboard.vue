@@ -69,9 +69,9 @@ const premiumSponsors = [
 </script>
 
 <template>
-  <div class="space-y-16 animate-page-in max-w-7xl mx-auto pb-20">
+  <div class="space-y-12 sm:space-y-16 animate-page-in max-w-7xl mx-auto pb-20 px-4 sm:px-6 lg:px-8">
     <!-- Hero Greeting -->
-    <header class="relative overflow-hidden rounded-[2.5rem] sm:rounded-[3.5rem] bg-gradient-to-br from-bg-card to-transparent border border-white/5 p-8 sm:p-10 lg:p-16">
+    <header class="relative overflow-hidden rounded-[2rem] sm:rounded-[4rem] bg-gradient-to-br from-bg-card to-transparent border border-white/5 p-6 sm:p-10 lg:p-16 shadow-premium ring-1 ring-white/5">
       <div class="absolute inset-0 pointer-events-none overflow-hidden">
         <div class="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
         <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary/5 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s"></div>
@@ -80,8 +80,8 @@ const premiumSponsors = [
       <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 sm:gap-10">
         <div class="space-y-3 sm:space-y-4">
           <div class="inline-flex items-center gap-2 sm:gap-3 px-3 py-1 sm:px-4 sm:py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary">
-            <Sparkles class="w-3.5 h-3.5 sm:w-4 h-4" />
-            <span class="text-[7px] sm:text-[9px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">Plataforma Elite v2.5</span>
+            <Sparkles class="w-3 h-3 sm:w-4 h-4" />
+            <span class="text-[6px] sm:text-[9px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">Plataforma Elite v2.5</span>
           </div>
           <h1 class="text-3xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[0.9] italic">
             Hola, <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{{ authStore.displayName }}</span>
@@ -93,7 +93,7 @@ const premiumSponsors = [
         
         <button 
           @click="navigateToCreate"
-          class="relative group px-8 py-5 sm:px-10 sm:py-6 bg-primary text-white rounded-[1.5rem] sm:rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] shadow-[0_20px_40px_-10px_rgba(var(--color-primary-rgb),0.5)] hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 overflow-hidden w-full lg:w-auto justify-center flex"
+          class="relative group px-8 py-5 sm:px-10 sm:py-6 bg-primary text-white rounded-2xl sm:rounded-3xl font-black text-[9px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 overflow-hidden w-full lg:w-auto justify-center flex"
         >
           <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl"></div>
           <div class="flex items-center gap-3 sm:gap-4 relative z-10">
@@ -117,14 +117,14 @@ const premiumSponsors = [
         <div 
           v-for="course in courses" 
           :key="course.id"
-          class="group relative p-6 sm:p-8 bg-white/2 border border-white/5 rounded-[2.5rem] sm:rounded-[3rem] hover:border-primary/40 transition-all duration-700 overflow-hidden cursor-pointer"
+          class="group relative p-6 sm:p-8 bg-white/2 border border-white/5 rounded-[2rem] sm:rounded-[3rem] hover:border-primary/40 transition-all duration-700 overflow-hidden cursor-pointer shadow-xl hover:shadow-primary/5 ring-1 ring-white/5"
           @click="handleViewCourse(course)"
         >
           <!-- Card Background Decor -->
           <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
 
           <div class="flex items-start justify-between mb-8 sm:mb-12 relative z-10">
-            <div :class="`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-[1.5rem] bg-gradient-to-br ${course.color || 'from-primary to-secondary'} flex items-center justify-center text-white shadow-glow group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 font-black text-xl sm:text-2xl border border-white/20` ">
+            <div :class="`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${course.color || 'from-primary to-secondary'} flex items-center justify-center text-white shadow-glow group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 font-black text-xl sm:text-2xl border border-white/20` ">
               {{ getInitials(course.name) }}
             </div>
             <button class="p-2 text-white/20 hover:text-primary transition-colors">
@@ -173,10 +173,10 @@ const premiumSponsors = [
         <!-- Quick Add Card -->
         <div 
           @click="navigateToCreate"
-          class="border-4 border-dashed border-white/5 rounded-[2.5rem] sm:rounded-[3.5rem] p-8 sm:p-12 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all duration-700 relative overflow-hidden min-h-[300px] sm:min-h-[350px]"
+          class="border-4 border-dashed border-white/5 rounded-[2rem] sm:rounded-[4rem] p-8 sm:p-12 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all duration-700 relative overflow-hidden min-h-[300px] sm:min-h-[350px]"
         >
           <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity blur-3xl"></div>
-          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.5rem] sm:rounded-[2rem] bg-white/5 border border-white/10 flex items-center justify-center mb-6 sm:mb-8 group-hover:bg-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 shadow-glow relative z-10">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 sm:mb-8 group-hover:bg-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 shadow-glow relative z-10">
             <Plus class="w-8 h-8 sm:w-10 sm:h-10 text-white/20 group-hover:text-white" />
           </div>
           <h4 class="text-xl sm:text-2xl font-black text-white/20 group-hover:text-white mb-2 transition-colors relative z-10 italic tracking-tighter">Nueva Asignatura</h4>
@@ -185,8 +185,8 @@ const premiumSponsors = [
       </div>
 
       <!-- Empty State -->
-      <div v-else class="py-16 sm:py-24 flex flex-col items-center text-center bg-white/2 rounded-[3rem] sm:rounded-[4rem] border border-white/5 border-dashed px-6">
-        <div class="w-32 h-32 sm:w-48 sm:h-48 bg-primary/5 rounded-[2.5rem] sm:rounded-[4rem] flex items-center justify-center mb-8 sm:mb-12 relative animate-float">
+      <div v-else class="py-16 sm:py-24 flex flex-col items-center text-center bg-white/2 rounded-[2rem] sm:rounded-[4rem] border border-white/5 border-dashed px-6">
+        <div class="w-32 h-32 sm:w-48 sm:h-48 bg-primary/5 rounded-[2rem] sm:rounded-[4rem] flex items-center justify-center mb-8 sm:mb-12 relative animate-float">
           <div class="absolute inset-0 bg-primary/20 blur-[60px] sm:blur-[80px] rounded-full scale-150 animate-pulse-slow"></div>
           <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-16 h-16 sm:w-24 sm:h-24 object-contain relative z-10" />
         </div>
@@ -196,7 +196,7 @@ const premiumSponsors = [
         </p>
         <button 
           @click="navigateToCreate"
-          class="px-8 py-4 sm:px-12 sm:py-6 bg-primary text-white rounded-[2rem] sm:rounded-[2.5rem] font-black text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] shadow-glow hover:bg-secondary hover:-translate-y-2 transition-all active:scale-95 group"
+          class="px-8 py-4 sm:px-12 sm:py-6 bg-primary text-white rounded-2xl sm:rounded-3xl font-black text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] shadow-glow hover:bg-secondary hover:-translate-y-2 transition-all active:scale-95 group"
         >
           Crear mi primer curso
           <Plus class="inline-block ml-3 w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-90 transition-transform" />
@@ -205,13 +205,13 @@ const premiumSponsors = [
     </div>
 
     <!-- Stats Section -->
-    <div class="relative overflow-hidden rounded-[3rem] sm:rounded-[4rem] bg-bg-card border border-primary/20 p-8 sm:p-12 lg:p-16 shadow-[0_0_80px_-20px_rgba(var(--color-primary-rgb),0.3)]">
+    <div class="relative overflow-hidden rounded-[2rem] sm:rounded-[4rem] bg-bg-card border border-primary/20 p-8 sm:p-12 lg:p-16 shadow-premium ring-1 ring-primary/20">
       <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-10 blur-[120px] -mr-48 -mt-48"></div>
       
       <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 sm:gap-16">
         <div class="flex-1 space-y-4 sm:space-y-6 w-full text-center lg:text-left">
           <div class="flex items-center justify-center lg:justify-start gap-4 sm:gap-5">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center border border-primary/40 shadow-glow shrink-0">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-primary/20 rounded-2xl flex items-center justify-center border border-primary/40 shadow-glow shrink-0">
               <TrendingUp class="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
             </div>
             <h2 class="text-2xl sm:text-4xl font-black italic tracking-tighter text-white">Impacto Pedagógico</h2>
@@ -234,6 +234,7 @@ const premiumSponsors = [
         </div>
       </div>
     </div>
+
 
     <!-- Sponsor Spotlight -->
     <section class="space-y-10">

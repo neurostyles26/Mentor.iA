@@ -207,15 +207,15 @@ const markRead = (id) => {
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col min-w-0 h-full relative">
       <!-- Elite Header -->
-      <header class="h-20 bg-bg-deep/80 backdrop-blur-2xl border-b border-white/5 px-4 sm:px-6 md:px-12 flex items-center justify-between sticky top-0 z-40">
+      <header class="h-20 bg-bg-deep/80 backdrop-blur-2xl border-b border-white/5 px-4 sm:px-6 md:px-12 flex items-center justify-between sticky top-0 z-40 w-full">
         <div class="flex items-center gap-3 sm:gap-6">
           <!-- Mobile Toggle -->
-          <button @click="isMobileMenuOpen = true" class="p-2.5 sm:p-3 bg-white/5 rounded-2xl lg:hidden text-white/40 hover:text-primary transition-colors">
+          <button @click="isMobileMenuOpen = true" class="p-2 sm:p-3 bg-white/5 rounded-xl sm:rounded-2xl lg:hidden text-white/40 hover:text-primary transition-colors">
             <Menu class="w-5 h-5 sm:w-6 h-6" />
           </button>
 
           <!-- Elite Search (Hidden on Mobile) -->
-          <div class="hidden md:flex items-center gap-4 bg-white/[0.03] px-6 py-3.5 rounded-2xl w-[350px] lg:w-[500px] border border-white/5 focus-within:border-primary/50 focus-within:bg-white/[0.05] transition-all duration-500 group shadow-inner">
+          <div class="hidden md:flex items-center gap-4 bg-white/[0.03] px-6 py-3.5 rounded-2xl w-[300px] lg:w-[500px] border border-white/5 focus-within:border-primary/50 focus-within:bg-white/[0.05] transition-all duration-500 group shadow-inner">
             <Search class="w-5 h-5 text-white/20 group-focus-within:text-primary transition-colors" />
             <input 
               type="text" 
@@ -225,27 +225,27 @@ const markRead = (id) => {
           </div>
         </div>
 
-        <div class="flex items-center gap-3 sm:gap-6 lg:gap-10">
-          <div class="flex items-center gap-3 sm:gap-4 relative">
+        <div class="flex items-center gap-2 sm:gap-6 lg:gap-10">
+          <div class="flex items-center gap-2 sm:gap-4 relative">
             <button 
               @click="toggleNotifications"
-              class="p-2.5 sm:p-3.5 bg-white/5 border border-white/10 rounded-2xl text-white/30 hover:text-primary relative transition-all active:scale-90 group"
+              class="p-2 sm:p-3.5 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl text-white/30 hover:text-primary relative transition-all active:scale-90 group"
             >
               <Bell class="w-5 h-5 group-hover:rotate-12 transition-transform" />
-              <span v-if="notificationStore.unreadCount > 0" class="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
+              <span v-if="notificationStore.unreadCount > 0" class="absolute top-2 right-2 sm:top-3.5 sm:right-3.5 w-2 h-2 bg-primary rounded-full shadow-glow"></span>
             </button>
 
             <!-- Chat Toggle Button -->
             <button 
               @click="isChatOpen = true"
-              class="p-2.5 sm:p-3.5 bg-primary/10 border border-primary/20 rounded-2xl text-primary hover:bg-primary hover:text-white transition-all active:scale-90 group shadow-glow"
+              class="p-2 sm:p-3.5 bg-primary/10 border border-primary/20 rounded-xl sm:rounded-2xl text-primary hover:bg-primary hover:text-white transition-all active:scale-90 group shadow-glow"
             >
               <MessageCircle class="w-5 h-5 group-hover:scale-110 transition-transform" />
             </button>
 
             <!-- Elite Notification Dropdown -->
             <Transition name="premium-pop">
-              <div v-if="isNotificationOpen" class="absolute right-0 mt-2 top-full w-[calc(100vw-2rem)] sm:w-80 lg:w-96 bg-bg-card border border-white/10 rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] z-50 overflow-hidden flex flex-col">
+              <div v-if="isNotificationOpen" class="absolute right-0 mt-4 top-full w-[calc(100vw-2rem)] sm:w-80 lg:w-96 bg-bg-card border border-white/10 rounded-[2rem] shadow-premium z-50 overflow-hidden flex flex-col ring-1 ring-white/5">
                 <header class="p-5 sm:p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
                    <h3 class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Notificaciones</h3>
                    <button 
@@ -312,10 +312,10 @@ const markRead = (id) => {
           </div>
           
           <!-- Premium Profile Widget -->
-          <div class="flex items-center gap-4 group p-1 pr-1 sm:pr-4 rounded-[1.5rem] bg-white/[0.02] border border-white/5 hover:border-primary/30 hover:bg-white/5 transition-all duration-700 cursor-pointer">
-            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-primary to-secondary p-0.5 transform group-hover:scale-105 transition-all duration-500 shadow-glow shrink-0">
-               <div class="w-full h-full rounded-[10px] bg-bg-card flex items-center justify-center">
-                  <User class="w-5 h-5 sm:w-6 h-6 text-primary" />
+          <div class="flex items-center gap-3 group p-1 pr-1 sm:pr-4 rounded-xl sm:rounded-2xl bg-white/[0.02] border border-white/5 hover:border-primary/30 hover:bg-white/5 transition-all duration-700 cursor-pointer">
+            <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary to-secondary p-0.5 transform group-hover:scale-105 transition-all duration-500 shadow-glow shrink-0">
+               <div class="w-full h-full rounded-[7px] sm:rounded-[10px] bg-bg-card flex items-center justify-center">
+                  <User class="w-4 h-4 sm:w-6 h-6 text-primary" />
                </div>
             </div>
             <div class="text-right hidden sm:block overflow-hidden max-w-[120px]">
@@ -328,6 +328,7 @@ const markRead = (id) => {
           </div>
         </div>
       </header>
+
 
       <!-- Dynamic Page Content -->
       <div class="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-8 md:p-12 custom-scrollbar scroll-smooth">

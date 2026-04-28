@@ -59,6 +59,13 @@ watch(() => props.isOpen, (val) => {
 const handleSendMessage = async () => {
   if (!newMessage.value.trim() || chatStore.isLoading) return
   
+  // Messenger Sound - Send
+  try {
+    const sendSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3')
+    sendSound.volume = 0.4
+    sendSound.play().catch(e => console.log('Audio playback blocked'))
+  } catch (e) {}
+
   // Desbloqueo crítico al interactuar (Click del usuario)
   unlock()
 
@@ -66,6 +73,13 @@ const handleSendMessage = async () => {
   newMessage.value = ''
   await chatStore.sendMessage(msg)
   
+  // Messenger Sound - Receive (Assistant reply)
+  try {
+    const receiveSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3')
+    receiveSound.volume = 0.5
+    receiveSound.play().catch(e => console.log('Audio playback blocked'))
+  } catch (e) {}
+
   // Auto-play voice if enabled
   if (courseStore.isVoiceOutputEnabled && chatStore.messages.length > 0) {
     const lastMsg = chatStore.messages[chatStore.messages.length - 1]
@@ -74,6 +88,7 @@ const handleSendMessage = async () => {
     }
   }
 }
+
 
 const renderMarkdown = (text) => {
   return DOMPurify.sanitize(marked.parse(text))
