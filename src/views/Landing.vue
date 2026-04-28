@@ -104,9 +104,11 @@ onMounted(() => {
           </div>
         </div>
         
-        <div class="hidden md:flex items-center gap-10">
-          <button @click="router.push('/login')" class="text-[8px] font-bold uppercase tracking-[0.5em] text-white/30 hover:text-white transition-all">Portal Docente</button>
-          <button @click="router.push('/login?signup=true')" class="px-8 py-3 bg-white text-black rounded-full font-black text-[8px] uppercase tracking-[0.4em] hover:bg-primary hover:text-white transition-all">
+        <div class="hidden md:flex items-center gap-8">
+          <button @click="router.push('/login')" class="px-6 py-2.5 border border-white/10 bg-white/5 backdrop-blur-xl rounded-full text-[8px] font-bold uppercase tracking-[0.4em] text-white/50 hover:text-white hover:border-primary/50 transition-all shadow-inner">
+            Portal Docente
+          </button>
+          <button @click="router.push('/login?signup=true')" class="px-10 py-3 bg-white text-black rounded-full font-black text-[8px] uppercase tracking-[0.4em] hover:bg-primary hover:text-white transition-all shadow-glow">
             Comenzar
           </button>
         </div>
