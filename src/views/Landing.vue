@@ -7,222 +7,190 @@ import {
   BrainCircuit, 
   ClipboardList, 
   Zap,
+  Activity,
+  Cpu,
   ShieldCheck,
   Menu as MenuIcon,
   X as XIcon,
-  Cpu,
-  Activity,
-  Globe
+  ChevronRight,
+  Globe,
+  Users
 } from 'lucide-vue-next'
 
 const router = useRouter()
 const isMenuOpen = ref(false)
 const toggleMenu = () => isMenuOpen.value = !isMenuOpen.value
 
-// Neural Network particles
 const neurons = ref([])
 onMounted(() => {
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 30; i++) {
     neurons.value.push({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
       delay: Math.random() * 5,
-      duration: 3 + Math.random() * 4
+      duration: 4 + Math.random() * 6
     })
   }
 })
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#030303] selection:bg-primary/30 overflow-x-hidden w-full font-sans relative text-white">
+  <div class="min-h-screen bg-[#010101] selection:bg-primary/30 overflow-x-hidden w-full font-sans relative text-white">
     
-    <!-- Ultra-Premium Neural Background -->
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <!-- Deep Glows -->
-      <div class="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] bg-primary/20 rounded-full blur-[180px] animate-pulse-slow"></div>
-      <div class="absolute bottom-[0%] right-[0%] w-[50%] h-[50%] bg-secondary/10 rounded-full blur-[150px] animate-pulse-slow" style="animation-delay: 3s"></div>
+    <!-- Cinematic Neural Background -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-primary/10 rounded-full blur-[200px] animate-pulse"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-secondary/5 rounded-full blur-[180px]" style="animation-delay: 2s"></div>
       
-      <!-- Interactive Grid -->
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02)_0%,transparent_100%)]"></div>
-      <div class="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]"></div>
-
-      <!-- Moving Neurons / Particles -->
+      <div class="absolute inset-0 bg-grid-white/[0.01] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_90%)]"></div>
+      
+      <!-- Moving Particles -->
       <div v-for="n in neurons" :key="n.id" 
-        class="absolute w-1 h-1 bg-primary rounded-full blur-[1px]"
+        class="absolute w-px h-px bg-primary/40 rounded-full"
         :style="{
           left: n.x + '%',
           top: n.y + '%',
           animation: `float-neuron ${n.duration}s ease-in-out ${n.delay}s infinite alternate`
         }"
-      >
-        <div class="absolute inset-0 bg-primary/40 rounded-full animate-ping"></div>
-      </div>
-
-      <!-- Animated Connections (SVG) -->
-      <svg class="absolute inset-0 w-full h-full opacity-20">
-        <defs>
-          <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:var(--color-primary);stop-opacity:0" />
-            <stop offset="50%" style="stop-color:var(--color-primary);stop-opacity:1" />
-            <stop offset="100%" style="stop-color:var(--color-primary);stop-opacity:0" />
-          </linearGradient>
-        </defs>
-        <path v-for="i in 5" :key="i"
-          class="animate-draw-line"
-          :d="`M ${Math.random()*100} ${Math.random()*100} Q ${Math.random()*100} ${Math.random()*100} ${Math.random()*100} ${Math.random()*100}`"
-          stroke="url(#lineGrad)"
-          stroke-width="0.5"
-          fill="none"
-          :style="{ animationDelay: `${i * 2}s` }"
-        />
-      </svg>
+      ></div>
     </div>
 
-    <!-- Floating Glass Header -->
-    <header class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl z-50 animate-fade-in-down">
-      <nav class="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] px-6 py-4 md:px-10 flex justify-between items-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-        <div class="flex items-center gap-4 group cursor-pointer" @click="router.push('/')">
-          <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary p-0.5 rounded-2xl transform group-hover:rotate-12 transition-all duration-700 shadow-glow shrink-0">
-            <div class="w-full h-full rounded-[14px] bg-[#050505] flex items-center justify-center overflow-hidden">
-              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-8 h-8 object-contain scale-110 group-hover:scale-125 transition-transform" />
+    <!-- Premium Floating Header -->
+    <header class="fixed top-8 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50">
+      <nav class="bg-black/40 backdrop-blur-3xl border border-white/5 rounded-[3rem] px-8 py-4 md:px-12 flex justify-between items-center shadow-2xl ring-1 ring-white/5">
+        <div class="flex items-center gap-5 group cursor-pointer" @click="router.push('/')">
+          <div class="w-11 h-11 bg-gradient-to-br from-primary to-secondary p-0.5 rounded-2xl transform group-hover:rotate-12 transition-all duration-700 shadow-glow shrink-0">
+            <div class="w-full h-full rounded-[14px] bg-[#050505] flex items-center justify-center">
+              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-7 h-7 object-contain" />
             </div>
           </div>
           <div class="hidden xs:block">
-            <span class="text-2xl font-black text-white tracking-tighter uppercase leading-none block">MentorIA</span>
-            <p class="text-[8px] font-black text-primary uppercase tracking-[0.4em] mt-1 italic">Neural Intelligence</p>
+            <span class="text-xl font-black text-white tracking-tighter uppercase block leading-none">MentorIA</span>
+            <span class="text-[7px] font-black text-primary uppercase tracking-[0.5em] mt-1">Intelligence Suite</span>
           </div>
         </div>
         
-        <div class="hidden md:flex items-center gap-10">
-          <button @click="router.push('/login')" class="text-[10px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-white transition-all">Sincronizar Panel</button>
-          <button @click="router.push('/login?signup=true')" class="px-8 py-3.5 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-glow hover:bg-secondary hover:scale-105 transition-all active:scale-95">
+        <div class="hidden md:flex items-center gap-12">
+          <button @click="router.push('/login')" class="text-[9px] font-black uppercase tracking-[0.4em] text-white/40 hover:text-white transition-all">Portal Docente</button>
+          <button @click="router.push('/login?signup=true')" class="px-10 py-4 bg-primary text-white rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] shadow-glow hover:bg-secondary hover:-translate-y-1 transition-all active:scale-95">
             Comenzar Ahora
           </button>
         </div>
 
-        <button @click="toggleMenu" class="md:hidden p-3 bg-white/5 border border-white/10 rounded-2xl text-white hover:text-primary transition-all active:scale-90">
-          <MenuIcon v-if="!isMenuOpen" class="w-6 h-6" />
-          <XIcon v-else class="w-6 h-6" />
+        <button @click="toggleMenu" class="md:hidden p-3 bg-white/5 border border-white/10 rounded-2xl text-white">
+          <MenuIcon v-if="!isMenuOpen" class="w-5 h-5" />
+          <XIcon v-else class="w-5 h-5" />
         </button>
       </nav>
     </header>
 
-    <!-- Hero Section -->
-    <main class="container mx-auto px-6 pt-52 pb-32 text-center relative z-10">
-      <!-- 3D Neural Brain Centerpiece -->
-      <div class="absolute top-40 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[600px] pointer-events-none z-0">
-        <img 
-          src="/neural-brain.png" 
-          alt="Neural Brain 3D" 
-          class="w-full h-full object-contain opacity-40 mix-blend-screen animate-float-slow filter blur-[1px] md:blur-none"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent"></div>
-      </div>
-
-      <!-- Neural Badge -->
-      <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 mb-12 animate-fade-in shadow-inner relative z-10">
-        <Activity class="w-4 h-4 text-primary animate-pulse" />
-        <span class="text-[10px] font-black uppercase tracking-[0.4em]">Red Neuronal v4.0 Online</span>
-        <div class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
-      </div>
-      
-      <div class="max-w-6xl mx-auto space-y-12 mb-24">
-        <h1 class="text-5xl md:text-8xl lg:text-[10rem] font-black text-white tracking-[ -0.05em] leading-[0.8] animate-fade-in-up">
-          LA IA QUE <br />
-          <span class="bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent italic">ENTIENDE</span> <br />
-          TU AULA
-        </h1>
-        
-        <p class="text-xl md:text-3xl text-white/40 max-w-3xl mx-auto font-medium animate-fade-in-up animation-delay-300 leading-tight italic">
-          MentorIA fusiona el instinto docente con el poder de redes neuronales profundas para crear educación de impacto.
-        </p>
-      </div>
-      
-      <div class="flex flex-col sm:flex-row justify-center gap-8 mb-32 animate-fade-in-up animation-delay-600">
-        <button @click="router.push('/login')" class="px-12 py-7 bg-primary text-white rounded-3xl font-black text-xs uppercase tracking-[0.3em] shadow-[0_0_50px_-10px_rgba(var(--color-primary-rgb),0.6)] hover:bg-secondary hover:scale-110 hover:-rotate-1 transition-all active:scale-95 group relative overflow-hidden">
-          <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity"></div>
-          <span class="relative z-10 flex items-center justify-center gap-4">
-            Empezar Experiencia <ArrowRight class="w-6 h-6 group-hover:translate-x-3 transition-transform" />
-          </span>
-        </button>
-        <button @click="router.push('/demo')" class="px-12 py-7 bg-white/5 border border-white/10 text-white rounded-3xl font-black text-xs uppercase tracking-[0.3em] hover:bg-white/10 backdrop-blur-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4">
-          Ver Demo Interactiva <Activity class="w-5 h-5 text-primary" />
-        </button>
-      </div>
-
-      <!-- Innovation Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto mt-20">
-        <div 
-          v-for="(feat, idx) in [
-            { t: 'Sinapsis Veloz', d: 'Generación instantánea de lecciones y talleres bajo demanda.', i: Zap },
-            { t: 'Memoria Cuántica', d: 'Tu historial pedagógico siempre listo y sincronizado en la nube.', i: ClipboardList },
-            { t: 'Visión Pedagógica', d: 'Análisis profundo de documentos con modelos de visión IA.', i: BrainCircuit }
-          ]" 
-          :key="idx"
-          class="premium-card group animate-fade-in-up"
-          :style="{ animationDelay: `${900 + idx * 200}ms` }"
-        >
-          <div class="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mb-8 mx-auto md:mx-0 group-hover:bg-primary/20 transition-all border border-white/10 shadow-inner overflow-hidden relative">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <component :is="feat.i" class="text-white group-hover:text-primary w-8 h-8 relative z-10 transition-transform group-hover:scale-125" />
-          </div>
-          <h3 class="text-2xl font-black text-white mb-4 tracking-tighter uppercase italic md:text-left">{{ feat.t }}</h3>
-          <p class="text-lg text-white/40 font-medium leading-tight md:text-left">{{ feat.d }}</p>
-          
-          <!-- Decorative line -->
-          <div class="w-0 h-1 bg-primary mt-8 group-hover:w-20 transition-all duration-700"></div>
+    <!-- Main Hero -->
+    <main class="relative z-10 pt-64 pb-32">
+      <section class="container mx-auto px-6 text-center">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 mb-16 animate-fade-in">
+          <Sparkles class="w-3.5 h-3.5 text-primary animate-pulse" />
+          <span class="text-[9px] font-black uppercase tracking-[0.5em]">El Futuro de la Educación</span>
         </div>
-      </div>
+
+        <!-- Headline -->
+        <div class="max-w-7xl mx-auto mb-20">
+          <h1 class="text-6xl md:text-8xl lg:text-[11rem] font-black tracking-[-0.06em] leading-[0.85] animate-fade-in-up">
+            LA IA QUE <br />
+            <span class="bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent italic px-4">ENTIENDE</span> <br />
+            TU MISION
+          </h1>
+        </div>
+
+        <!-- Subheadline -->
+        <p class="text-xl md:text-3xl text-white/30 max-w-3xl mx-auto font-medium mb-24 animate-fade-in-up animation-delay-300 italic leading-snug">
+          Fusionamos el instinto pedagógico con redes neuronales para potenciar cada aula del mundo.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row justify-center gap-8 mb-40 animate-fade-in-up animation-delay-600">
+          <button @click="router.push('/login')" class="px-14 py-8 bg-white text-black rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] hover:bg-primary hover:text-white hover:scale-110 hover:-rotate-1 transition-all active:scale-95 shadow-2xl">
+            Entrar al Panel
+          </button>
+          <button @click="router.push('/demo')" class="px-14 py-8 bg-white/5 border border-white/10 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.4em] hover:bg-white/10 backdrop-blur-xl transition-all hover:scale-105 active:scale-95">
+            Ver Demo
+          </button>
+        </div>
+
+        <!-- 3D Centerpiece -->
+        <div class="relative w-full max-w-5xl mx-auto mb-40">
+           <div class="absolute inset-0 bg-primary/20 blur-[150px] rounded-full scale-75 animate-pulse"></div>
+           <img 
+             src="/neural-brain.png" 
+             alt="Neural Core" 
+             class="w-full h-auto relative z-10 animate-float-slow drop-shadow-[0_0_100px_rgba(99,102,241,0.3)]"
+           />
+        </div>
+
+        <!-- Value Proposition Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div v-for="(card, i) in [
+            { t: 'GENERACIÓN ÉLITE', d: 'Clases y talleres creados por IA con precisión pedagógica.', i: Cpu },
+            { t: 'SEGURIDAD TOTAL', d: 'Tus datos y archivos protegidos por encriptación neuronal.', i: ShieldCheck },
+            { t: 'ANÁLISIS VISIÓN', d: 'Procesa documentos físicos y digitales con ojos de IA.', i: BrainCircuit }
+          ]" :key="i" 
+          class="bg-white/[0.02] border border-white/5 p-12 rounded-[3.5rem] hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-700 group text-left">
+            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:scale-110 transition-transform">
+              <component :is="card.i" class="w-7 h-7" />
+            </div>
+            <h3 class="text-2xl font-black text-white mb-4 tracking-tighter uppercase italic">{{ card.t }}</h3>
+            <p class="text-base text-white/30 font-bold leading-relaxed">{{ card.d }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust Section -->
+      <section class="mt-60 border-y border-white/5 py-24 bg-white/[0.01]">
+         <div class="container mx-auto px-6">
+            <p class="text-center text-[9px] font-black text-white/20 uppercase tracking-[0.8em] mb-16">Impulsando Instituciones de Vanguardia</p>
+            <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-30 grayscale hover:grayscale-0 transition-all duration-1000">
+               <div class="flex items-center gap-3">
+                  <Globe class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">GLOBAL ED</span>
+               </div>
+               <div class="flex items-center gap-3">
+                  <Cpu class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">TECH ACADEMY</span>
+               </div>
+               <div class="flex items-center gap-3">
+                  <ShieldCheck class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">SECURE LEARN</span>
+               </div>
+               <div class="flex items-center gap-3">
+                  <Users class="w-8 h-8" /> <span class="text-xl font-black tracking-tighter">UNION DOCENTE</span>
+               </div>
+            </div>
+         </div>
+      </section>
     </main>
 
-    <!-- Mobile Menu Overlay -->
-    <Transition name="premium-pop">
-      <div v-if="isMenuOpen" 
-        class="fixed inset-0 bg-[#030303]/98 backdrop-blur-3xl z-[100] flex flex-col items-center justify-center p-10 space-y-12 overflow-hidden"
-      >
-        <div class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-          <div class="absolute -top-1/4 -left-1/4 w-full h-full bg-primary/20 rounded-full blur-[200px]"></div>
-          <div class="absolute -bottom-1/4 -right-1/4 w-full h-full bg-secondary/20 rounded-full blur-[200px]"></div>
-        </div>
-
-        <div class="flex flex-col items-center gap-8 text-center relative z-10">
-          <div class="w-24 h-24 bg-gradient-to-br from-primary to-secondary p-0.5 rounded-[2.5rem] shadow-glow">
-            <div class="w-full h-full rounded-[2.3rem] bg-[#050505] flex items-center justify-center">
-              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-14 h-14 object-contain" />
-            </div>
-          </div>
-          <h2 class="text-5xl font-black text-white tracking-tighter uppercase leading-none">MentorIA</h2>
-          <p class="text-[10px] font-black text-primary uppercase tracking-[0.6em] italic">Intelligence Suite</p>
-        </div>
-
-        <div class="w-full max-w-sm space-y-6 relative z-10">
-           <button @click="router.push('/demo'); isMenuOpen = false" class="w-full py-8 bg-white/5 border border-white/10 text-white rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center gap-4">
-              <Play class="w-5 h-5 text-primary" /> Ver Demo
-           </button>
-           <button @click="router.push('/login'); isMenuOpen = false" class="w-full py-8 bg-white/5 border border-white/10 text-white rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
-              Sincronizar Panel
-           </button>
-           <button @click="router.push('/login?signup=true'); isMenuOpen = false" class="w-full py-8 bg-primary text-white rounded-3xl font-black text-xs uppercase tracking-widest shadow-glow hover:bg-secondary transition-all">
-              Crear Cuenta
-           </button>
-        </div>
-
-        <button @click="isMenuOpen = false" class="text-white/20 uppercase font-black text-[9px] tracking-[0.5em] hover:text-white transition-colors relative z-10 mt-12">
-          Cerrar Sistema
-        </button>
-      </div>
-    </Transition>
+    <!-- Final CTA -->
+    <section class="py-40 relative overflow-hidden">
+       <div class="absolute inset-0 bg-primary/5 blur-[200px] rounded-full translate-y-1/2"></div>
+       <div class="container mx-auto px-6 text-center relative z-10">
+          <h2 class="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase mb-12 italic">¿Listo para elevar <br /> tu aula?</h2>
+          <button @click="router.push('/login')" class="px-20 py-10 bg-primary text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.5em] shadow-glow hover:scale-110 transition-all">
+             Crear Cuenta Gratis
+          </button>
+       </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 py-32 bg-black relative z-20 overflow-hidden">
-      <div class="container mx-auto px-6 text-center space-y-12">
-        <div class="flex items-center justify-center gap-6 mb-8">
-           <div class="w-2 h-2 rounded-full bg-primary animate-ping"></div>
-           <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.8em]">Ecosistema MentorIA 2026</p>
-        </div>
-        <h4 class="text-4xl md:text-6xl font-black text-white/10 tracking-tighter italic uppercase">La Inteligencia al Servicio de la Vocación</h4>
-      </div>
+    <footer class="py-20 border-t border-white/5 bg-black/50 backdrop-blur-xl">
+       <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
+          <div class="flex items-center gap-4">
+             <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-8 h-8 opacity-50" />
+             <span class="text-[10px] font-black text-white/20 uppercase tracking-[0.5em]">MentorIA 2026 | Neural Suite</span>
+          </div>
+          <div class="flex gap-8">
+             <button class="text-[9px] font-black text-white/20 uppercase tracking-widest hover:text-white transition-colors">Privacidad</button>
+             <button class="text-[9px] font-black text-white/20 uppercase tracking-widest hover:text-white transition-colors">Términos</button>
+             <button class="text-[9px] font-black text-white/20 uppercase tracking-widest hover:text-white transition-colors">Contacto</button>
+          </div>
+       </div>
     </footer>
   </div>
 </template>
@@ -233,50 +201,25 @@ onMounted(() => {
 .animation-delay-300 { animation-delay: 0.3s; }
 .animation-delay-600 { animation-delay: 0.6s; }
 
-.animate-pulse-slow {
-  animation: pulse-slow 8s ease-in-out infinite alternate;
-}
-
-@keyframes pulse-slow {
-  from { opacity: 0.3; transform: scale(1); }
-  to { opacity: 0.6; transform: scale(1.1); }
+@keyframes float-neuron {
+  from { transform: translate(0, 0); opacity: 0.1; }
+  to { transform: translate(30px, 30px); opacity: 0.6; }
 }
 
 @keyframes float-slow {
   0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-30px) rotate(2deg); }
+  50% { transform: translateY(-40px) rotate(3deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
 
 .animate-float-slow {
-  animation: float-slow 10s ease-in-out infinite;
+  animation: float-slow 12s ease-in-out infinite;
 }
 
-@keyframes float-neuron {
-  from { transform: translate(0, 0); opacity: 0.2; }
-  to { transform: translate(20px, 20px); opacity: 1; }
-}
-
-@keyframes draw-line {
-  0% { stroke-dasharray: 0 1000; opacity: 0; }
-  50% { opacity: 1; }
-  100% { stroke-dasharray: 1000 0; opacity: 0; }
-}
-
-.animate-draw-line {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  animation: draw-line 8s ease-in-out infinite;
-}
-
-.animate-fade-in { animation: fadeIn 1.5s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 2s ease-out forwards; }
 .animate-fade-in-up { 
   opacity: 0;
-  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-}
-.animate-fade-in-down { 
-  opacity: 0;
-  animation: fadeInDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+  animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
 }
 
 @keyframes fadeIn {
@@ -285,46 +228,26 @@ onMounted(() => {
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(60px); filter: blur(20px); }
+  from { opacity: 0; transform: translateY(80px); filter: blur(30px); }
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-40px); filter: blur(10px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
-.premium-card {
-  background-color: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4rem;
-  padding: 4rem;
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.premium-card:hover {
-  border-color: rgba(var(--color-primary-rgb), 0.4);
-  transform: translateY(-20px) scale(1.02);
-  background-color: rgba(255, 255, 255, 0.04);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 50px -10px var(--color-primary-glow);
+  box-shadow: 0 0 60px -10px var(--color-primary-glow);
 }
 
 .premium-pop-enter-active,
 .premium-pop-leave-active {
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .premium-pop-enter-from,
 .premium-pop-leave-to {
   opacity: 0;
   transform: scale(1.1);
-  filter: blur(20px);
+  filter: blur(30px);
 }
+</style>
+
 </style>
 
