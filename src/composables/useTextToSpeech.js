@@ -68,6 +68,20 @@ export function useTextToSpeech() {
     return chunks
   }
 
+  const cleanMarkdown = (text) => {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Remueve negritas
+      .replace(/\*(.*?)\*/g, '$1')     // Remueve itálicas
+      .replace(/#+\s?(.*?)\n/g, '$1\n') // Remueve encabezados
+      .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remueve enlaces
+      .replace(/`{1,3}(.*?)`{1,3}/g, '$1') // Remueve código
+      .replace(/>\s?(.*?)(\n|$)/g, '$1$2') // Remueve citas
+      .replace(/[-*+]\s/g, '') // Remueve viñetas
+      .replace(/\|/g, ' ') // Remueve separadores de tablas
+      .replace(/[-=_]{3,}/g, '') // Remueve líneas horizontales
+      .trim()
+  }
+
   const speak = (text) => {
     if (!text || !synth) return
 
@@ -76,7 +90,8 @@ export function useTextToSpeech() {
     // Forzar reanudación del motor (fix crítico para móviles)
     if (synth.paused) synth.resume()
 
-    const chunks = chunkText(text)
+    const cleanedText = cleanMarkdown(text)
+    const chunks = chunkText(cleanedText)
     let currentChunkIndex = 0
 
     const speakNextChunk = () => {
