@@ -157,18 +157,28 @@ const markRead = (id) => {
           v-for="item in navItems" 
           :key="item.name"
           :to="item.path"
-          class="flex items-center gap-4 px-6 py-4 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 relative group overflow-hidden border border-transparent"
+          class="flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 relative group overflow-hidden border"
           :class="[
-            route.path === item.path ? 'bg-primary/10 text-primary border-primary/20 shadow-inner' : 'text-white/40 hover:bg-white/5 hover:text-white/80',
+            route.path === item.path 
+              ? 'bg-primary/20 text-white border-primary/40 shadow-[0_0_20px_-5px_rgba(99,102,241,0.5)]' 
+              : 'text-white/30 border-transparent hover:bg-white/5 hover:text-white/80',
             isSidebarCollapsed ? 'justify-center px-0' : ''
           ]"
           @click="isMobileMenuOpen = false"
         >
-          <component :is="item.icon" class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110" />
-          <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in">{{ item.name }}</span>
+          <!-- Neon Glow Background (Active only) -->
+          <div v-if="route.path === item.path" class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/10 animate-pulse"></div>
           
-          <!-- Indicator for active -->
-          <div v-if="route.path === item.path && !isSidebarCollapsed" class="absolute left-0 w-1 h-6 bg-primary rounded-r-full"></div>
+          <component :is="item.icon" 
+            class="w-5 h-5 shrink-0 transition-all duration-500 relative z-10" 
+            :class="route.path === item.path ? 'text-primary drop-shadow-[0_0_8px_rgba(99,102,241,0.8)] scale-110' : 'group-hover:scale-110 group-hover:text-white'"
+          />
+          
+          <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in relative z-10">{{ item.name }}</span>
+          
+          <!-- Animated Selection Bar -->
+          <div v-if="route.path === item.path && !isSidebarCollapsed" 
+               class="absolute left-0 w-1.5 h-8 bg-primary rounded-r-full shadow-[2px_0_15px_rgba(99,102,241,1)]"></div>
           
           <!-- Tooltip for collapsed mode -->
           <div v-if="isSidebarCollapsed" class="absolute left-full ml-4 px-4 py-2 bg-primary text-white text-[9px] rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap z-50 shadow-glow">
@@ -180,24 +190,23 @@ const markRead = (id) => {
         <button 
           v-if="!isInstalled"
           @click="handleInstallClick"
-          class="flex items-center gap-4 px-6 py-4 w-full rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all group mt-4 overflow-hidden relative"
+          class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] text-emerald-400 bg-emerald-500/5 border border-emerald-500/20 hover:bg-emerald-500/10 hover:border-emerald-500/40 hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.5)] transition-all group mt-6 overflow-hidden relative"
           :class="isSidebarCollapsed ? 'justify-center px-0' : ''"
         >
-          <div class="absolute inset-0 bg-emerald-400/10 blur-xl animate-pulse"></div>
           <DownloadCloud class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform relative z-10" />
           <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in relative z-10">Descargar App</span>
         </button>
       </nav>
 
       <!-- Bottom Profile / Support -->
-      <div class="p-6 space-y-4 relative z-10 border-t border-white/5 bg-white/[0.02] backdrop-blur-sm">
+      <div class="p-6 space-y-4 relative z-10 border-t border-white/5 bg-white/[0.02] backdrop-blur-md">
         <div class="flex flex-col gap-3">
            <button 
              @click="isSupportOpen = true"
-             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] text-primary bg-primary/5 hover:bg-primary/20 hover:shadow-glow transition-all group border border-primary/10"
+             class="flex items-center gap-4 px-6 py-4 w-full rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] text-primary bg-primary/5 border border-primary/10 hover:bg-primary/10 hover:border-primary/40 hover:shadow-[0_0_20px_-5px_rgba(99,102,241,0.5)] transition-all group"
              :class="isSidebarCollapsed ? 'justify-center px-0' : ''"
            >
-             <Heart class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform animate-pulse" />
+             <Heart class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform text-red-500/50 group-hover:text-red-500 drop-shadow-[0_0_5px_rgba(239,68,68,0.3)]" />
              <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in">Apoyar Proyecto</span>
            </button>
 
