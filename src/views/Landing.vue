@@ -122,52 +122,58 @@ onMounted(() => {
             Comenzar
           </button>
         </div>
+
+        <!-- Mobile Menu Button (Restored) -->
+        <button @click="toggleMenu" class="md:hidden p-3 bg-white/5 border border-white/10 rounded-2xl text-white hover:bg-white/10 transition-colors">
+          <MenuIcon v-if="!isMenuOpen" class="w-6 h-6" />
+          <XIcon v-else class="w-6 h-6" />
+        </button>
       </nav>
     </header>
 
     <!-- Main Hero Container -->
-    <main class="relative z-10 h-screen w-full flex flex-col justify-center items-center px-4 md:px-10 overflow-hidden">
+    <main class="relative z-10 h-screen w-full flex flex-col justify-center items-center px-6 md:px-10 overflow-hidden">
       
       <!-- Neural Brain (Absolute Background) -->
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 opacity-20">
          <img 
            src="/neural-brain.png" 
            alt="Neural Core" 
-           class="w-full max-w-lg h-auto animate-float-slow mix-blend-screen grayscale contrast-125"
+           class="w-[140%] max-w-lg h-auto animate-float-slow mix-blend-screen grayscale contrast-125"
          />
       </div>
 
       <!-- Headline & Subheadline Group -->
-      <div class="text-center relative z-10 space-y-10 max-w-6xl">
-        <div class="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-white/40 mb-2 animate-fade-in mx-auto backdrop-blur-sm">
+      <div class="text-center relative z-10 flex flex-col items-center gap-6 md:gap-10 max-w-6xl w-full">
+        <div class="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-white/40 mb-2 animate-fade-in backdrop-blur-sm">
           <Activity class="w-3.5 h-3.5 text-primary animate-pulse" />
-          <span class="text-[8px] font-bold uppercase tracking-[0.8em]">Neural Network v2.0 Online</span>
+          <span class="text-[7px] md:text-[8px] font-bold uppercase tracking-[0.6em] md:tracking-[0.8em]">Neural v2.0 Online</span>
         </div>
 
-        <div class="space-y-4">
-          <h2 class="text-sm md:text-base font-light tracking-[1.2em] text-primary/60 uppercase animate-fade-in-up">Inovación Educativa</h2>
-          <h1 class="text-5xl md:text-7xl lg:text-[6.5rem] font-extralight tracking-[-0.04em] leading-[0.95] animate-fade-in-up uppercase text-white">
+        <div class="space-y-3 md:space-y-4 w-full">
+          <h2 class="text-[10px] md:text-sm font-light tracking-[0.8em] md:tracking-[1.2em] text-primary/60 uppercase animate-fade-in-up">Innovación Educativa</h2>
+          <h1 class="text-4xl md:text-7xl lg:text-[6.5rem] font-extralight tracking-[-0.04em] leading-[1] md:leading-[0.95] animate-fade-in-up uppercase text-white">
             LA IA QUE <br />
-            <span class="font-black italic bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent px-6 animate-gradient-text bg-[length:200%_auto] drop-shadow-[0_0_40px_rgba(99,102,241,0.2)]">
+            <span class="font-black italic bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent px-4 md:px-6 animate-gradient-text bg-[length:200%_auto] drop-shadow-[0_0_40px_rgba(99,102,241,0.2)]">
               ENTIENDE
             </span> <br />
-            <span class="font-bold tracking-[0.2em] opacity-80 text-4xl md:text-6xl">TU MISIÓN</span>
+            <span class="font-bold tracking-[0.1em] md:tracking-[0.2em] opacity-80 text-2xl md:text-6xl">TU MISIÓN</span>
           </h1>
         </div>
 
-        <div class="relative py-2">
+        <div class="relative py-2 hidden sm:block">
            <div class="absolute inset-0 bg-black/40 blur-2xl rounded-full scale-125"></div>
-           <p class="text-base md:text-xl text-white/40 max-w-2xl mx-auto font-medium italic leading-relaxed animate-fade-in-up animation-delay-300 relative z-10">
+           <p class="text-sm md:text-xl text-white/40 max-w-2xl mx-auto font-medium italic leading-relaxed animate-fade-in-up animation-delay-300 relative z-10">
              "La inteligencia artificial al servicio de la vocación docente."
            </p>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row justify-center gap-8 pt-6 animate-fade-in-up animation-delay-600 relative z-10">
-          <button @click="router.push('/login')" class="px-16 py-6 bg-white text-black rounded-full font-bold text-[9px] uppercase tracking-[0.6em] hover:bg-primary hover:text-white transition-all shadow-[0_0_80px_rgba(255,255,255,0.3)] active:scale-95">
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 md:gap-8 pt-4 md:pt-6 animate-fade-in-up animation-delay-600 relative z-10 w-full max-w-md">
+          <button @click="router.push('/login')" class="w-full sm:w-auto px-12 md:px-16 py-4 md:py-6 bg-white text-black rounded-full font-bold text-[9px] uppercase tracking-[0.5em] md:tracking-[0.6em] hover:bg-primary hover:text-white transition-all shadow-[0_0_60px_rgba(255,255,255,0.1)] active:scale-95 shrink-0">
             Entrar al Panel
           </button>
-          <button @click="router.push('/demo')" class="px-16 py-6 border border-white/20 bg-white/10 backdrop-blur-3xl text-white rounded-full font-bold text-[9px] uppercase tracking-[0.6em] hover:bg-white/20 hover:border-white transition-all active:scale-95 shadow-lg">
+          <button @click="router.push('/demo')" class="w-full sm:w-auto px-12 md:px-16 py-4 md:py-6 border border-white/20 bg-white/10 backdrop-blur-3xl text-white rounded-full font-bold text-[9px] uppercase tracking-[0.5em] md:tracking-[0.6em] hover:bg-white/20 hover:border-white transition-all active:scale-95 shrink-0">
             Ver Demo
           </button>
         </div>
