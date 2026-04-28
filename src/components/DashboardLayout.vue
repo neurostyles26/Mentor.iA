@@ -52,11 +52,10 @@ const navItems = [
   { name: 'Historial de Chats', icon: History, path: '/dashboard/history' },
   { name: 'Mis Recortes', icon: ClipboardList, path: '/dashboard/clipboard' },
   { name: 'Agenda', icon: Calendar, path: '/dashboard/agenda' },
-  { name: 'Centro de Ayuda', icon: LifeBuoy, path: '/dashboard/help' },
   { name: 'Configuraciones', icon: Settings, path: '/dashboard/settings' },
 ]
 
-const { isInstallable, installApp } = usePWA()
+const { isInstallable, isInstalled, installApp } = usePWA()
 const showInstallNotification = ref(false)
 
 onMounted(async () => {
@@ -168,16 +167,16 @@ const markRead = (id) => {
           </div>
         </router-link>
 
-        <!-- Install App Button (Conditional) -->
+        <!-- Descargar App Button (Visible if not installed) -->
         <button 
-          v-if="isInstallable"
-          @click="installApp"
+          v-if="!isInstalled"
+          @click="isInstallable ? installApp() : router.push('/dashboard/help')"
           class="flex items-center gap-4 px-6 py-4 w-full rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all group mt-4 overflow-hidden relative"
           :class="isSidebarCollapsed ? 'justify-center px-0' : ''"
         >
           <div class="absolute inset-0 bg-emerald-400/10 blur-xl animate-pulse"></div>
           <DownloadCloud class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform relative z-10" />
-          <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in relative z-10">Instalar App</span>
+          <span v-if="!isSidebarCollapsed" class="whitespace-nowrap animate-fade-in relative z-10">Descargar App</span>
         </button>
       </nav>
 
