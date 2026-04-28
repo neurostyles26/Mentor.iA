@@ -132,21 +132,36 @@ const markRead = (id) => {
         <ChevronRight v-else class="w-5 h-5" />
       </button>
 
-      <!-- Logo Section -->
-      <div class="p-10 flex flex-col items-center relative z-10 transition-all duration-500 overflow-hidden">
+      <!-- Logo Section (Redesign) -->
+      <div class="p-10 flex flex-col items-center relative z-10 transition-all duration-500">
         <div 
-          class="flex items-center gap-4 group cursor-pointer" 
+          class="flex items-center gap-5 group cursor-pointer relative" 
           @click="router.push('/dashboard')"
           :class="isSidebarCollapsed ? 'flex-col' : ''"
         >
-          <div class="w-14 h-14 bg-gradient-to-br from-primary to-secondary p-0.5 rounded-2xl transform group-hover:rotate-12 transition-all duration-700 shadow-glow shrink-0">
-            <div class="w-full h-full rounded-[14px] bg-bg-card flex items-center justify-center">
-              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-9 h-9 object-contain" />
-            </div>
+          <!-- Neon Orbit Effect -->
+          <div class="absolute -inset-2 bg-gradient-to-tr from-primary/20 via-secondary/10 to-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+          <!-- Holographic Icon Container -->
+          <div class="w-16 h-16 relative">
+             <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 opacity-20"></div>
+             <div class="absolute inset-0 bg-gradient-to-tr from-primary to-secondary rounded-2xl -rotate-3 group-hover:rotate-0 transition-transform duration-500 opacity-20"></div>
+             
+             <div class="relative w-full h-full bg-bg-card border border-white/10 rounded-2xl p-0.5 shadow-premium group-hover:border-primary/50 transition-all duration-500 flex items-center justify-center overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-10 h-10 object-contain relative z-10 transform group-hover:scale-110 transition-transform duration-700" />
+             </div>
           </div>
+
+          <!-- Animated Typography -->
           <div v-if="!isSidebarCollapsed" class="flex flex-col animate-fade-in">
-            <span class="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap">MentorIA</span>
-            <span class="text-[8px] font-black text-primary uppercase tracking-[0.4em] leading-none">Intelligence Suite</span>
+            <span class="text-3xl font-black italic tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-white bg-[length:200%_auto] animate-gradient-text">
+              MENTORIA
+            </span>
+            <div class="flex items-center gap-2">
+               <div class="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent"></div>
+               <span class="text-[7px] font-black text-primary uppercase tracking-[0.5em] leading-none">Intelligence Suite</span>
+            </div>
           </div>
         </div>
       </div>
@@ -444,6 +459,16 @@ const markRead = (id) => {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateX(-10px); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes gradient-text {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-text {
+  animation: gradient-text 4s ease infinite;
 }
 
 .page-premium-enter-active,
