@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GoogleGenAI } from "googlegenai"
+import { createClient } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
       )
     }
 
-    const ai = new GoogleGenAI({ apiKey: API_KEY })
+    const ai = createClient({ apiKey: API_KEY })
 
     let systemPrompt = ''
     if (type === 'lesson') {
@@ -62,12 +62,12 @@ Usa Markdown elegante.`
     }
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `${systemPrompt}\n\nTema a desarrollar: ${prompt}`,
+      model: 'gemini-1.5-flash',
+      contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\nTema a desarrollar: ${prompt}` }] }],
     })
 
     return new Response(
-      JSON.stringify({ text: response.text, model_used: 'gemini-2.5-flash' }),
+      JSON.stringify({ text: response.text, model_used: 'gemini-1.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
 
