@@ -70,8 +70,7 @@ export function useTextToSpeech() {
 
   const cleanMarkdown = (text) => {
     return text
-      .replace(/\*\*(.*?)\*\*/g, '$1') // Remueve negritas
-      .replace(/\*(.*?)\*/g, '$1')     // Remueve itálicas
+      .replace(/[\*_]{1,3}/g, '') // Remueve asteriscos y guiones bajos (negritas, itálicas, subrayados)
       .replace(/#+\s?(.*?)\n/g, '$1\n') // Remueve encabezados
       .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remueve enlaces
       .replace(/`{1,3}(.*?)`{1,3}/g, '$1') // Remueve código
