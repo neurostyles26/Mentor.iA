@@ -85,84 +85,87 @@ onMounted(() => {
       </nav>
     </header>
 
-    <!-- Main Hero -->
-    <main class="relative z-10 h-screen flex flex-col justify-center items-center px-6 overflow-hidden">
-      <!-- Badge -->
-      <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 mb-8 animate-fade-in relative z-20">
-        <Sparkles class="w-3.5 h-3.5 text-primary animate-pulse" />
-        <span class="text-[9px] font-black uppercase tracking-[0.5em]">Red Neuronal v2.0 Online</span>
-      </div>
+    <!-- Main Hero Container -->
+    <main class="relative z-10 h-screen w-full flex flex-col overflow-hidden px-4 md:px-10">
+      
+      <!-- Top Spacer for Header -->
+      <div class="h-24 shrink-0"></div>
 
-      <!-- Content Container (Centered) -->
-      <div class="relative w-full max-w-7xl flex flex-col items-center">
-        <!-- 3D Centerpiece (Background of text) -->
-        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
-           <div class="absolute w-[80%] h-[80%] bg-primary/10 blur-[120px] rounded-full animate-pulse"></div>
+      <!-- Center Content: Hero -->
+      <div class="flex-1 flex flex-col justify-center items-center relative min-h-0">
+        
+        <!-- Neural Brain (Absolute Background) -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 opacity-40">
+           <div class="absolute w-[80%] h-[80%] bg-primary/10 blur-[100px] rounded-full animate-pulse"></div>
            <img 
              src="/neural-brain.png" 
              alt="Neural Core" 
-             class="w-full max-w-2xl h-auto animate-float-slow mix-blend-screen"
+             class="w-full max-w-xl h-auto animate-float-slow mix-blend-screen opacity-60"
            />
         </div>
 
-        <!-- Headline -->
-        <div class="text-center mb-8 relative z-10">
-          <h1 class="text-5xl md:text-7xl lg:text-9xl font-black tracking-[-0.06em] leading-[0.85] animate-fade-in-up">
+        <!-- Headline & Subheadline Group -->
+        <div class="text-center relative z-10 space-y-4 max-w-5xl">
+          <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 mb-2 animate-fade-in mx-auto">
+            <Sparkles class="w-3 h-3 text-primary animate-pulse" />
+            <span class="text-[8px] font-black uppercase tracking-[0.4em]">Red Neuronal v2.0 Online</span>
+          </div>
+
+          <h1 class="text-4xl md:text-6xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] animate-fade-in-up uppercase">
             LA IA QUE <br />
-            <span class="bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent italic px-4">ENTIENDE</span> <br />
+            <span class="bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-transparent italic px-2">ENTIENDE</span> <br />
             TU MISION
           </h1>
+
+          <p class="text-sm md:text-lg text-white/30 max-w-xl mx-auto font-medium italic leading-snug animate-fade-in-up animation-delay-300">
+            Fusionamos el instinto pedagógico con redes neuronales para potenciar cada aula del mundo.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4 animate-fade-in-up animation-delay-600">
+            <button @click="router.push('/login')" class="px-10 py-5 bg-white text-black rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all shadow-xl active:scale-95">
+              Entrar al Panel
+            </button>
+            <button @click="router.push('/demo')" class="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] hover:bg-white/10 backdrop-blur-xl transition-all active:scale-95">
+              Ver Demo
+            </button>
+          </div>
         </div>
+      </div>
 
-        <!-- Subheadline -->
-        <p class="text-lg md:text-xl text-white/30 max-w-2xl text-center font-medium mb-10 animate-fade-in-up animation-delay-300 italic leading-snug relative z-10">
-          Fusionamos el instinto pedagógico con redes neuronales para potenciar cada aula del mundo.
-        </p>
-
-        <!-- CTAs -->
-        <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16 animate-fade-in-up animation-delay-600 relative z-10">
-          <button @click="router.push('/login')" class="px-12 py-6 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-primary hover:text-white hover:scale-110 transition-all active:scale-95 shadow-2xl">
-            Entrar al Panel
-          </button>
-          <button @click="router.push('/demo')" class="px-12 py-6 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-white/10 backdrop-blur-xl transition-all hover:scale-105 active:scale-95">
-            Ver Demo
-          </button>
-        </div>
-
-        <!-- Value Proposition Grid (Compact) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-5xl animate-fade-in-up animation-delay-900 relative z-10">
+      <!-- Bottom Content: Features Grid -->
+      <div class="h-auto shrink-0 pb-24 relative z-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 w-full max-w-6xl mx-auto animate-fade-in-up animation-delay-900">
           <div v-for="(card, i) in [
-            { t: 'GENERACIÓN ÉLITE', d: 'Clases y talleres con precisión pedagógica.', i: Cpu },
-            { t: 'SEGURIDAD TOTAL', d: 'Datos protegidos por encriptación neuronal.', i: ShieldCheck },
-            { t: 'ANÁLISIS VISIÓN', d: 'Procesa documentos físicos con ojos de IA.', i: BrainCircuit }
+            { t: 'GENERACIÓN ÉLITE', d: 'Clases con precisión pedagógica.', i: Cpu },
+            { t: 'SEGURIDAD TOTAL', d: 'Datos protegidos por encriptación.', i: ShieldCheck },
+            { t: 'ANÁLISIS VISIÓN', d: 'Procesa documentos con ojos de IA.', i: BrainCircuit }
           ]" :key="i" 
-          class="bg-white/[0.02] border border-white/5 p-6 rounded-3xl hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-700 group flex items-center gap-5">
-            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform shrink-0">
-              <component :is="card.i" class="w-5 h-5" />
+          class="bg-white/[0.03] border border-white/5 p-4 rounded-2xl hover:bg-white/[0.06] hover:border-primary/20 transition-all group flex items-center gap-4">
+            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary shrink-0">
+              <component :is="card.i" class="w-4 h-4" />
             </div>
-            <div class="text-left">
-              <h3 class="text-[11px] font-black text-white uppercase tracking-wider italic mb-0.5">{{ card.t }}</h3>
-              <p class="text-[9px] text-white/30 font-bold leading-tight">{{ card.d }}</p>
+            <div class="text-left overflow-hidden">
+              <h3 class="text-[10px] font-black text-white uppercase tracking-wider italic mb-0.5 truncate">{{ card.t }}</h3>
+              <p class="text-[8px] text-white/20 font-bold leading-tight truncate md:whitespace-normal">{{ card.d }}</p>
             </div>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Footer (Simplified and compact) -->
-    <footer class="fixed bottom-0 left-0 w-full py-6 px-10 border-t border-white/5 bg-black/40 backdrop-blur-xl z-20 flex justify-between items-center">
-       <div class="flex items-center gap-4">
-          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-6 h-6 opacity-40" />
-          <span class="text-[8px] font-black text-white/20 uppercase tracking-[0.4em]">MentorIA 2026 | Neural Suite</span>
+    <!-- Fixed Footer -->
+    <footer class="fixed bottom-0 left-0 w-full py-4 px-8 border-t border-white/5 bg-black/60 backdrop-blur-2xl z-30 flex justify-between items-center h-16">
+       <div class="flex items-center gap-3">
+          <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-5 h-5 opacity-40" />
+          <span class="text-[7px] font-black text-white/20 uppercase tracking-[0.3em]">MentorIA 2026 | Neural Suite</span>
        </div>
-       <div class="flex items-center gap-12 grayscale opacity-20 pointer-events-none hidden lg:flex">
-          <Globe class="w-4 h-4" />
-          <Users class="w-4 h-4" />
-          <Activity class="w-4 h-4" />
+       <div class="hidden lg:flex items-center gap-8 grayscale opacity-10">
+          <Globe class="w-3.5 h-3.5" /> <Users class="w-3.5 h-3.5" /> <Activity class="w-3.5 h-3.5" />
        </div>
-       <div class="flex gap-6">
-          <button class="text-[8px] font-black text-white/10 uppercase tracking-widest hover:text-white transition-colors">Portal</button>
-          <button class="text-[8px] font-black text-white/10 uppercase tracking-widest hover:text-white transition-colors">Legal</button>
+       <div class="flex gap-4">
+          <button class="text-[7px] font-black text-white/10 uppercase tracking-widest hover:text-white transition-colors">Portal</button>
+          <button class="text-[7px] font-black text-white/10 uppercase tracking-widest hover:text-white transition-colors">Legal</button>
        </div>
     </footer>
   </div>
