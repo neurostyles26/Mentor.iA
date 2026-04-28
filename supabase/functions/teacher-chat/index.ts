@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { createClient } from "googlegenai"
+import { GoogleGenerativeAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +30,8 @@ Deno.serve(async (req) => {
       )
     }
 
-    const ai = createClient({ apiKey: API_KEY })
+    const genAI = new GoogleGenerativeAI(API_KEY)
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
     const systemPrompt = `Eres MentorIA, el asistente de inteligencia pedagógica más avanzado, especializado en el ecosistema educativo de Colombia.
 
@@ -45,26 +46,26 @@ Reglas:
 - Español colombiano fluido y claro.
 - Siempre usa Markdown elegante con Tablas, Listas y Negritas.`
 
-    // Build conversation history
+    // Build conversation history for GoogleGenerativeAI
     const history = (chatHistory || []).map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
     }))
 
-    const contents = [
-      { role: 'user', parts: [{ text: systemPrompt }] },
-      { role: 'model', parts: [{ text: 'Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. ¿En qué desafío pedagógico trabajaremos hoy?' }] },
-      ...history,
-      { role: 'user', parts: [{ text: message }] }
-    ]
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: contents,
+    const chat = model.startChat({
+      history: [
+        { role: 'user', parts: [{ text: systemPrompt }] },
+        { role: 'model', parts: [{ text: 'Entendido. Soy MentorIA, tu colaborador estratégico en innovación educativa para Colombia. ¿En qué desafío pedagógico trabajaremos hoy?' }] },
+        ...history
+      ]
     })
 
+    const result = await chat.sendMessage(message)
+    const response = await result.response
+    const text = response.text()
+
     return new Response(
-      JSON.stringify({ reply: response.text, model_used: 'gemini-1.5-flash' }),
+      JSON.stringify({ reply: text, model_used: 'gemini-1.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 

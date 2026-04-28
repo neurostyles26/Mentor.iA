@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { createClient } from "googlegenai"
+import { GoogleGenerativeAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
