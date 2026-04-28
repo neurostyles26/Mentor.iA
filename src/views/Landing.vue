@@ -199,6 +199,50 @@ onMounted(() => {
           <button class="text-[7px] font-bold text-white/10 uppercase tracking-widest hover:text-white transition-colors">Legal</button>
        </div>
     </footer>
+
+    <!-- Mobile Menu Overlay (Re-added & Improved) -->
+    <Transition name="premium-pop">
+      <div v-if="isMenuOpen" 
+        class="fixed inset-0 bg-black/95 backdrop-blur-3xl z-[100] flex flex-col items-center justify-center p-10 space-y-12 overflow-hidden"
+      >
+        <!-- Background Glows -->
+        <div class="absolute inset-0 pointer-events-none opacity-30">
+          <div class="absolute -top-1/4 -left-1/4 w-full h-full bg-primary/30 rounded-full blur-[200px]"></div>
+          <div class="absolute -bottom-1/4 -right-1/4 w-full h-full bg-secondary/30 rounded-full blur-[200px]"></div>
+        </div>
+
+        <!-- Mobile Logo Info -->
+        <div class="flex flex-col items-center gap-6 text-center relative z-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-primary to-secondary p-0.5 rounded-3xl shadow-glow">
+            <div class="w-full h-full rounded-[1.4rem] bg-[#050505] flex items-center justify-center">
+              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-10 h-10 object-contain" />
+            </div>
+          </div>
+          <h2 class="text-4xl font-bold text-white tracking-[0.2em] uppercase leading-none">MentorIA</h2>
+          <div class="flex flex-col items-center gap-2">
+             <span class="text-[8px] font-black text-primary uppercase tracking-[0.6em]">Neural Suite</span>
+             <span class="text-[6px] font-medium text-white/30 uppercase tracking-[0.3em]">© 2026 Dev. Edisson Pinza</span>
+          </div>
+        </div>
+
+        <!-- Mobile Links -->
+        <div class="w-full max-w-xs space-y-5 relative z-10">
+           <button @click="router.push('/login'); isMenuOpen = false" class="w-full py-6 bg-white/5 border border-white/10 text-white rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center gap-4">
+              Portal Docente
+           </button>
+           <button @click="router.push('/login?signup=true'); isMenuOpen = false" class="w-full py-6 bg-white text-black rounded-full font-bold text-[10px] uppercase tracking-widest shadow-glow hover:bg-primary hover:text-white transition-all">
+              Comenzar Ahora
+           </button>
+           <button @click="router.push('/demo'); isMenuOpen = false" class="w-full py-6 bg-white/5 border border-white/10 text-white rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">
+              Ver Demo
+           </button>
+        </div>
+
+        <button @click="isMenuOpen = false" class="text-white/20 uppercase font-bold text-[9px] tracking-[0.6em] hover:text-white transition-colors relative z-10 mt-10">
+          Cerrar Menú
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
