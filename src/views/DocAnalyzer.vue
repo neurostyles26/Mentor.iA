@@ -127,30 +127,46 @@ const copyToClipboard = async () => {
 const downloadAsWord = () => {
   if (!analysisResult.value) return
   
-  const content = analysisResult.value
   const filename = `MentorIA_${currentFile.value?.name.split('.')[0] || 'Analisis'}.doc`
   
+  // Limpieza profunda de Markdown para Word
+  const cleanContent = analysisResult.value
+    .replace(/### (.*?)\n/g, '<h2 style="color: #1e293b; font-size: 16pt;">$1</h2>')
+    .replace(/\*\* (.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>')
+
   const header = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' 
           xmlns:w='urn:schemas-microsoft-com:office:word' 
           xmlns='http://www.w3.org/TR/REC-html40'>
-    <head><meta charset='utf-8'><title>MentorIA Export</title>
+    <head><meta charset='utf-8'>
     <style>
       @page { size: 8.5in 11in; margin: 2.5cm; }
-      body { font-family: 'Arial', sans-serif; font-size: 12pt; line-height: 1.5; text-align: justify; }
-      h1, h2, h3 { color: #1e293b; }
-      pre { white-space: pre-wrap; font-family: 'Arial', sans-serif; }
+      body { font-family: 'Arial', sans-serif; font-size: 12pt; line-height: 1.6; color: #334155; }
+      .header-table { width: 100%; border-bottom: 2pt solid #6366f1; margin-bottom: 20pt; }
+      .brand { font-size: 18pt; font-weight: bold; color: #6366f1; font-style: italic; }
+      .subtitle { font-size: 9pt; color: #64748b; text-transform: uppercase; letter-spacing: 2pt; }
     </style>
     </head><body>
+    <table class="header-table">
+      <tr>
+        <td>
+          <div class="brand">MENTORIA</div>
+          <div class="subtitle">Intelligence Suite | Laboratorio Pedagógico</div>
+        </td>
+        <td style="text-align: right; color: #64748b; font-size: 10pt;">
+          Generado el ${new Date().toLocaleDateString()}
+        </td>
+      </tr>
+    </table>
   `
   const footer = "</body></html>"
   
-  const sourceHTML = header + content.replace(/\n/g, '<br>') + footer
+  const sourceHTML = header + cleanContent + footer
   
-  const blob = new Blob(['\ufeff', sourceHTML], {
-    type: 'application/msword'
-  })
-  
+  const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
