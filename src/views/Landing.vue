@@ -98,9 +98,13 @@ onMounted(() => {
               <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-6 h-6 object-contain" />
             </div>
           </div>
-          <div class="hidden xs:block">
+          <div class="hidden xs:flex flex-col">
             <span class="text-lg font-bold text-white tracking-[0.2em] uppercase block leading-none">MentorIA</span>
-            <span class="text-[6px] font-black text-primary uppercase tracking-[0.6em] mt-1">Neural Suite</span>
+            <div class="flex items-center gap-2 mt-1">
+               <span class="text-[6px] font-black text-primary uppercase tracking-[0.4em]">Neural Suite</span>
+               <div class="w-1 h-1 bg-white/20 rounded-full"></div>
+               <span class="text-[5px] font-bold text-white/40 uppercase tracking-widest">© 2026 Dev. Edisson Pinza</span>
+            </div>
           </div>
         </div>
         
