@@ -19,6 +19,7 @@ import {
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import VoiceAssistant from './VoiceAssistant.vue'
+import { useTextToSpeech } from '../composables/useTextToSpeech'
 
 const props = defineProps({
   isOpen: Boolean
@@ -28,6 +29,7 @@ const emit = defineEmits(['close'])
 
 const courseStore = useCourseStore()
 const chatStore = useChatStore()
+const { speak, unlock } = useTextToSpeech()
 const newMessage = ref('')
 const scrollContainer = ref(null)
 
@@ -49,12 +51,17 @@ watch(() => props.isOpen, (val) => {
   if (val) {
     chatStore.loadChats()
     scrollToBottom()
+    // Desbloqueo proactivo al abrir el chat
+    unlock()
   }
 })
 
 const handleSendMessage = async () => {
   if (!newMessage.value.trim() || chatStore.isLoading) return
   
+  // Desbloqueo crítico al interactuar (Click del usuario)
+  unlock()
+
   const msg = newMessage.value
   newMessage.value = ''
   await chatStore.sendMessage(msg)
@@ -63,11 +70,7 @@ const handleSendMessage = async () => {
   if (courseStore.isVoiceOutputEnabled && chatStore.messages.length > 0) {
     const lastMsg = chatStore.messages[chatStore.messages.length - 1]
     if (lastMsg.role === 'assistant') {
-      try {
-        const { useTextToSpeech } = await import('../composables/useTextToSpeech')
-        const { speak } = useTextToSpeech()
-        speak(lastMsg.content)
-      } catch (e) { console.error(e) }
+      speak(lastMsg.content)
     }
   }
 }
@@ -85,6 +88,7 @@ const clearChat = async () => {
 onMounted(() => {
   chatStore.loadChats()
 })
+
 </script>
 
 <template>

@@ -40,7 +40,7 @@ import { useClipboardStore } from '../store/clipboard'
 import VoiceAssistant from '../components/VoiceAssistant.vue'
 import { useTextToSpeech } from '../composables/useTextToSpeech'
 
-const { speak, stop, isSpeaking } = useTextToSpeech()
+const { speak, stop, isSpeaking, unlock } = useTextToSpeech()
 
 const router = useRouter()
 const courseStore = useCourseStore()
@@ -81,6 +81,7 @@ const types = [
 
 const sendToMentor = async () => {
   if (!teacherMessage.value.trim() || chatStore.isLoading) return
+  unlock() // Desbloqueo crítico
   const msg = teacherMessage.value
   teacherMessage.value = ''
   await chatStore.sendMessage(msg)
@@ -102,6 +103,7 @@ const useIdeaFromChat = (content) => {
 
 const handleGenerate = async () => {
   if (!topic.value.trim() || !subject.value.trim() || !grade.value.trim()) return
+  unlock() // Desbloqueo crítico
   await courseStore.generateLessonsWithAI(topic.value, {
     subject: subject.value,
     grade: grade.value,
@@ -480,7 +482,7 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
                    <!-- Controls Group -->
                    <div class="flex items-center gap-2">
                       <button 
-                        @click="isSpeaking ? stop() : speak(renderedContent.replace(/<[^>]*>/g, ''))"
+                        @click="() => { unlock(); isSpeaking ? stop() : speak(renderedContent.replace(/<[^>]*>/g, '')) }"
                         class="w-10 h-10 sm:w-11 h-11 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center transition-all hover:bg-white/10 hover:border-primary/40 group shadow-inner"
                         :class="isSpeaking ? 'text-primary' : 'text-white/40'"
                         title="Reproducción por Voz"

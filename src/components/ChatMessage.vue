@@ -4,7 +4,7 @@ import { BrainCircuit, User, Copy, ClipboardPlus, Check, Volume2, Square } from 
 import { ref } from 'vue'
 import { useTextToSpeech } from '../composables/useTextToSpeech'
 
-const { speak, stop, isSpeaking } = useTextToSpeech()
+const { speak, stop, isSpeaking, unlock } = useTextToSpeech()
 
 const props = defineProps({
   role: String,
@@ -12,7 +12,7 @@ const props = defineProps({
   timestamp: String
 })
 
-const emit = defineEmits(['saveToClipboard'])
+const emit = defineEmits(['saveToClipboard', 'speak'])
 
 const isAssistant = computed(() => props.role === 'assistant')
 const copied = ref(false)
@@ -21,6 +21,15 @@ const copyToClipboard = () => {
   navigator.clipboard.writeText(props.content)
   copied.value = true
   setTimeout(() => copied.value = false, 2000)
+}
+
+const handleSpeak = () => {
+  unlock()
+  if (isSpeaking.value) {
+    stop()
+  } else {
+    speak(props.content)
+  }
 }
 </script>
 
@@ -68,7 +77,7 @@ const copyToClipboard = () => {
         <!-- Speaker Button -->
         <button 
           v-if="isAssistant"
-          @click="isSpeaking ? stop() : speak(content)"
+          @click="handleSpeak"
           class="flex items-center gap-1.5 text-xs transition-colors"
           :class="isSpeaking ? 'text-primary' : 'text-text-muted hover:text-white'"
           title="Escuchar mensaje"
@@ -81,3 +90,4 @@ const copyToClipboard = () => {
     </div>
   </div>
 </template>
+
