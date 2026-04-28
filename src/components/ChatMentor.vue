@@ -206,15 +206,16 @@ onMounted(() => {
 
       <!-- Footer / Input -->
       <footer class="p-8 bg-bg-card border-t border-white/5">
-        <div class="flex items-center gap-4 bg-white/5 p-2.5 pl-6 rounded-[2.5rem] border border-white/10 focus-within:border-primary/50 focus-within:bg-white/10 transition-all duration-500 shadow-inner group">
+        <div class="flex items-center gap-4 bg-white/5 p-2 rounded-[2.5rem] border border-white/10 focus-within:border-primary/40 focus-within:bg-white/10 focus-within:ring-4 focus-within:ring-primary/10 transition-all duration-500 shadow-inner group">
           <input 
             v-model="newMessage"
             @keyup.enter="handleSendMessage"
             type="text" 
             placeholder="Introduce tu consulta..."
-            class="flex-1 bg-transparent border-none outline-none text-xs font-bold text-white placeholder:text-white/20"
+            class="flex-1 bg-transparent border-none outline-none ring-0 focus:ring-0 px-4 text-xs font-bold text-white placeholder:text-white/20"
             :disabled="chatStore.isLoading"
           />
+
           <VoiceAssistant v-model="newMessage" :disabled="chatStore.isLoading" />
           <button 
             @click="handleSendMessage"
