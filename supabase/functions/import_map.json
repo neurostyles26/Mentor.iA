@@ -1,5 +1,5 @@
 {
   "imports": {
-    "googlegenai": "npm:@google/generative-ai@latest"
+    "googlegenai": "npm:@google/genai@latest"
   }
 }
