@@ -92,11 +92,17 @@ onMounted(() => {
     <!-- Premium Floating Header -->
     <header class="fixed top-8 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50">
       <nav class="bg-black/20 backdrop-blur-3xl border border-white/5 rounded-[3rem] px-8 py-4 flex justify-between items-center ring-1 ring-white/5 shadow-2xl">
-        <div class="flex items-center gap-5 group cursor-pointer" @click="router.push('/')">
-          <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary p-0.5 rounded-xl transform group-hover:rotate-12 transition-all duration-700 shadow-glow shrink-0">
-            <div class="w-full h-full rounded-[10px] bg-[#050505] flex items-center justify-center">
-              <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-6 h-6 object-contain" />
-            </div>
+        <div class="flex items-center gap-5 group cursor-pointer relative" @click="router.push('/')">
+          <!-- Neon Halo Effect -->
+          <div class="absolute -inset-2 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          
+          <!-- Holographic Icon Container -->
+          <div class="w-12 h-12 relative shrink-0">
+             <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 opacity-20"></div>
+             <div class="relative w-full h-full bg-black/40 border border-white/10 rounded-2xl p-1 shadow-premium group-hover:border-primary/50 transition-all duration-500 flex items-center justify-center overflow-hidden backdrop-blur-md">
+                <img src="/App_Icon_MentoriA.png" alt="Logo" class="w-9 h-9 object-contain relative z-10 transform group-hover:scale-110 transition-transform duration-700" />
+                <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+             </div>
           </div>
           <div class="hidden xs:flex flex-col">
             <span class="text-lg font-bold text-white tracking-[0.2em] uppercase block leading-none">MentorIA</span>
