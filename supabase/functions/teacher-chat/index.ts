@@ -59,12 +59,12 @@ Reglas:
     ]
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
       contents: contents,
     })
 
     return new Response(
-      JSON.stringify({ reply: response.text, model_used: 'gemini-2.5-flash' }),
+      JSON.stringify({ reply: response.text, model_used: 'gemini-1.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 
