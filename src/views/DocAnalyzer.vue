@@ -12,14 +12,16 @@ import {
   FileSpreadsheet,
   FileEdit,
   GraduationCap,
-  ChevronRight,
-  ArrowLeft,
-  Loader2,
-  Trash2,
-  Download,
-  ClipboardCheck,
-  Volume2,
-  VolumeX
+  ChevronRight, 
+  ArrowLeft, 
+  Loader2, 
+  Trash2, 
+  Download, 
+  ClipboardCheck, 
+  Volume2, 
+  VolumeX,
+  ChevronLeft,
+  ChevronDown
 } from 'lucide-vue-next'
 import { documentProcessor } from '../lib/documentProcessor'
 import { supabase } from '../lib/supabase'
@@ -34,6 +36,7 @@ const currentFile = ref(null)
 const extractedText = ref('')
 const analysisResult = ref(null)
 const selectedMode = ref(null)
+const isSidebarCollapsed = ref(false)
 
 const modes = [
   { 
@@ -113,6 +116,14 @@ const processWithAI = async () => {
     isProcessing.value = false
   }
 }
+
+// Auto-collapse sidebar during processing to maximize space
+import { watch } from 'vue'
+watch(isProcessing, (newValue) => {
+  if (newValue) {
+    isSidebarCollapsed.value = true
+  }
+})
 
 const copyToClipboard = async () => {
   if (!analysisResult.value) return
@@ -210,83 +221,112 @@ const toggleSpeech = () => {
       </p>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 relative">
       <!-- Sidebar de Control -->
-      <aside class="lg:col-span-4 space-y-6 sm:space-y-8">
-        <!-- Mode Selection -->
-        <section class="space-y-4 sm:space-y-6">
-           <h3 class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.4em] sm:tracking-[0.5em] ml-2">Seleccionar Propósito</h3>
-           <div class="space-y-2 sm:space-y-3">
-              <button 
-                v-for="mode in modes" 
-                :key="mode.id"
-                @click="selectedMode = mode"
-                class="w-full p-4 sm:p-6 rounded-2xl sm:rounded-3xl border transition-all duration-500 text-left group flex items-start gap-4 sm:gap-5 relative overflow-hidden"
-                :class="selectedMode?.id === mode.id ? 'bg-primary/10 border-primary/40 shadow-glow' : 'bg-white/2 border-white/5 hover:border-white/20'"
-              >
-                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
-                     :class="selectedMode?.id === mode.id ? 'bg-primary text-white shadow-glow' : 'bg-white/5 text-white/20'">
-                  <component :is="mode.icon" class="w-5 h-5 sm:w-6 sm:h-6" />
-                </div>
-                <div>
-                   <h4 class="text-xs sm:text-sm font-black text-white uppercase tracking-tight mb-0.5 sm:mb-1" :class="selectedMode?.id === mode.id ? 'text-primary' : ''">{{ mode.title }}</h4>
-                   <p class="text-[8px] sm:text-[10px] text-white/30 font-medium leading-relaxed">{{ mode.desc }}</p>
-                </div>
-                <ChevronRight v-if="selectedMode?.id === mode.id" class="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-              </button>
-           </div>
-        </section>
-
-        <!-- File Upload -->
-        <section class="space-y-4 sm:space-y-6">
-          <h3 class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.4em] sm:tracking-[0.5em] ml-2">Carga de Activos</h3>
-          <div 
-            @click="triggerFileInput"
-            class="border-4 border-dashed rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 flex flex-col items-center justify-center group cursor-pointer transition-all duration-700 relative overflow-hidden text-center"
-            :class="[
-              currentFile ? 'border-accent/40 bg-accent/5' : 'border-white/5 bg-white/2 hover:border-primary/40 hover:bg-primary/5',
-              isUploading ? 'opacity-30 pointer-events-none' : ''
-            ]"
-          >
-            <input ref="fileInput" type="file" class="hidden" accept=".pdf,.docx,.xlsx,.xls" @change="handleFileUpload" />
-            
-            <div v-if="isUploading" class="flex flex-col items-center gap-3 sm:gap-4">
-               <Loader2 class="w-8 h-8 sm:w-10 sm:h-10 text-primary animate-spin" />
-               <p class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-widest">Escaneando...</p>
-            </div>
-            
-            <template v-else-if="currentFile">
-               <CheckCircle2 class="w-10 h-10 sm:w-12 sm:h-12 text-accent mb-3 sm:mb-4 animate-bounce" />
-               <p class="text-[10px] sm:text-xs font-black text-white italic truncate max-w-[150px] sm:max-w-[200px]">{{ currentFile.name }}</p>
-               <button @click.stop="reset" class="mt-3 sm:mt-4 text-[7px] sm:text-[8px] font-black text-red-400 uppercase tracking-widest hover:underline">Eliminar</button>
-            </template>
-
-            <template v-else>
-               <div class="w-14 h-14 sm:w-16 sm:h-16 bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all">
-                  <Upload class="w-6 h-6 sm:w-8 sm:h-8 text-white/20" />
-               </div>
-               <p class="text-[9px] sm:text-[10px] font-black text-white/40 uppercase tracking-[0.2em] sm:tracking-[0.3em]">Click para Cargar</p>
-               <p class="text-[7px] sm:text-[8px] text-white/10 mt-1.5 sm:mt-2 font-bold italic">PDF, Word, Excel</p>
-            </template>
+      <aside 
+        :class="['transition-all duration-700 ease-in-out lg:sticky lg:top-24 h-fit', 
+          isSidebarCollapsed ? 'lg:col-span-1' : 'lg:col-span-4']"
+      >
+        <div :class="['glass-panel border-white/5 relative overflow-hidden transition-all duration-700', isSidebarCollapsed ? 'p-3' : 'p-6 sm:p-8']">
+          <!-- Toggle Button -->
+          <div class="flex items-center justify-between mb-6">
+            <h3 v-if="!isSidebarCollapsed" class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.4em] ml-2 italic">Configuración</h3>
+            <button 
+              @click="isSidebarCollapsed = !isSidebarCollapsed"
+              class="w-8 h-8 bg-white/5 hover:bg-white/10 rounded-xl text-white/40 hover:text-primary transition-all border border-white/10 flex items-center justify-center shadow-inner"
+            >
+              <ChevronRight v-if="isSidebarCollapsed" class="w-4 h-4" />
+              <ChevronLeft v-else class="w-4 h-4" />
+            </button>
           </div>
-        </section>
 
-        <!-- Process Button -->
-        <button 
-          @click="processWithAI" 
-          :disabled="!currentFile || !selectedMode || isProcessing"
-          class="w-full py-5 sm:py-7 bg-primary text-white rounded-[1.5rem] sm:rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-20 disabled:translate-y-0 group"
-        >
-           <div class="flex items-center justify-center gap-3 sm:gap-4">
-              <Loader2 v-if="isProcessing" class="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-              <Zap v-else class="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
-              <span>Sintetizar con IA</span>
-           </div>
-        </button>
+          <div v-show="!isSidebarCollapsed" class="space-y-8 animate-fade-in">
+            <!-- Mode Selection -->
+            <section class="space-y-4">
+               <h3 class="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">Propósito</h3>
+               <div class="relative group">
+                 <select 
+                   v-model="selectedMode" 
+                   class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white font-bold text-sm outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all hover:bg-white/10"
+                 >
+                   <option :value="null" disabled>— Seleccionar Propósito —</option>
+                   <option v-for="mode in modes" :key="mode.id" :value="mode">
+                     {{ mode.title }}
+                   </option>
+                 </select>
+                 <ChevronDown class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 pointer-events-none group-hover:text-primary transition-colors" />
+               </div>
+               
+               <!-- Mode Info Card (Mini) -->
+               <div v-if="selectedMode" class="p-4 bg-primary/5 border border-primary/20 rounded-2xl animate-page-in">
+                 <div class="flex items-center gap-3 mb-2">
+                   <component :is="selectedMode.icon" class="w-4 h-4 text-primary" />
+                   <h4 class="text-[10px] font-black text-primary uppercase tracking-wider">{{ selectedMode.title }}</h4>
+                 </div>
+                 <p class="text-[9px] text-white/40 leading-relaxed italic">{{ selectedMode.desc }}</p>
+               </div>
+            </section>
+
+            <!-- File Upload -->
+            <section class="space-y-4">
+              <h3 class="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">Activo Digital</h3>
+              <div 
+                @click="triggerFileInput"
+                class="border-2 border-dashed rounded-3xl p-6 flex flex-col items-center justify-center group cursor-pointer transition-all duration-700 relative overflow-hidden text-center"
+                :class="[
+                  currentFile ? 'border-accent/40 bg-accent/5' : 'border-white/5 bg-white/2 hover:border-primary/40 hover:bg-primary/5',
+                  isUploading ? 'opacity-30 pointer-events-none' : ''
+                ]"
+              >
+                <input ref="fileInput" type="file" class="hidden" accept=".pdf,.docx,.xlsx,.xls" @change="handleFileUpload" />
+                
+                <Loader2 v-if="isUploading" class="w-6 h-6 text-primary animate-spin" />
+                
+                <template v-else-if="currentFile">
+                   <CheckCircle2 class="w-8 h-8 text-accent mb-2" />
+                   <p class="text-[9px] font-black text-white italic truncate max-w-[150px]">{{ currentFile.name }}</p>
+                   <button @click.stop="reset" class="mt-2 text-[7px] font-black text-red-400 uppercase tracking-widest hover:underline">Cambiar</button>
+                </template>
+
+                <template v-else>
+                   <Upload class="w-6 h-6 text-white/20 mb-2 group-hover:scale-110 transition-transform" />
+                   <p class="text-[8px] font-black text-white/40 uppercase tracking-widest">Cargar PDF/Word</p>
+                </template>
+              </div>
+            </section>
+
+            <!-- Process Button -->
+            <button 
+              @click="processWithAI" 
+              :disabled="!currentFile || !selectedMode || isProcessing"
+              class="w-full py-5 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-1 active:scale-95 disabled:opacity-20 disabled:translate-y-0 group"
+            >
+               <div class="flex items-center justify-center gap-3">
+                  <Loader2 v-if="isProcessing" class="w-4 h-4 animate-spin" />
+                  <Zap v-else class="w-4 h-4 group-hover:animate-pulse" />
+                  <span>Sintetizar</span>
+               </div>
+            </button>
+          </div>
+
+          <!-- Collapsed State Icons -->
+          <div v-if="isSidebarCollapsed" class="flex flex-col items-center gap-8 py-10 animate-fade-in">
+             <div :class="['w-10 h-10 rounded-xl flex items-center justify-center border transition-all', selectedMode ? 'bg-primary/20 border-primary/40 text-primary shadow-glow' : 'bg-white/5 border-white/10 text-white/20']">
+                <component :is="selectedMode?.icon || BrainCircuit" class="w-5 h-5" />
+             </div>
+             <div :class="['w-10 h-10 rounded-xl flex items-center justify-center border transition-all', currentFile ? 'bg-accent/20 border-accent/40 text-accent' : 'bg-white/5 border-white/10 text-white/20']">
+                <FileText class="w-5 h-5" />
+             </div>
+             <div class="[writing-mode:vertical-lr] rotate-180 text-[10px] font-black text-white/10 uppercase tracking-[0.4em] italic">LAB DOCK</div>
+          </div>
+        </div>
       </aside>
 
       <!-- Main Display -->
-      <main class="lg:col-span-8">
+      <main 
+        :class="['transition-all duration-700 ease-in-out', 
+          isSidebarCollapsed ? 'lg:col-span-11' : 'lg:col-span-8']"
+      >
         <div class="glass-panel min-h-[500px] sm:min-h-[700px] border-white/5 p-6 sm:p-10 md:p-16 relative flex flex-col">
           <!-- Background Decoration -->
           <div class="absolute top-0 right-0 p-8 sm:p-12 opacity-[0.02] pointer-events-none">
@@ -378,6 +418,20 @@ const toggleSpeech = () => {
 
 .shadow-glow-primary {
   box-shadow: 0 0 80px -10px rgba(99, 102, 241, 0.4);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+select option {
+  background-color: #0f172a;
+  color: white;
 }
 
 .prose-content {

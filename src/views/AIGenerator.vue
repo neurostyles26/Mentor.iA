@@ -111,6 +111,13 @@ const handleGenerate = async () => {
   })
 }
 
+// Auto-collapse sidebar during generation
+watch(() => courseStore.isGenerating, (newValue) => {
+  if (newValue) {
+    isSidebarCollapsed.value = true
+  }
+})
+
 const renderedContent = computed(() => {
   if (!courseStore.generatedContent) return ''
   return DOMPurify.sanitize(marked.parse(courseStore.generatedContent))
@@ -416,20 +423,17 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 
                <div class="space-y-4 sm:space-y-6">
                 <label class="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.4em] text-white/20 px-2">Arquitectura</label>
-                <div class="grid grid-cols-1 gap-2 sm:gap-3">
-                  <button v-for="t in types" :key="t.id" @click="type = t.id"
-                    :class="['flex items-center gap-3 sm:gap-5 p-4 sm:p-5 rounded-2xl border-2 transition-all duration-500 group', 
-                    type === t.id ? 'border-primary bg-primary/10 shadow-glow' : 'border-white/5 bg-white/[0.02] hover:bg-white/5 hover:border-white/10']"
-                  >
-                    <div :class="['w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-500', type === t.id ? 'bg-primary text-white scale-110 rotate-6 shadow-glow' : 'bg-white/5 text-white/20 group-hover:text-white/40']">
-                       <component :is="t.icon" class="w-4 h-4 sm:w-5 sm:h-5" />
-                    </div>
-                    <div class="text-left">
-                       <p :class="['font-black text-[10px] sm:text-[11px] uppercase tracking-widest mb-0.5', type === t.id ? 'text-white' : 'text-white/40 group-hover:text-white/60']">{{ t.name }}</p>
-                       <p class="text-[7px] sm:text-[8px] font-black text-white/20 uppercase tracking-widest">{{ t.desc }}</p>
-                    </div>
-                  </button>
-                </div>
+                 <div class="relative group">
+                   <select 
+                     v-model="type" 
+                     class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white font-bold text-sm outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all hover:bg-white/10"
+                   >
+                     <option v-for="t in types" :key="t.id" :value="t.id">
+                       {{ t.name }} — {{ t.desc }}
+                     </option>
+                   </select>
+                   <ChevronDown class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 pointer-events-none group-hover:text-primary transition-colors" />
+                 </div>
                </div>
 
                 <button 
