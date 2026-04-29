@@ -62,8 +62,13 @@ const type = ref('lesson')
 const teacherMessage = ref('')
 const chatContainer = ref(null)
 
-const copySuccess = ref(false)
 const showDiagnosis = ref(false)
+const isTypeDropdownOpen = ref(false)
+
+const selectType = (id) => {
+  type.value = id
+  isTypeDropdownOpen.value = false
+}
 
 onMounted(() => {
   if (courseStore.currentCourse) {
@@ -423,16 +428,39 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 
                <div class="space-y-4 sm:space-y-6">
                 <label class="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.4em] text-white/20 px-2">Arquitectura</label>
-                 <div class="relative group">
-                   <select 
-                     v-model="type" 
-                     class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white font-bold text-sm outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all hover:bg-white/10"
+                 <div class="relative">
+                   <button 
+                     @click="isTypeDropdownOpen = !isTypeDropdownOpen"
+                     class="w-full flex items-center justify-between bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white font-bold text-sm hover:border-primary/40 transition-all group"
+                     :class="isTypeDropdownOpen ? 'border-primary/60 shadow-glow bg-white/10' : ''"
                    >
-                     <option v-for="t in types" :key="t.id" :value="t.id">
-                       {{ t.name }} — {{ t.desc }}
-                     </option>
-                   </select>
-                   <ChevronDown class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 pointer-events-none group-hover:text-primary transition-colors" />
+                     <div class="flex items-center gap-3">
+                       <component :is="types.find(t => t.id === type)?.icon || BookOpen" class="w-4 h-4 text-primary" />
+                       <span>{{ types.find(t => t.id === type)?.name || 'Seleccionar Arquitectura' }}</span>
+                     </div>
+                     <ChevronDown class="w-4 h-4 text-white/20 group-hover:text-primary transition-transform duration-500" :class="isTypeDropdownOpen ? 'rotate-180' : ''" />
+                   </button>
+
+                   <!-- Custom Dropdown Menu -->
+                   <Transition name="fade-slide">
+                     <div v-if="isTypeDropdownOpen" class="absolute z-50 top-full left-0 right-0 mt-3 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2">
+                       <button 
+                         v-for="t in types" 
+                         :key="t.id"
+                         @click="selectType(t.id)"
+                         class="w-full flex items-start gap-4 p-4 rounded-2xl hover:bg-primary/10 transition-all text-left group"
+                         :class="type === t.id ? 'bg-primary/10 border border-primary/20' : 'border border-transparent'"
+                       >
+                         <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" :class="type === t.id ? 'bg-primary text-white' : 'bg-white/5 text-white/40 group-hover:bg-primary/20 group-hover:text-primary transition-colors'">
+                           <component :is="t.icon" class="w-5 h-5" />
+                         </div>
+                         <div>
+                           <p class="text-xs font-black text-white uppercase tracking-tight mb-0.5" :class="type === t.id ? 'text-primary' : ''">{{ t.name }}</p>
+                           <p class="text-[8px] text-white/30 font-medium leading-tight">{{ t.desc }}</p>
+                         </div>
+                       </button>
+                     </div>
+                   </Transition>
                  </div>
                </div>
 
@@ -603,6 +631,17 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
 @keyframes neuralPulse {
   0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1); }
   50% { opacity: 0.7; transform: scale(1.1); filter: brightness(1.5); }
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 /* Premium Markdown Styling */

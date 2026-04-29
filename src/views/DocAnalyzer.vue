@@ -37,6 +37,11 @@ const extractedText = ref('')
 const analysisResult = ref(null)
 const selectedMode = ref(null)
 const isSidebarCollapsed = ref(false)
+const isDropdownOpen = ref(false)
+const selectMode = (mode) => {
+  selectedMode.value = mode
+  isDropdownOpen.value = false
+}
 
 const modes = [
   { 
@@ -241,70 +246,93 @@ const toggleSpeech = () => {
           </div>
 
           <div v-show="!isSidebarCollapsed" class="space-y-8 animate-fade-in">
-            <!-- Mode Selection -->
+            <!-- Custom Mode Selection (The "Dropdown") -->
             <section class="space-y-4">
-               <h3 class="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">Propósito</h3>
-               <div class="relative group">
-                 <select 
-                   v-model="selectedMode" 
-                   class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white font-bold text-sm outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all hover:bg-white/10"
+               <h3 class="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em] ml-2">Misión / Propósito</h3>
+               <div class="relative">
+                 <button 
+                   @click="isDropdownOpen = !isDropdownOpen"
+                   class="w-full flex items-center justify-between bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white font-bold text-sm hover:border-primary/40 transition-all group"
+                   :class="isDropdownOpen ? 'border-primary/60 shadow-glow bg-white/10' : ''"
                  >
-                   <option :value="null" disabled>— Seleccionar Propósito —</option>
-                   <option v-for="mode in modes" :key="mode.id" :value="mode">
-                     {{ mode.title }}
-                   </option>
-                 </select>
-                 <ChevronDown class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 pointer-events-none group-hover:text-primary transition-colors" />
-               </div>
-               
-               <!-- Mode Info Card (Mini) -->
-               <div v-if="selectedMode" class="p-4 bg-primary/5 border border-primary/20 rounded-2xl animate-page-in">
-                 <div class="flex items-center gap-3 mb-2">
-                   <component :is="selectedMode.icon" class="w-4 h-4 text-primary" />
-                   <h4 class="text-[10px] font-black text-primary uppercase tracking-wider">{{ selectedMode.title }}</h4>
-                 </div>
-                 <p class="text-[9px] text-white/40 leading-relaxed italic">{{ selectedMode.desc }}</p>
+                   <div class="flex items-center gap-3">
+                     <component :is="selectedMode?.icon || BrainCircuit" class="w-4 h-4" :class="selectedMode ? 'text-primary' : 'text-white/20'" />
+                     <span :class="!selectedMode ? 'text-white/20' : ''">{{ selectedMode?.title || 'Seleccionar Propósito' }}</span>
+                   </div>
+                   <ChevronDown class="w-4 h-4 text-white/20 group-hover:text-primary transition-transform duration-500" :class="isDropdownOpen ? 'rotate-180' : ''" />
+                 </button>
+
+                 <!-- Custom Dropdown Menu -->
+                 <Transition name="fade-slide">
+                   <div v-if="isDropdownOpen" class="absolute z-50 top-full left-0 right-0 mt-3 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2">
+                     <button 
+                       v-for="mode in modes" 
+                       :key="mode.id"
+                       @click="selectMode(mode)"
+                       class="w-full flex items-start gap-4 p-4 rounded-2xl hover:bg-primary/10 transition-all text-left group"
+                       :class="selectedMode?.id === mode.id ? 'bg-primary/10 border border-primary/20' : 'border border-transparent'"
+                     >
+                       <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" :class="selectedMode?.id === mode.id ? 'bg-primary text-white' : 'bg-white/5 text-white/40 group-hover:bg-primary/20 group-hover:text-primary transition-colors'">
+                         <component :is="mode.icon" class="w-5 h-5" />
+                       </div>
+                       <div>
+                         <p class="text-xs font-black text-white uppercase tracking-tight mb-0.5" :class="selectedMode?.id === mode.id ? 'text-primary' : ''">{{ mode.title }}</p>
+                         <p class="text-[8px] text-white/30 font-medium leading-tight">{{ mode.desc }}</p>
+                       </div>
+                     </button>
+                   </div>
+                 </Transition>
                </div>
             </section>
 
-            <!-- File Upload -->
+            <!-- File Upload Elite -->
             <section class="space-y-4">
-              <h3 class="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">Activo Digital</h3>
+              <h3 class="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em] ml-2">Activo de Datos</h3>
               <div 
                 @click="triggerFileInput"
-                class="border-2 border-dashed rounded-3xl p-6 flex flex-col items-center justify-center group cursor-pointer transition-all duration-700 relative overflow-hidden text-center"
+                class="border-2 border-dashed rounded-[2rem] p-10 flex flex-col items-center justify-center group cursor-pointer transition-all duration-700 relative overflow-hidden text-center"
                 :class="[
                   currentFile ? 'border-accent/40 bg-accent/5' : 'border-white/5 bg-white/2 hover:border-primary/40 hover:bg-primary/5',
                   isUploading ? 'opacity-30 pointer-events-none' : ''
                 ]"
               >
+                <!-- Background Pulse -->
+                <div v-if="!currentFile" class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse"></div>
+
                 <input ref="fileInput" type="file" class="hidden" accept=".pdf,.docx,.xlsx,.xls" @change="handleFileUpload" />
                 
-                <Loader2 v-if="isUploading" class="w-6 h-6 text-primary animate-spin" />
+                <Loader2 v-if="isUploading" class="w-8 h-8 text-primary animate-spin" />
                 
                 <template v-else-if="currentFile">
-                   <CheckCircle2 class="w-8 h-8 text-accent mb-2" />
-                   <p class="text-[9px] font-black text-white italic truncate max-w-[150px]">{{ currentFile.name }}</p>
-                   <button @click.stop="reset" class="mt-2 text-[7px] font-black text-red-400 uppercase tracking-widest hover:underline">Cambiar</button>
+                   <div class="relative">
+                     <CheckCircle2 class="w-10 h-10 text-accent mb-3 animate-bounce" />
+                     <div class="absolute inset-0 bg-accent/20 blur-xl rounded-full"></div>
+                   </div>
+                   <p class="text-[10px] font-black text-white italic truncate max-w-[180px]">{{ currentFile.name }}</p>
+                   <button @click.stop="reset" class="mt-4 text-[8px] font-black text-red-400 uppercase tracking-widest hover:text-red-300 transition-colors">Eliminar Activo</button>
                 </template>
 
                 <template v-else>
-                   <Upload class="w-6 h-6 text-white/20 mb-2 group-hover:scale-110 transition-transform" />
-                   <p class="text-[8px] font-black text-white/40 uppercase tracking-widest">Cargar PDF/Word</p>
+                   <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all border border-white/5">
+                      <Upload class="w-6 h-6 text-white/20" />
+                   </div>
+                   <p class="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">Prescribir Archivo</p>
+                   <p class="text-[7px] font-bold text-white/10 uppercase tracking-[0.2em]">PDF • Word • Excel</p>
                 </template>
               </div>
             </section>
 
-            <!-- Process Button -->
+            <!-- Process Button Elite -->
             <button 
               @click="processWithAI" 
               :disabled="!currentFile || !selectedMode || isProcessing"
-              class="w-full py-5 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-1 active:scale-95 disabled:opacity-20 disabled:translate-y-0 group"
+              class="w-full py-6 bg-primary text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] shadow-glow hover:bg-secondary transition-all hover:-translate-y-2 active:scale-95 disabled:opacity-10 disabled:translate-y-0 group relative overflow-hidden"
             >
-               <div class="flex items-center justify-center gap-3">
-                  <Loader2 v-if="isProcessing" class="w-4 h-4 animate-spin" />
-                  <Zap v-else class="w-4 h-4 group-hover:animate-pulse" />
-                  <span>Sintetizar</span>
+               <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+               <div class="flex items-center justify-center gap-4 relative z-10">
+                  <Loader2 v-if="isProcessing" class="w-5 h-5 animate-spin" />
+                  <Zap v-else class="w-5 h-5 group-hover:animate-pulse" />
+                  <span>Sintetizar Red</span>
                </div>
             </button>
           </div>
