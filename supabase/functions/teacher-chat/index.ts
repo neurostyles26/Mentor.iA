@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
     ]
 
     // LLAMADA DIRECTA A LA API DE GOOGLE (Sin librerías, nivel gratuito)
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`
     
     const response = await fetch(apiUrl, {
       method: 'POST',
