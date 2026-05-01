@@ -1,5 +1,3 @@
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.14.1"
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -18,28 +16,22 @@ Deno.serve(async (req) => {
       })
     }
 
-    const genAI = new GoogleGenerativeAI(API_KEY)
-    const modelsToTry = ['gemini-1.5-flash', 'gemini-pro']
-    let lastError = null
-    let text = ''
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`
+    
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        contents: [{ role: 'user', parts: [{ text: `Eres experto pedagógico. Materia: ${subject}. Grado: ${grade}. Tipo: ${type}.\n\nTema: ${prompt}` }] }] 
+      })
+    })
 
-    for (const modelName of modelsToTry) {
-      try {
-        const model = genAI.getGenerativeModel({ model: modelName })
-        const systemPrompt = `Eres un experto pedagógico. Materia: ${subject}. Grado: ${grade}. Tipo: ${type}.`
-        const finalPrompt = `${systemPrompt}\n\nTema: ${prompt}`
-        const result = await model.generateContent(finalPrompt)
-        text = result.response.text()
-        if (text) break
-      } catch (err) {
-        lastError = err
-        continue
-      }
-    }
+    const data = await response.json()
+    if (data.error) throw new Error(data.error.message)
 
-    if (!text && lastError) throw lastError
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No respuesta"
 
-    return new Response(JSON.stringify({ text: text }), {
+    return new Response(JSON.stringify({ text }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200
     })
 
