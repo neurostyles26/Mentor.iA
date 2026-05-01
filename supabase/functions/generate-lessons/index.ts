@@ -24,8 +24,9 @@ Deno.serve(async (req) => {
 
     const API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
     if (!API_KEY) {
+      console.error('API Key missing in environment')
       return new Response(
-        JSON.stringify({ error: 'API Key no configurada en Supabase Secrets.' }),
+        JSON.stringify({ error: 'API Key no configurada. Ejecuta: supabase secrets set GEMINI_API_KEY=tu_llave' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -66,6 +67,11 @@ Usa Markdown elegante.`
       contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\nTema a desarrollar: ${prompt}` }] }],
     })
     const response = await result.response
+
+    if (response.promptFeedback?.blockReason) {
+      throw new Error(`Contenido bloqueado: ${response.promptFeedback.blockReason}`)
+    }
+
     const text = response.text()
 
     return new Response(
@@ -76,7 +82,10 @@ Usa Markdown elegante.`
   } catch (error) {
     console.error('Error in generate-lessons:', error)
     return new Response(
-      JSON.stringify({ error: error.message || 'Error interno del servidor' }),
+      JSON.stringify({ 
+        error: error.message || 'Error interno del servidor',
+        details: error.toString()
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }

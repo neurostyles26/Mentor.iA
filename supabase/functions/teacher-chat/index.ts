@@ -24,8 +24,9 @@ Deno.serve(async (req) => {
 
     const API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
     if (!API_KEY) {
+      console.error('API Key missing in environment')
       return new Response(
-        JSON.stringify({ error: 'API Key no configurada en Supabase Secrets.' }),
+        JSON.stringify({ error: 'API Key no configurada. Ejecuta: supabase secrets set GEMINI_API_KEY=tu_llave' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -46,7 +47,6 @@ Reglas:
 - Español colombiano fluido y claro.
 - Siempre usa Markdown elegante con Tablas, Listas y Negritas.`
 
-    // Build conversation history
     const history = (chatHistory || []).map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
@@ -59,10 +59,13 @@ Reglas:
       { role: 'user', parts: [{ text: message }] }
     ]
 
-    const result = await model.generateContent({
-      contents: contents,
-    })
+    const result = await model.generateContent({ contents })
     const response = await result.response
+    
+    if (response.promptFeedback?.blockReason) {
+      throw new Error(`Contenido bloqueado: ${response.promptFeedback.blockReason}`)
+    }
+
     const text = response.text()
 
     return new Response(
@@ -73,7 +76,10 @@ Reglas:
   } catch (error) {
     console.error('Edge Function Error:', error)
     return new Response(
-      JSON.stringify({ error: error.message || 'Error interno del servidor' }),
+      JSON.stringify({ 
+        error: error.message || 'Error interno del servidor',
+        details: error.toString() 
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }

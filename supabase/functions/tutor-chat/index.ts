@@ -24,8 +24,9 @@ Deno.serve(async (req) => {
 
     const API_KEY = Deno.env.get('GEMINI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY')
     if (!API_KEY) {
+      console.error('API Key missing in environment')
       return new Response(
-        JSON.stringify({ error: 'API Key no configurada en Supabase Secrets.' }),
+        JSON.stringify({ error: 'API Key no configurada. Ejecuta: supabase secrets set GEMINI_API_KEY=tu_llave' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
       )
     }
@@ -43,6 +44,11 @@ IMPORTANTE: Responde de forma directa y concisa. Si el usuario pide algo "corto"
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
     })
     const response = await result.response
+    
+    if (response.promptFeedback?.blockReason) {
+      throw new Error(`Contenido bloqueado: ${response.promptFeedback.blockReason}`)
+    }
+
     const text = response.text()
 
     return new Response(
@@ -53,7 +59,10 @@ IMPORTANTE: Responde de forma directa y concisa. Si el usuario pide algo "corto"
   } catch (error) {
     console.error('Error in tutor-chat:', error)
     return new Response(
-      JSON.stringify({ error: error.message || 'Error interno del servidor' }),
+      JSON.stringify({ 
+        error: error.message || 'Error interno del servidor',
+        details: error.toString()
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     )
   }
