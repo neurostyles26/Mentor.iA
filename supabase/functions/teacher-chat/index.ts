@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GoogleGenAI } from "googlegenai"
+import { GoogleGenerativeAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +30,8 @@ Deno.serve(async (req) => {
       )
     }
 
-    const ai = new GoogleGenAI({ apiKey: API_KEY })
+    const genAI = new GoogleGenerativeAI(API_KEY)
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
     const systemPrompt = `Eres MentorIA, el asistente de inteligencia pedagógica más avanzado, especializado en el ecosistema educativo de Colombia.
 
@@ -58,13 +59,14 @@ Reglas:
       { role: 'user', parts: [{ text: message }] }
     ]
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+    const result = await model.generateContent({
       contents: contents,
     })
+    const response = await result.response
+    const text = response.text()
 
     return new Response(
-      JSON.stringify({ reply: response.text, model_used: 'gemini-1.5-flash' }),
+      JSON.stringify({ reply: text, model_used: 'gemini-1.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 

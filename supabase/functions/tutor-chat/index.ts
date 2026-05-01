@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GoogleGenAI } from "googlegenai"
+import { GoogleGenerativeAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +30,8 @@ Deno.serve(async (req) => {
       )
     }
 
-    const ai = new GoogleGenAI({ apiKey: API_KEY })
+    const genAI = new GoogleGenerativeAI(API_KEY)
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
     const prompt = `${contexto}
 
@@ -38,13 +39,14 @@ Pregunta del docente: ${pregunta}
 
 IMPORTANTE: Responde de forma directa y concisa. Si el usuario pide algo "corto" o "breve", limítate a 2-3 párrafos máximo. No agregues secciones extras que no se pidieron. Usa español colombiano y Markdown para formatear.`
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+    const result = await model.generateContent({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
     })
+    const response = await result.response
+    const text = response.text()
 
     return new Response(
-      JSON.stringify({ text: response.text, model_used: 'gemini-1.5-flash' }),
+      JSON.stringify({ text: text, model_used: 'gemini-1.5-flash' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     )
 

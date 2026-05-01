@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GoogleGenAI } from "googlegenai"
+import { GoogleGenerativeAI } from "googlegenai"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +30,8 @@ Deno.serve(async (req) => {
       )
     }
 
-    const ai = new GoogleGenAI({ apiKey: API_KEY })
+    const genAI = new GoogleGenerativeAI(API_KEY)
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
     let systemPrompt = ''
     if (type === 'lesson') {
@@ -61,11 +62,11 @@ Crea un EXAMEN que incluya:
 Usa Markdown elegante.`
     }
 
-    const result = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+    const result = await model.generateContent({
       contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\nTema a desarrollar: ${prompt}` }] }],
     })
-    const text = result.text
+    const response = await result.response
+    const text = response.text()
 
     return new Response(
       JSON.stringify({ text: text, model_used: 'gemini-1.5-flash' }),
