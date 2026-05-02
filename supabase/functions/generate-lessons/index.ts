@@ -20,7 +20,7 @@ _Deno.serve(async (req: Request) => {
 
     if (provider === 'openrouter' || provider === 'groq') {
       if (!OPENROUTER_KEY) {
-        return new Response(JSON.stringify({ text: "⚠️ **Falta OPENROUTER_API_KEY.**" }), {
+        return new Response(JSON.stringify({ text: "⚠️ **Falta llave OpenRouter.**" }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
@@ -32,7 +32,7 @@ _Deno.serve(async (req: Request) => {
           'X-Title': 'MentorIA'
         },
         body: JSON.stringify({
-          model: 'meta-llama/llama-3-8b-instruct:free',
+          model: 'google/gemma-2-9b-it:free',
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: `Tema: ${prompt}` }
@@ -42,16 +42,16 @@ _Deno.serve(async (req: Request) => {
 
       const data = await response.json();
       if (data.error) throw new Error(data.error.message || 'Error OpenRouter');
-      text = data.choices?.[0]?.message?.content || "No respuesta";
+      text = data.choices?.[0]?.message?.content || "Sin respuesta";
 
     } else {
       if (!GEMINI_KEY) {
-        return new Response(JSON.stringify({ text: "⚠️ **Falta GEMINI_API_KEY.**" }), {
+        return new Response(JSON.stringify({ text: "⚠️ **Falta llave Gemini.**" }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
       
-      const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

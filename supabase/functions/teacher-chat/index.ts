@@ -20,16 +20,10 @@ _Deno.serve(async (req: Request) => {
 
     if (provider === 'openrouter' || provider === 'groq') {
       if (!OPENROUTER_KEY) {
-        return new Response(JSON.stringify({ reply: "⚠️ **Configuración faltante:** No se encontró la `OPENROUTER_API_KEY` en Supabase." }), {
+        return new Response(JSON.stringify({ reply: "⚠️ **Configuración faltante:** OPENROUTER_API_KEY." }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
-
-      const messages = [
-        { role: 'system', content: systemPrompt },
-        ...(chatHistory || []).map((m: any) => ({ role: m.role, content: m.content })),
-        { role: 'user', content: message || "Hola" }
-      ];
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -39,37 +33,39 @@ _Deno.serve(async (req: Request) => {
           'X-Title': 'MentorIA'
         },
         body: JSON.stringify({
-          model: 'meta-llama/llama-3-8b-instruct:free',
-          messages
+          model: 'google/gemma-2-9b-it:free',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            ...(chatHistory || []).map((m: any) => ({ role: m.role, content: m.content })),
+            { role: 'user', content: message || "Hola" }
+          ]
         })
       });
 
       const data = await response.json();
       if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-      reply = data.choices?.[0]?.message?.content || "Sin respuesta de OpenRouter";
+      reply = data.choices?.[0]?.message?.content || "Sin respuesta";
 
     } else {
       if (!GEMINI_KEY) {
-        return new Response(JSON.stringify({ reply: "⚠️ **Configuración faltante:** Falta la llave de Gemini." }), {
+        return new Response(JSON.stringify({ reply: "⚠️ **Falta llave de Gemini.**" }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
       
-      const history = (chatHistory || [])
-        .filter((m: any) => m.content && m.content.trim() !== "")
-        .map((m: any) => ({
-          role: m.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: m.content }]
-        }));
-
       const contents = [
         { role: 'user', parts: [{ text: systemPrompt }] },
-        { role: 'model', parts: [{ text: 'Entendido. Soy MentorIA.' }] },
-        ...history,
+        { role: 'model', parts: [{ text: 'Entendido.' }] },
+        ...(chatHistory || [])
+          .filter((m: any) => m.content && m.content.trim() !== "")
+          .map((m: any) => ({
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: m.content }]
+          })),
         { role: 'user', parts: [{ text: message || "Hola" }] }
       ];
 
-      const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
