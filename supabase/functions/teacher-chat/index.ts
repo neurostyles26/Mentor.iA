@@ -39,7 +39,7 @@ _Deno.serve(async (req: Request) => {
           'X-Title': 'MentorIA'
         },
         body: JSON.stringify({
-          model: 'meta-llama/llama-3.1-8b-instruct:free',
+          model: 'meta-llama/llama-3-8b-instruct:free',
           messages
         })
       });
@@ -69,7 +69,7 @@ _Deno.serve(async (req: Request) => {
         { role: 'user', parts: [{ text: message || "Hola" }] }
       ];
 
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+      const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
