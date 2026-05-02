@@ -359,22 +359,34 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
             </h4>
             
             <div class="space-y-4 sm:space-y-6">
-              <div class="p-4 sm:p-5 bg-white/[0.02] rounded-2xl border border-white/5 space-y-3">
+              <div class="p-4 sm:p-5 bg-white/[0.02] rounded-2xl border border-white/5 space-y-4">
                 <span class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Motor de Proceso</span>
-                <div class="flex p-1 bg-black/40 rounded-xl border border-white/5">
+                <div class="space-y-2">
                   <button 
                     @click="courseStore.setProvider('gemini')"
-                    class="flex-1 py-2 text-[8px] font-black uppercase tracking-widest rounded-lg transition-all"
-                    :class="courseStore.aiProvider === 'gemini' ? 'bg-primary text-white shadow-glow' : 'text-white/20 hover:text-white/40'"
+                    class="w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-500 border"
+                    :class="courseStore.aiProvider === 'gemini' 
+                      ? 'bg-primary/15 border-primary/30 shadow-[0_0_20px_-5px_var(--color-primary-glow)]' 
+                      : 'bg-transparent border-white/5 hover:border-white/10 hover:bg-white/[0.02]'"
                   >
-                    Gemini
+                    <div class="w-3 h-3 rounded-full shrink-0" :class="courseStore.aiProvider === 'gemini' ? 'bg-primary animate-pulse' : 'bg-white/10'"></div>
+                    <div class="text-left">
+                      <p class="text-[9px] font-black uppercase tracking-[0.15em]" :class="courseStore.aiProvider === 'gemini' ? 'text-primary' : 'text-white/30'">⚡ Google Gemini</p>
+                      <p class="text-[7px] font-bold" :class="courseStore.aiProvider === 'gemini' ? 'text-white/40' : 'text-white/15'">Gemini 2.5 Flash • Rápido</p>
+                    </div>
                   </button>
                   <button 
                     @click="courseStore.setProvider('openrouter')"
-                    class="flex-1 py-2 text-[8px] font-black uppercase tracking-widest rounded-lg transition-all"
-                    :class="courseStore.aiProvider === 'openrouter' ? 'bg-primary text-white shadow-glow' : 'text-white/20 hover:text-white/40'"
+                    class="w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-500 border"
+                    :class="courseStore.aiProvider === 'openrouter' 
+                      ? 'bg-emerald-500/15 border-emerald-500/30 shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)]' 
+                      : 'bg-transparent border-white/5 hover:border-white/10 hover:bg-white/[0.02]'"
                   >
-                    OpenRouter (Free)
+                    <div class="w-3 h-3 rounded-full shrink-0" :class="courseStore.aiProvider === 'openrouter' ? 'bg-emerald-500 animate-pulse' : 'bg-white/10'"></div>
+                    <div class="text-left">
+                      <p class="text-[9px] font-black uppercase tracking-[0.15em]" :class="courseStore.aiProvider === 'openrouter' ? 'text-emerald-400' : 'text-white/30'">🟢 OpenRouter</p>
+                      <p class="text-[7px] font-bold" :class="courseStore.aiProvider === 'openrouter' ? 'text-white/40' : 'text-white/15'">Gemma 4 Free • Gratuito</p>
+                    </div>
                   </button>
                 </div>
               </div>

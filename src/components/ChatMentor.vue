@@ -227,31 +227,34 @@ onMounted(() => {
           </button>
         </div>
 
-        <!-- Sleek Model Selector Below Input -->
-        <div class="flex items-center justify-center gap-6 pt-2">
-           <button 
-            @click="chatStore.setProvider('gemini')"
-            class="flex items-center gap-2 transition-all duration-500 group"
-            :class="chatStore.aiProvider === 'gemini' ? 'opacity-100 scale-110' : 'opacity-20 hover:opacity-40'"
-          >
-            <div class="w-1.5 h-1.5 rounded-full bg-primary" :class="chatStore.aiProvider === 'gemini' ? 'animate-pulse shadow-glow' : ''"></div>
-            <span class="text-[8px] font-black uppercase tracking-[0.3em]" :class="chatStore.aiProvider === 'gemini' ? 'text-white' : 'text-white/40'">Gemini Core</span>
-          </button>
-
-          <div class="w-px h-3 bg-white/5"></div>
-
-          <button 
-            @click="chatStore.setProvider('openrouter')"
-            class="flex items-center gap-2 transition-all duration-500 group"
-            :class="chatStore.aiProvider === 'openrouter' ? 'opacity-100 scale-110' : 'opacity-20 hover:opacity-40'"
-          >
-            <div class="w-1.5 h-1.5 rounded-full bg-secondary" :class="chatStore.aiProvider === 'openrouter' ? 'animate-pulse shadow-glow' : ''"></div>
-            <span class="text-[8px] font-black uppercase tracking-[0.3em]" :class="chatStore.aiProvider === 'openrouter' ? 'text-white' : 'text-white/40'">OpenRouter (Free)</span>
-          </button>
+        <!-- Neural Engine Selector -->
+        <div class="flex items-center justify-center gap-2 pt-3">
+          <div class="flex items-center bg-black/30 rounded-2xl p-1 border border-white/5">
+            <button 
+              @click="chatStore.setProvider('gemini')"
+              class="flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] transition-all duration-500"
+              :class="chatStore.aiProvider === 'gemini' 
+                ? 'bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-3px_var(--color-primary-glow)]' 
+                : 'text-white/25 hover:text-white/40'"
+            >
+              <div class="w-2 h-2 rounded-full" :class="chatStore.aiProvider === 'gemini' ? 'bg-primary animate-pulse' : 'bg-white/10'"></div>
+              <span>⚡ Gemini</span>
+            </button>
+            <button 
+              @click="chatStore.setProvider('openrouter')"
+              class="flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] transition-all duration-500"
+              :class="chatStore.aiProvider === 'openrouter' 
+                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_-3px_rgba(16,185,129,0.4)]' 
+                : 'text-white/25 hover:text-white/40'"
+            >
+              <div class="w-2 h-2 rounded-full" :class="chatStore.aiProvider === 'openrouter' ? 'bg-emerald-500 animate-pulse' : 'bg-white/10'"></div>
+              <span>🟢 OpenRouter</span>
+            </button>
+          </div>
         </div>
 
-        <div class="flex items-center justify-center gap-3 opacity-20">
-           <p class="text-[7px] font-black uppercase tracking-[0.5em] text-white">Elite Pedagogical Engine v4.0</p>
+        <div class="flex items-center justify-center pt-1 opacity-15">
+           <p class="text-[7px] font-black uppercase tracking-[0.4em] text-white">{{ chatStore.aiProvider === 'gemini' ? 'Google Gemini 2.5 Flash' : 'Gemma 4 Free • OpenRouter' }}</p>
         </div>
       </footer>
     </div>
