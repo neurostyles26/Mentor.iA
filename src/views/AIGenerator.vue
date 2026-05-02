@@ -359,9 +359,24 @@ const isContextValid = computed(() => subject.value.trim() && grade.value.trim()
             </h4>
             
             <div class="space-y-4 sm:space-y-6">
-              <div class="flex justify-between items-center p-4 sm:p-5 bg-white/[0.02] rounded-2xl border border-white/5">
+              <div class="p-4 sm:p-5 bg-white/[0.02] rounded-2xl border border-white/5 space-y-3">
                 <span class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Motor de Proceso</span>
-                <span class="text-[10px] sm:text-[11px] font-black text-white/60 tracking-widest italic">Core v4.0</span>
+                <div class="flex p-1 bg-black/40 rounded-xl border border-white/5">
+                  <button 
+                    @click="courseStore.setProvider('gemini')"
+                    class="flex-1 py-2 text-[8px] font-black uppercase tracking-widest rounded-lg transition-all"
+                    :class="courseStore.aiProvider === 'gemini' ? 'bg-primary text-white shadow-glow' : 'text-white/20 hover:text-white/40'"
+                  >
+                    Gemini
+                  </button>
+                  <button 
+                    @click="courseStore.setProvider('openrouter')"
+                    class="flex-1 py-2 text-[8px] font-black uppercase tracking-widest rounded-lg transition-all"
+                    :class="courseStore.aiProvider === 'openrouter' ? 'bg-primary text-white shadow-glow' : 'text-white/20 hover:text-white/40'"
+                  >
+                    OpenRouter (Free)
+                  </button>
+                </div>
               </div>
               <div class="flex justify-between items-center p-4 sm:p-5 bg-white/[0.02] rounded-2xl border border-white/5">
                 <span class="text-[9px] sm:text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Estado de Red</span>

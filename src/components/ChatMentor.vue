@@ -14,7 +14,8 @@ import {
   Bot,
   Volume2,
   VolumeX,
-  ChevronDown
+  ChevronDown,
+  Cpu
 } from 'lucide-vue-next'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
@@ -131,6 +132,16 @@ onMounted(() => {
           </div>
           
           <div class="flex items-center gap-2">
+            <button 
+              @click="chatStore.setProvider(chatStore.aiProvider === 'gemini' ? 'openrouter' : 'gemini')"
+              class="px-3 h-10 hover:bg-white/5 rounded-xl transition-all flex items-center gap-2 border border-white/5 group"
+              :class="chatStore.aiProvider === 'openrouter' ? 'text-primary' : 'text-white/40'"
+              :title="chatStore.aiProvider === 'openrouter' ? 'Usando OpenRouter (Llama 3)' : 'Usando Gemini'"
+            >
+              <Cpu class="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              <span class="text-[9px] font-black uppercase tracking-widest hidden sm:inline">{{ chatStore.aiProvider }}</span>
+            </button>
+
             <button 
               @click="courseStore.isVoiceOutputEnabled = !courseStore.isVoiceOutputEnabled"
               class="w-10 h-10 hover:bg-white/5 rounded-xl transition-all flex items-center justify-center border border-transparent"

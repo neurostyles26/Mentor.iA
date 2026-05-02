@@ -1,12 +1,16 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { supabase } from '../lib/supabase'
+import { useCourseStore } from './index'
 
 export const useChatStore = defineStore('chat', () => {
   const chats = ref([])
   const currentChatId = ref(null)
   const messages = ref([])
   const isLoading = ref(false)
+  const courseStore = useCourseStore()
+  const aiProvider = computed(() => courseStore.aiProvider)
+  const setProvider = (p) => courseStore.setProvider(p)
 
   const loadChats = async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -61,11 +65,13 @@ export const useChatStore = defineStore('chat', () => {
 
     // 3. Call Edge Function
     isLoading.value = true
+    const courseStore = useCourseStore()
     try {
       const { data: functionData, error: functionError } = await supabase.functions.invoke('teacher-chat', {
         body: { 
           message: content,
-          chatHistory: messages.value.slice(-6).map(m => ({ role: m.role, content: m.content }))
+          chatHistory: messages.value.slice(-6).map(m => ({ role: m.role, content: m.content })),
+          provider: courseStore.aiProvider
         }
       })
 
@@ -103,6 +109,8 @@ export const useChatStore = defineStore('chat', () => {
     currentChatId,
     messages,
     isLoading,
+    aiProvider,
+    setProvider,
     loadChats,
     selectChat,
     sendMessage,

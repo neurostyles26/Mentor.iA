@@ -21,9 +21,14 @@ export const useCourseStore = defineStore('course', {
     lastDiagnosis: null,
     teacherChatHistory: [],
     schedules: [],
-    isVoiceOutputEnabled: false
+    isVoiceOutputEnabled: false,
+    aiProvider: localStorage.getItem('mentor_ai_provider') || 'gemini'
   }),
   actions: {
+    setProvider(provider) {
+      this.aiProvider = provider
+      localStorage.setItem('mentor_ai_provider', provider)
+    },
     async askMentorTeacher(question) {
       if (!question) return
       this.isAskingTutor = true
@@ -35,7 +40,8 @@ export const useCourseStore = defineStore('course', {
         const { data, error } = await supabase.functions.invoke('tutor-chat', {
           body: { 
             pregunta: question, 
-            contexto: 'Eres un Mentor IA para DOCENTES colombianos. Responde de forma directa, concisa y precisa a lo que el usuario pregunte. No te extiendas innecesariamente. Si te piden algo corto, sé breve.' 
+            contexto: 'Eres un Mentor IA para DOCENTES colombianos. Responde de forma directa, concisa y precisa a lo que el usuario pregunte. No te extiendas innecesariamente. Si te piden algo corto, sé breve.',
+            provider: this.aiProvider
           }
         })
 
@@ -156,7 +162,7 @@ export const useCourseStore = defineStore('course', {
 
       try {
         const { data, error } = await supabase.functions.invoke('generate-lessons', {
-          body: { prompt, grade, subject, type }
+          body: { prompt, grade, subject, type, provider: this.aiProvider }
         })
 
         if (error) {
@@ -246,7 +252,7 @@ export const useCourseStore = defineStore('course', {
       
       try {
         const { data, error } = await supabase.functions.invoke('tutor-chat', {
-          body: { contexto: context, pregunta: question }
+          body: { contexto: context, pregunta: question, provider: this.aiProvider }
         })
 
         if (error) throw error
