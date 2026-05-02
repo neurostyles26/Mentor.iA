@@ -133,16 +133,6 @@ onMounted(() => {
           
           <div class="flex items-center gap-2">
             <button 
-              @click="chatStore.setProvider(chatStore.aiProvider === 'gemini' ? 'openrouter' : 'gemini')"
-              class="px-3 h-10 hover:bg-white/5 rounded-xl transition-all flex items-center gap-2 border border-white/5 group"
-              :class="chatStore.aiProvider === 'openrouter' ? 'text-primary' : 'text-white/40'"
-              :title="chatStore.aiProvider === 'openrouter' ? 'Usando OpenRouter (Llama 3)' : 'Usando Gemini'"
-            >
-              <Cpu class="w-4 h-4 group-hover:rotate-12 transition-transform" />
-              <span class="text-[9px] font-black uppercase tracking-widest hidden sm:inline">{{ chatStore.aiProvider }}</span>
-            </button>
-
-            <button 
               @click="courseStore.isVoiceOutputEnabled = !courseStore.isVoiceOutputEnabled"
               class="w-10 h-10 hover:bg-white/5 rounded-xl transition-all flex items-center justify-center border border-transparent"
               :class="courseStore.isVoiceOutputEnabled ? 'text-primary bg-primary/10 border-primary/20' : 'text-white/20'"
@@ -216,7 +206,7 @@ onMounted(() => {
       </div>
 
       <!-- Footer / Input -->
-      <footer class="p-8 bg-bg-card border-t border-white/5">
+      <footer class="p-8 bg-bg-card border-t border-white/5 space-y-6">
         <div class="flex items-center gap-4 bg-white/5 p-2 rounded-[2.5rem] border border-white/10 focus-within:border-primary/40 focus-within:bg-white/10 focus-within:ring-4 focus-within:ring-primary/10 transition-all duration-500 shadow-inner group">
           <input 
             v-model="newMessage"
@@ -236,10 +226,32 @@ onMounted(() => {
             <Send class="w-6 h-6" />
           </button>
         </div>
-        <div class="mt-6 flex items-center justify-center gap-3">
-           <div class="w-1 h-1 bg-primary rounded-full"></div>
-           <p class="text-[8px] font-black uppercase tracking-[0.5em] text-white/20">Elite Pedagogical Engine</p>
-           <div class="w-1 h-1 bg-primary rounded-full"></div>
+
+        <!-- Sleek Model Selector Below Input -->
+        <div class="flex items-center justify-center gap-6 pt-2">
+           <button 
+            @click="chatStore.setProvider('gemini')"
+            class="flex items-center gap-2 transition-all duration-500 group"
+            :class="chatStore.aiProvider === 'gemini' ? 'opacity-100 scale-110' : 'opacity-20 hover:opacity-40'"
+          >
+            <div class="w-1.5 h-1.5 rounded-full bg-primary" :class="chatStore.aiProvider === 'gemini' ? 'animate-pulse shadow-glow' : ''"></div>
+            <span class="text-[8px] font-black uppercase tracking-[0.3em]" :class="chatStore.aiProvider === 'gemini' ? 'text-white' : 'text-white/40'">Gemini Core</span>
+          </button>
+
+          <div class="w-px h-3 bg-white/5"></div>
+
+          <button 
+            @click="chatStore.setProvider('openrouter')"
+            class="flex items-center gap-2 transition-all duration-500 group"
+            :class="chatStore.aiProvider === 'openrouter' ? 'opacity-100 scale-110' : 'opacity-20 hover:opacity-40'"
+          >
+            <div class="w-1.5 h-1.5 rounded-full bg-secondary" :class="chatStore.aiProvider === 'openrouter' ? 'animate-pulse shadow-glow' : ''"></div>
+            <span class="text-[8px] font-black uppercase tracking-[0.3em]" :class="chatStore.aiProvider === 'openrouter' ? 'text-white' : 'text-white/40'">OpenRouter (Free)</span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 opacity-20">
+           <p class="text-[7px] font-black uppercase tracking-[0.5em] text-white">Elite Pedagogical Engine v4.0</p>
         </div>
       </footer>
     </div>

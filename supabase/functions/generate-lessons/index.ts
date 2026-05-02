@@ -15,7 +15,12 @@ Deno.serve(async (req) => {
     let text = ""
     const systemPrompt = `Eres experto pedagógico. Materia: ${subject}. Grado: ${grade}. Tipo: ${type}. Genera contenido estructurado en Markdown.`
 
-    if (provider === 'openrouter' || (provider === 'groq' && OPENROUTER_KEY)) {
+    if (provider === 'openrouter' || provider === 'groq') {
+      if (!OPENROUTER_KEY) {
+        return new Response(JSON.stringify({ text: "⚠️ **Falta OPENROUTER_API_KEY.** Agrégala en Supabase." }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200
+        })
+      }
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -37,7 +42,11 @@ Deno.serve(async (req) => {
       text = data.choices?.[0]?.message?.content || "No respuesta"
 
     } else {
-      if (!GEMINI_KEY) throw new Error('Falta la API Key de Gemini en Supabase')
+      if (!GEMINI_KEY) {
+        return new Response(JSON.stringify({ text: "⚠️ **Falta GEMINI_API_KEY.** Usa OpenRouter o configura la llave." }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200
+        })
+      }
       
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`
       

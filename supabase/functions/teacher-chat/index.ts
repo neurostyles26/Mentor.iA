@@ -16,35 +16,48 @@ Deno.serve(async (req) => {
     let reply = ""
     const systemPrompt = "Eres MentorIA, el asistente pedagógico más avanzado de Colombia. Responde siempre en Markdown elegante."
 
-    if (provider === 'openrouter' || (provider === 'groq' && OPENROUTER_KEY)) {
-      // --- LÓGICA DE OPENROUTER (Modelos Gratuitos) ---
+    if (provider === 'openrouter' || provider === 'groq') {
+      // --- LÓGICA DE OPENROUTER ---
+      if (!OPENROUTER_KEY) {
+        return new Response(JSON.stringify({ reply: "⚠️ **Configuración faltante:** No se encontró la `OPENROUTER_API_KEY` en Supabase. Por favor, agrégala en los Secrets." }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        })
+      }
+
       const messages = [
         { role: 'system', content: systemPrompt },
         ...(chatHistory || []).map(m => ({ role: m.role, content: m.content })),
         { role: 'user', content: message }
       ]
 
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${OPENROUTER_KEY}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://mentoria.vercel.app', // Opcional pero recomendado
-          'X-Title': 'MentorIA'
-        },
-        body: JSON.stringify({
-          model: 'meta-llama/llama-3.1-8b-instruct:free',
-          messages
+      try {
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${OPENROUTER_KEY}`,
+            'Content-Type': 'application/json',
+            'X-Title': 'MentorIA'
+          },
+          body: JSON.stringify({
+            model: 'meta-llama/llama-3.1-8b-instruct:free',
+            messages
+          })
         })
-      })
 
-      const data = await response.json()
-      if (data.error) throw new Error(`OpenRouter Error: ${data.error.message || JSON.stringify(data.error)}`)
-      reply = data.choices?.[0]?.message?.content || "Lo siento, OpenRouter no pudo responder."
+        const data = await response.json()
+        if (data.error) throw new Error(data.error.message || JSON.stringify(data.error))
+        reply = data.choices?.[0]?.message?.content || "Lo siento, OpenRouter no devolvió una respuesta."
+      } catch (e) {
+        throw new Error(`Error en OpenRouter: ${e.message}`)
+      }
 
     } else {
-      // --- LÓGICA DE GEMINI (Por defecto) ---
-      if (!GEMINI_KEY) throw new Error('Falta la API Key de Gemini en Supabase')
+      // --- LÓGICA DE GEMINI ---
+      if (!GEMINI_KEY) {
+        return new Response(JSON.stringify({ reply: "⚠️ **Configuración faltante:** No se encontró la llave de Gemini en Supabase. Cambia a **OpenRouter** abajo para continuar." }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        })
+      }
       
       const history = (chatHistory || []).map((m) => ({
         role: m.role === 'assistant' ? 'model' : 'user',
